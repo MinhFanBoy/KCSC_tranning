@@ -1,1 +1,4 @@
-# KCSC_tranning
+## KCSC_tranning
+
+:v 
+Learning CTF with KCSC
