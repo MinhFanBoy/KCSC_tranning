@@ -76,6 +76,16 @@ $$
 $$
 
   Khi đó sử dụng CRT với hệ trên ta sẽ có được $M^3$. Lấy $\sqrt[3]{X}$ là ta có được M.
+  
+2. Fermat's attack
+
+Trong RSA, $q, p$ nên có chung độ dài để có thể tạo nên một khóa mạnh mẽ, nhưng nếu $q, p$ quá gần nhau lại dẫn dến trường hợp khóa yếu dễ bị tấn công.
+Giả sử: $N = (a - b) * (a + b) = a^2 - b^2 \quad \forall a, b \in Z^*$
+$$b^2 = a^2 - N$$
+$$b = \sqrt{a^2 - N}$$
+
+Với $a = \sqrt{N}, b = a^2 - n$ thử lần lượt với mọi $x > a$ sao cho thỏa mãn hệ.Với cách brute force như vậy nên cách tấn công này chỉ áp dụng với các sô q và p gần nhau
+
 
 ## PART_4
 
