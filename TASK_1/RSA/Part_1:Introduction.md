@@ -49,7 +49,21 @@ $$
   m = m_q \pmod{q}
 \end{cases}
 $$
+
+### PART_3
+
+1. Hastad's attack
+   Để thực hiện cuộc tấn công này cần có ít nhất 3 tín nhắn được mã hóa có nội dung giống nhau và có chung e và tất cả các N lần lượt từng đôi một nguyên tố cùng nhau. Từ đó ta có:
    
+$$
+\begin{cases}
+  c_1 = M^3 \pmod{n_1}\\
+  c_2 = M^3 \pmod{n_2}\\
+  c_3 = M^3 \pmod{n_3}
+\end{cases}
+$$
+
+  Khi đó sử dụng CRT với hệ trên ta sẽ có được $M^3$. Lấy $\sqrt[3]{X}$ là ta có được M.
 
 
               
