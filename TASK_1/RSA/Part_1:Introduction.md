@@ -53,7 +53,7 @@ $$
 ### PART_3
 
 1. Hastad's attack
-   Để thực hiện cuộc tấn công này cần có ít nhất 3 tín nhắn được mã hóa có nội dung giống nhau và có chung e và tất cả các N lần lượt từng đôi một nguyên tố cùng nhau. Từ đó ta có:
+Để thực hiện cuộc tấn công này cần có ít nhất 3 tín nhắn được mã hóa có nội dung giống nhau và có chung e và tất cả các N lần lượt từng đôi một nguyên tố cùng nhau. Từ đó ta có:
    
 $$
 \begin{cases}
@@ -64,6 +64,42 @@ $$
 $$
 
   Khi đó sử dụng CRT với hệ trên ta sẽ có được $M^3$. Lấy $\sqrt[3]{X}$ là ta có được M.
+
+## PART_4
+
+1. Timing attack
+Đây là kiểu tấn công đươn giản và rất không hiệu quả nên không được sử dụng trong thực tế.
+
+Viết d dưới dạng nhị phân ta có: $d = d_0d_1...d_n$ nên $d = \displaystyle\sum_{i=0}^{n} 2^i * d_i$.
+   Từ đó, đặt $$z = M, c = 1, i = 0, ..., n$$
+
+$$
+\begin{cases}
+  c = c * z \pmod{N} & \text{if } d_i = 1\\
+  z = z ^ 2 \pmod{N} & \text{else} \\
+  C = M ^ \pmod{N} & \text{when end}
+\end{cases}
+$$
+
+Vì d là số lẻ nên $d_0$ luôn bằng $1$, Ở lần lặp tiếp theo vì có sự khác biệt giữa thời gian thực hiện phép tính nên ta có thể xác định lần lượt các $d_i$ tiếp theo. Cứ tiếp tục như vậy để khôi phục $d$. Lưu ý khi số $e$ nhỏ dược sử dụng ta chỉ cần khôi phục $1/4$ số bít của $d$.
+
+3. random fault
+Trong RSA, việc giải mã có thể sử dụng CRT để giảm thời gian chạy. Thay vì hoạt động trên modulus $N$ thì ta chỉ hoạt động trên $q, p$ từ đó giúp giảm thời gian.
+
+   + $c_p = M^{d_p} \pmod{p}$ và $c_q = M^{d_q} \pmod{q}$
+   + với $d_p = d \pmod{p - 1}, d_q = d \pmod{q - 1}$
+   + $c = a * c_p + b * c_q \pmod{N}$
+
+Trong một vài trường hợp có thể sảy ra lỗi như sau: $${c_q} ^ e = M \pmod{p}$$ $${c_p} ^ e \neq M \pmod{p}$$.  $$\to \gcd(N, {c_p} ^ e) = p$$. Để kiểu tấn công này hoạt động, ta cần phải biết $M$. Nên yêu cầu $M$ phải là văn bản thuần không được pad.
+
+4. PKCS1 attack
+
+Với $N$ có $n$ bits RSA và tin nhắn mã hóa có $m$ bits mà $m < n$ thì trước khi được mã hóa tin nhắn thường được pad thêm sao cho $m' = n$. Tiêu chuẩn thường dược sử dụng để pad là PKCS1, nó có dạng:
+   + "02" + random + 00 + M
+     
+Khi tin nhắn được giải mã nó sẽ phải kiểm tra xem có "02" ở trong không. Nếu như không có nó sẽ gửi về lỗi nên từ đó ta sẽ biết được tin nhắn có dc pad hay k và có thể tấn công nó. Chọn một số ngẫu nhiên $r < Z_n$, tính toán $C' = c * r \pmod{N}$ gửi $C'$ đi mã hóa. Từ đó có thể giải mã $C$. 
+    
+
 
 
               
