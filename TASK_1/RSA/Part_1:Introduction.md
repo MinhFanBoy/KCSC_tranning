@@ -21,14 +21,26 @@ Nếu d được cho việc tính toán m trở nên rất dễ ràng, Khi muố
 
 1. Common modulus
    
-   Để tránh tạo ra một modulo nhiều lần cho mọi người thì việc tạo ra một mod cho nhiều người dùng thoạt nhìn thì có thể vẫn an toàn(dùng chung một $N$ cho nhiều người dùng và có các hệ số $e, d$ khác nhau).
-   Nếu chúng ta biết $e_a, d_a$ thì thì ta hoàn toàn tim ra dc $q, p$ của $N$. Từ đó với $e_b$ của một người bất kỳ nào đó thì ta sẽ tính ra dc $d_b$ đó và từ đó có thể dễ dàng mã hóa được $c_b$.
+Để tránh tạo ra một modulo nhiều lần cho mọi người thì việc tạo ra một mod cho nhiều người dùng thoạt nhìn thì có thể vẫn an toàn(dùng chung một $N$ cho nhiều người dùng và có các hệ số $e, d$ khác nhau).
 
-2. Blinding
+Nếu chúng ta biết $e_a, d_a$ thì thì ta hoàn toàn tìm ra dc $q, p$ của $N$. Từ đó với $e_b$ của một người bất kỳ nào đó thì ta sẽ tính ra dc $d_b$ đó và từ đó có thể dễ dàng mã hóa được $c_b$.
+
+Giả sử: $e_a, d_a,N$ đã biết lúc đó ta có:
+Tồn tại $k$ sao cho $e_a * d_a = 1 + k * phi$
+$$phi = (e_a * d_a - 1)/k \text{   } \forall phi \in N^*$$
+Từ đó ta dễ dàng tìm được phi. Và ta cũng có $phi = (p - 1) * (q - 1) \to phi = N - q - p + 1$
+
+Xét phương trình $(x - q) * (x - p) == 0$, dễ thấy pt có hai nghiệm phân biệt là $p, q$. Phương trình tương đương $x^2 - (p + q) * x + p * q = 0$. Kết hợp với phi đã tính ở trên, ta có: $$x^2 - (N - phi + 1) * x + N = 0$$
+Từ đó dễ dàng tìm được $p, q$ , để chắc chắn có thể thêm điều kiện $q, p$ là số nguyên tố. Với $phi, e_b$ ta hoàn toàn có thể tính ra $d_b$ rồi từ đó mã hóa tin nhắn.
+
+
+   
+
+3. Blinding
    
    Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung. với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
     Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
-3. Low private exponent
+4. Low private exponent
    
    Khi $e$ quá nhỏ thì dẫn tới việc d bị quá lớn từ đó dẫn tới việc giải mã bị tốn nhiều thời gian. Để không bị tốn nhiều thời gian thì cho $e$ lớn, dẫn tới việc $d$ nhỏ hơn và giảm thời gian mã hóa. Nhưng nếu $d$ quá nhỏ sẽ dẫn tới trường hợp khóa yếu từ đó dễ bị tấn công.Khi $d < \sqrt[4]{N} / 3,  q < p < 2 * q$, ta có thể tấn công như sau:
    + $e * d = 1 (\mod phi)$ $\to$ $ed = 1 + k*phi$ $\to$ $e/phi - k/d = 1/(d * phi)$ vì $1/(d * phi)$ rất nhỏ nên từ đó ta có thể suy ra $e/phi = k/d$
