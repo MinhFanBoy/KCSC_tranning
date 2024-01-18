@@ -5,7 +5,7 @@ Tables of contens
 * [PART_1: Giới thiệu chung]()
    * [Tổng quan]()
    * [Bài toán phân tích thừa số]()
-* [PART_2: Attack]()
+* [PART_2: Attack](#part_2-attack)
    * [1. Common modulus]()
    * [2. Blinding]()
    * [3. Low private exponent]()
