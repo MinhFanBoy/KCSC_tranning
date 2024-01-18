@@ -3,8 +3,8 @@ Tables of contens
 =================
 
 * [PART_1: Giới thiệu chung](#part_1-giới-thiệu-chung)
-   * [Tổng quan](#tổng-quát)
-   * [Bài toán phân tích thừa số](#bài-toán-phân-tích-thừa-số)
+   * [Tổng quan](#tổng-quan)
+   * [Bài toán phân tích thừa số](#factoring-large-intergers)
 * [PART_2: Attack](#part_2-attack)
    * [1. Common modulus]()
    * [2. Blinding]()
