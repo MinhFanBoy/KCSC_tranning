@@ -49,6 +49,11 @@ Từ đó ta dễ dàng tìm được phi. Và ta cũng có $phi = (p - 1) * (q 
 
 Xét phương trình $(x - q) * (x - p) == 0$, dễ thấy pt có hai nghiệm phân biệt là $p, q$. Phương trình tương đương $x^Với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
     Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
+
+### 2. Blinding
+   Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung. với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
+    Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
+
 ### 3. Low private exponent
    
    Khi $e$ quá nhỏ thì dẫn tới việc d bị quá lớn từ đó dẫn tới việc giải mã bị tốn nhiều thời gian. Để không bị tốn nhiều thời gian thì cho $e$ lớn, dẫn tới việc $d$ nhỏ hơn và giảm thời gian mã hóa. Nhưng nếu $d$ quá nhỏ sẽ dẫn tới trường hợp khóa yếu từ đó dễ bị tấn công.Khi $d < \sqrt[4]{N} / 3,  q < p < 2 * q$, ta có thể tấn công như sau:
