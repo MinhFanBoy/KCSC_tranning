@@ -3,8 +3,8 @@ Tables of contens
 =================
 
 
-[PART_1: Giới thiệu chung]()
-+ [Tổng quan]()
+* [PART_1: Giới thiệu chung]()
+  * [Tổng quan]()
 + [Bài toán phân tích thừa số]()
 
 [PART_2: Attack]()
