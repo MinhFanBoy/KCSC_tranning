@@ -3,18 +3,17 @@ Tables of contens
 =================
 
 * [PART_1: Giới thiệu chung]()
- * [Tổng quan]()
- * [Bài toán phân tích thừa số]()
-
+   * [Tổng quan]()
+   * [Bài toán phân tích thừa số]()
 * [PART_2: Attack]()
- * [1. Common modulus](###common-modulus)
- * [2. Blinding](### 2. Blinding)
- * [3. Low private exponent]()
- * [4. Hastad's attack]()
- * [5. Fermat's attack]()
- * [6. Timing attack]()
- * [7. random fault]()
- * [8. PKCS1 attack]()
+   * [1. Common modulus]()
+   * [2. Blinding]()
+   * [3. Low private exponent]()
+   * [4. Hastad's attack]()
+   * [5. Fermat's attack]()
+   * [6. Timing attack]()
+   * [7. random fault]()
+   * [8. PKCS1 attack]()
 
 ## PART_1: Giới thiệu chung
 
