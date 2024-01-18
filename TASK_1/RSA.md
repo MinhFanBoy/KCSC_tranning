@@ -7,7 +7,7 @@ Tables of contens
    * [Bài toán phân tích thừa số](#2-factoring-large-intergers)
 * [PART_2: Attack](#part_2-attack)
    * [1. Common modulus](#1-common-modulus)
-   * [2. Blinding](#2-bliding)
+   * [2. Blinding](#2-blinding)
    * [3. Low private exponent](#3-low-private-exponent)
    * [4. Hastad's attack](#4-hastad's-attack)
    * [5. Fermat's attack](#5-fermat's-attack)
