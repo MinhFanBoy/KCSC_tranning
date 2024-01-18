@@ -5,7 +5,7 @@
 + [Bài toán phân tích thừa số]()
 
 [PART_2: Attack]()
-+ [1. Common modulus](###1.Common-modulus)
++ [1. Common modulus](###common-modulus)
 + [2. Blinding](### 2. Blinding)
 + [3. Low private exponent]()
 + [4. Hastad's attack]()
@@ -35,7 +35,7 @@ Nếu d được cho việc tính toán m trở nên rất dễ ràng, Khi muố
 ## PART_2: Attack
 
 
-### 1.Common modulus
+### Common modulus
    
 Để tránh tạo ra một modulo nhiều lần cho mọi người thì việc tạo ra một mod cho nhiều người dùng thoạt nhìn thì có thể vẫn an toàn(dùng chung một $N$ cho nhiều người dùng và có các hệ số $e, d$ khác nhau).
 
