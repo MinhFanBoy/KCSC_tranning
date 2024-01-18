@@ -2,7 +2,7 @@
 Tables of contens
 =================
 
-* [PART_1: Giới thiệu chung]()
+* [PART_1: Giới thiệu chung](#part-1-giới-thiệu-chung)
    * [Tổng quan]()
    * [Bài toán phân tích thừa số]()
 * [PART_2: Attack](#part_2-attack)
