@@ -30,8 +30,8 @@ Một tin nhắn là một số tự nhiên m thuộc nhóm $Z_{n}$. Để mã h
 Nếu d được cho việc tính toán m trở nên rất dễ ràng, Khi muốn biết d từ n thì nó trở thành một bài toán khó còn được gọi là trap_door. Khi muốn phá RSA, có $(N, e, C)$, rất khó để tính được $\sqrt[e]{C} \mod N$. Vì nhóm hữu hạn $Z_n$ lớn nên rất khó để tìm $d$ sao cho $M$ đúng. Trong RSA hàm $x \to x^e \mod N$ là một ví dụ cho bẫy sập một chiều. Rễ dàng để tính, nhưng khó để đảo ngược.
 
 ### 2. factoring large intergers
- +  Tấn công vào public key đơn giản nhất đó chính là phân tích nhân tử cho n từ đó có thể dễ dàng tìm được phi n thông qua $ed = 1 (\mod phi)$. (Được gọi là tấn công bạo lực :v). Nhưng việc phân tích nhân tử một số lớn là một trong những bài toán khó tốn nhiều thời gian từ đó việc tấn công này chở nên bất khả thi về mặt thời gian.
- +  Ngòai ra, khi biết $d$ và $e$ thì ta có thể tìm được $n$ từ đó tìm được $(q, p)$.
+ +  Tấn công vào public key đơn giản nhất đó chính là phân tích nhân tử cho n từ đó có thể dễ dàng tìm được phi n thông qua $ed = 1 (\mod phi)$. (Được gọi là tấn công bạo lực :v). Nhưng việc phân tích nhân tử một số lớn là một trong những bài toán khó tốn nhiều thời gian từ đó việc tấn công này trở nên bất khả thi về mặt thời gian.
+ +  NgoàiNgoài ra, khi biết $d$ và $e$ thì ta có thể tìm được $n$ từ đó tìm được $(q, p)$.
 
 ## PART_2: Attack
 
@@ -47,15 +47,7 @@ Tồn tại $k$ sao cho $e_a * d_a = 1 + k * phi$
 $$phi = (e_a * d_a - 1)/k \text{   } \forall phi \in N^*$$
 Từ đó ta dễ dàng tìm được phi. Và ta cũng có $phi = (p - 1) * (q - 1) \to phi = N - q - p + 1$
 
-Xét phương trình $(x - q) * (x - p) == 0$, dễ thấy pt có hai nghiệm phân biệt là $p, q$. Phương trình tương đương $x^2 - (p + q) * x + p * q = 0$. Kết hợp với phi đã tính ở trên, ta có: $$x^2 - (N - phi + 1) * x + N = 0$$
-Từ đó dễ dàng tìm được $p, q$ , để chắc chắn có thể thêm điều kiện $q, p$ là số nguyên tố. Với $phi, e_b$ ta hoàn toàn có thể tính ra $d_b$ rồi từ đó mã hóa tin nhắn.
-
-
-   
-
-### 2. Blinding
-   
-   Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung. với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
+Xét phương trình $(x - q) * (x - p) == 0$, dễ thấy pt có hai nghiệm phân biệt là $p, q$. Phương trình tương đương $x^Với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
     Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
 ### 3. Low private exponent
    
