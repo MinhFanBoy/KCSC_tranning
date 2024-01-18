@@ -66,7 +66,8 @@ Từ đó dễ dàng tìm được $p, q$ , để chắc chắn có thể thêm 
     Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
 
 ### 3. Low private exponent
-   
+
+1. Weinner attack
    Khi $e$ quá nhỏ thì dẫn tới việc d bị quá lớn từ đó dẫn tới việc giải mã bị tốn nhiều thời gian. Để không bị tốn nhiều thời gian thì cho $e$ lớn, dẫn tới việc $d$ nhỏ hơn và giảm thời gian mã hóa. Nhưng nếu $d$ quá nhỏ sẽ dẫn tới trường hợp khóa yếu từ đó dễ bị tấn công.Khi $d < \sqrt[4]{N} / 3,  q < p < 2 * q$, ta có thể tấn công như sau:
    + $e * d = 1 (\mod phi)$ $\to$ $ed = 1 + k*phi$ $\to$ $e/phi - k/d = 1/(d * phi)$ vì $1/(d * phi)$ rất nhỏ nên từ đó ta có thể suy ra $e/phi = k/d$
    + $phi = (q - 1)*(p - 1)$ $\to$ $phi = N - q - p +1 \to p + q -1 = 1/3 (n^(1/2))$ nên $|N - phi| = 1/3 (n^{1/2})$
@@ -87,7 +88,10 @@ $$
 \end{cases}
 $$
 
+2. e attack
 
+Khi chọn e quá nhỏ (thường là dạng $2 ^ k + 1$ để giảm thời gian tính) như 3, 5 thì với n quá lớn cũng có thể khiến nó dễ bị tấn công. Cụ thể $m ^ e < n$ từ đó nó kiển phép mod trở nên vô dụng, từ đó ta có thể dễ dàng tính lại bản mã chỉ bằng phép căn quen thuộc.
+$$m = \sqrt[e]{c} $$
 
 ### 4. Hastad's attack
 Để thực hiện cuộc tấn công này cần có ít nhất 3 tín nhắn được mã hóa có nội dung giống nhau và có chung e và tất cả các N lần lượt từng đôi một nguyên tố cùng nhau. Từ đó ta có:
