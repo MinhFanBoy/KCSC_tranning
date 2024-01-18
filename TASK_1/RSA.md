@@ -92,7 +92,7 @@ $$
 
 Khi chọn e quá nhỏ (thường là dạng $2 ^ k + 1$ để giảm thời gian tính) như 3, 5 thì với n quá lớn cũng có thể khiến nó dễ bị tấn công. Cụ thể, khi $m ^ e < n$ từ đó nó kiển phép mod trở nên vô dụng, từ đó ta có thể dễ dàng tính lại bản mã chỉ bằng phép căn quen thuộc.
 $$m = \sqrt[e]{c} $$
-Còn nếu với n quá nhỏ thì sẽ dẫn tới việc có thể factor ra được p vqf q từ đó dẫn tới việc nó dễ bị phá.
+Còn nếu với n quá nhỏ thì sẽ dẫn tới việc có thể factor ra được p và q từ đó dẫn tới việc nó dễ bị phá.
 
 Vậy nên khi đó ta có thể dùng pad(có nhiều cách pad những dễ nhất thì cứ thêm thông tin rác vào bản rõ) để tăng thêm độ dài bản mã từ đó khiến cho nó đảm bảo an toàn.
 
