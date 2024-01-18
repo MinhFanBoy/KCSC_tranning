@@ -5,7 +5,7 @@
 + [Bài toán phân tích thừa số]()
 
 [PART_2: Attack]()
-+ [1. Common modulus](###1.-common-modulus)
++ [1. Common modulus](###1.-Common-modulus)
 + [2. Blinding](### 2. Blinding)
 + [3. Low private exponent]()
 + [4. Hastad's attack]()
