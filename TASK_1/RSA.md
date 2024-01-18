@@ -37,7 +37,17 @@ Nếu d được cho việc tính toán m trở nên rất dễ ràng, Khi muố
 
 
 ### 1. Common modulus
-   
+
+1. External attack
+
+Trong trường hợp một hệ thống có chung một N, và mỗi người dùng có một cặp $(e_i, d_i)$ khác nhau. Mặt khác, thông thường $gcd(e_a, e_b) = 1$, chọn u, v sao cho $e_a * u + e_b * v = 1$(có nhiều cách tính, đơn giản nhất là dùng Euclid mở rộng)
+$$m ^ {e_a} \equiv c_a \pmod{n} \quad \text{and} \quad m ^ {e_b} \equiv c_b \pmod{n}$$
+$$c_a ^ {v} \equiv m ^ {e_a * v} \pmod{n}$$
+$$c_b ^ {u} \equiv m ^ {e_b * u} \pmod{n}$$
+$$\to c_a ^ {v} * c_b ^{u} \equiv m ^ {e_a * u + e_b * v} = m \pmod{n}$$
+
+2. Internal attack
+
 Để tránh tạo ra một modulo nhiều lần cho mọi người thì việc tạo ra một mod cho nhiều người dùng thoạt nhìn thì có thể vẫn an toàn(dùng chung một $N$ cho nhiều người dùng và có các hệ số $e, d$ khác nhau).
 
 Nếu chúng ta biết $e_a, d_a$ thì thì ta hoàn toàn tìm ra dc $q, p$ của $N$. Từ đó với $e_b$ của một người bất kỳ nào đó thì ta sẽ tính ra dc $d_b$ đó và từ đó có thể dễ dàng mã hóa được $c_b$.
@@ -47,8 +57,7 @@ Tồn tại $k$ sao cho $e_a * d_a = 1 + k * phi$
 $$phi = (e_a * d_a - 1)/k \text{   } \forall phi \in N^*$$
 Từ đó ta dễ dàng tìm được phi. Và ta cũng có $phi = (p - 1) * (q - 1) \to phi = N - q - p + 1$
 
-Xét phương trình $(x - q) * (x - p) == 0$, dễ thấy pt có hai nghiệm phân biệt là $p, q$. Phương trình tương đương $x^Với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
-    Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
+Xét phương trình $(x - q) * (x - p) == 0$, dễ thấy pt có hai nghiệm phân biệt là $p, q$. Phương trình tương đương $x
 
 ### 2. Blinding
    Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung. với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
