@@ -71,3 +71,54 @@ if __name__ == "__main__":
 ```
 
 ---
+
+$\to$
+
+```python
+
+from pwn import *
+from json import *
+from Crypto.Util.number import *
+import random
+import time
+import os
+import json
+from tqdm import *
+from factordb.factordb import FactorDB
+from gmpy2 import iroot
+
+s = process(["python3", "t.py"])
+
+
+
+print(s.recvuntil(b"hint = ").decode())
+total = int(s.recvline().decode())
+print(s.recvuntil(b"3 : Check\n").decode())
+
+dict = {"option":"Get_Public_Key"}
+s.sendline(dumps(dict).encode())
+s.recvuntil(b"n = ")
+n = int(s.recvline().decode())
+dict = {"option":"Get_ciphertext"}
+s.sendline(dumps(dict).encode())
+
+s.recvuntil(b"ciphertext : ")
+cipher = int(s.recvline().decode())
+KEY_SIZE = 512
+e = 65537
+print(f"e : {e}")
+print(f"n : {n}")
+print(f"cipher : {cipher}")
+print(f"key_size : {KEY_SIZE}")
+
+# x ^ 2 - total * x + n = 0
+delta = total * total - 4 * n
+p = (total + iroot(delta, 2)[0]) // 2
+q = n //p
+phi = (p-1)*(q-1)
+s.sendline(dumps({"option" : "check", "private_key" : hex(pow(e, -1, phi))}).encode())
+tmp = s.recv()
+if b"flag" in tmp:
+    print(tmp)
+
+```
