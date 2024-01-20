@@ -72,7 +72,23 @@ if __name__ == "__main__":
 
 ---
 
-$\to$
+$\to$ Dễ thấy hàm fast_exp(a, b, n) = $a ^ b \pmod{n}$. Từ đó ta có hàm check sẽ tương đương như sau:
+$$fast_exp(q, a_, (p - 1) * (q - 1)) =  q ^ a \pmod{phi} \quad = \quad q ^ a + k * phi, \forall k \in R$$
+$$fast_exp(p, fast_exp(q, a_, (p - 1) * (q - 1)), n) = q ^ {p ^ a + k * phi} \pmod{n} = q ^ {p ^ a} \pmod{n}$$
+
+mà ta có:
+
+
+$$
+\begin{cases}
+  p ^ {q ^ a}  \equiv 0 \equiv p \pmod{p} \\
+  p ^ {q ^ a}  \equiv p \pmod{p}
+\end{cases}
+$$
+
+$$\to p ^ {q ^ a} = p \pmod{n}$$
+
+Chứng minh cái còn lại tương tự, từ đó ta thấy hint = p + q. Nên phi = n - hint + 1
 
 ```python
 
