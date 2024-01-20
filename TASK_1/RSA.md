@@ -147,7 +147,7 @@ Trong một vài trường hợp có thể sảy ra lỗi như sau: $${c_q} ^ e 
 ### 8. PKCS1 attack
 
 Với $N$ có $n$ bits RSA và tin nhắn mã hóa có $m$ bits mà $m < n$ thì trước khi được mã hóa tin nhắn thường được pad thêm sao cho $m' = n$. Tiêu chuẩn thường dược sử dụng để pad là PKCS1, nó có dạng:
-   + "02" + random + 00 + M
+    $$"02" + random + 00 + M$$
      
 Khi tin nhắn được giải mã nó sẽ phải kiểm tra xem có "02" ở trong không. Nếu như không có nó sẽ gửi về lỗi nên từ đó ta sẽ biết được tin nhắn có dc pad hay k và có thể tấn công nó. Chọn một số ngẫu nhiên $r < Z_n$, tính toán $C' = c * r \pmod{N}$ gửi $C'$ đi mã hóa. Từ đó có thể giải mã $C$. 
     
