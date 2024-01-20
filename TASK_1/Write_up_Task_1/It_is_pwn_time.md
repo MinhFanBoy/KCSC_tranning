@@ -73,8 +73,8 @@ if __name__ == "__main__":
 ---
 
 $\to$ Dễ thấy hàm fast_exp(a, b, n) = $a ^ b \pmod{n}$. Từ đó ta có hàm check sẽ tương đương như sau:
-$$fast_exp(q, a_, (p - 1) * (q - 1)) =  q ^ a \pmod{phi} \quad = \quad q ^ a + k * phi, \forall k \in R$$
-$$fast_exp(p, fast_exp(q, a_, (p - 1) * (q - 1)), n) = q ^ {p ^ a + k * phi} \pmod{n} = q ^ {p ^ a} \pmod{n}$$
+$$\text{fast exp}(q, a, (p - 1) * (q - 1)) =  q ^ a \pmod{phi} \quad = \quad q ^ a + k * phi, \forall k \in R$$
+$$\text{fast exp}(p, \text{fast exp}(q, a, (p - 1) * (q - 1)), n) = q ^ {p ^ a + k * phi} \pmod{n} = q ^ {p ^ a} \pmod{n}$$
 
 mà ta có:
 
