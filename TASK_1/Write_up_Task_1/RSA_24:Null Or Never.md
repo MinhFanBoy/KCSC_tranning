@@ -32,14 +32,12 @@ flag = pad100(flag)
 m = bytes_to_long(flag)
 print(m)
 
-p.<x> = PolynomialRing(Zmod(n))
+P.<x> = PolynomialRing(Zmod(n))
 f = ((m + (2 **(8 * 58)) * x) ** 3 - c)//(2 ** (8 * 58 * e))
 
 f = f.monic()
-t = f.small_roots()
 
-print(b"crypto{" + long_to_bytes( t ) + b"}")
-```
+print(b"crypto{" + long_to_bytes( int(f.small_roots(epsilon = 1 / 20)[0]) ) + b"}")```
 
 
 
