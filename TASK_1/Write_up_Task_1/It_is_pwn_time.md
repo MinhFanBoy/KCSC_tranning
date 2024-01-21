@@ -82,7 +82,7 @@ mà ta có:
 $$
 \begin{cases}
   p ^ {q ^ a}  \equiv 0 \equiv p \pmod{p} \\
-  p ^ {q ^ a}  \equiv p \pmod{p}
+  p ^ {q ^ a}  \equiv p \pmod{q}
 \end{cases}
 $$
 
