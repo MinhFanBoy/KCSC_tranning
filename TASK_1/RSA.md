@@ -111,13 +111,17 @@ $$
   
 ### 5. Fermat's attack
 
+1. Fermat attack
 Trong RSA, $q, p$ nên có chung độ dài để có thể tạo nên một khóa mạnh mẽ, nhưng nếu $q, p$ quá gần nhau lại dẫn dến trường hợp khóa yếu dễ bị tấn công.
 Giả sử: $N = (a - b) * (a + b) = a^2 - b^2 \quad \forall a, b \in Z^*$
 $$b^2 = a^2 - N$$
 $$b = \sqrt{a^2 - N}$$
 
-Với $a = \sqrt{N}, b = a^2 - n$ thử lần lượt với mọi $x > a$ sao cho thỏa mãn hệ.Với cách brute force như vậy nên cách tấn công này chỉ áp dụng với các sô q và p gần nhau
+Với $a = \sqrt{N}, b = a^2 - n$ thử lần lượt với mọi $x > a$ sao cho thỏa mãn hệ.Với cách brute force như vậy nên cách tấn công này chỉ áp dụng với các số q và p gần nhau
 
+2. Random attack
+
+Khi ta biết $q, p$ gần nhau thì ngoài cách trên ta có thể tính theo cách sau nếu p rất gần q. Rõ ràng khi đó $$n = p * q \approx p ^ 2 \forall p < q < n$$ nên từ đó ta có thể tính $p \approx \sqrt[2]{n}$. Từ đó ta có thể dễ dàng tính ra $q = n / p$ hoặc sử dụng hàm nextPrime(p) trong python. Nhưng cách này hầu như không dùng dc nhiều bời vì nó yêu cầu p và q phải đủ gần nhau và n cũng không quá lớn để khi sử dụng hàm khai căn thì nó có thể tính xấp xỉ ra q or p. Cách này hầu như không có tác dụng trong thực tế.
 
 ### 6. Timing attack
 Đây là kiểu tấn công đươn giản và rất không hiệu quả nên không được sử dụng trong thực tế.
