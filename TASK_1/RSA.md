@@ -16,8 +16,8 @@ Tables of contens
    * [8. PKCS1 attack](#8-PKCS1-attack)
    * [9. Multi-prime attack](#9-Multi-prime-attack)
    * [10. Brute-force CTR leak](#10-Brute-force-attack-on-CRT)
-* [Part_3: Write up Crypto hack](#part_3:write-up)
-* [Part_4: More write up from task](#part_4:more-write-up)
+* [Part_3: Write up Crypto hack](#part_3-write-up)
+* [Part_4: More write up from task](#part_4-more-write-up)
 ## PART_1: Giới thiệu chung
 
 ### 1. Tổng quan
