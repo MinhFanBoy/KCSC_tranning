@@ -266,7 +266,7 @@ print((p - 1)*(q - 1))
 > 882564595536224140639625987657529300394956519977044270821168
 
 
-### RSA4
+### RSA_4
 
 ---
 
@@ -277,6 +277,8 @@ print((p - 1)*(q - 1))
 $\to \quad d = ?$
 
 ---
+
+ta tìm $d$ bằng cách lấy $d \equiv e ^ {-1} \pmod{phi}$ với $phi = (p - 1) * (q - 11)$
 
 ```python
 
@@ -304,6 +306,8 @@ print("d: ", pow(e, -1, phi))
 decrypt this
 
 ---
+
+Ta có thể dễ dàng mã hóa như sau $c = m ^ e \pmod{n}$ và giải mã bằng $m = c ^ d \pmod{n}$ 
 
 ```python
 
@@ -390,6 +394,8 @@ Factorise the 150-bit number 510143758735509025530880200653196460532653147 into 
 
 ---
 
+Mình phân tích số nguyên tố trên factorDB thì dễ dàng ra được đáp án.
+
 ```python
 
 
@@ -425,6 +431,8 @@ Challenge files:
   - [output.txt](https://cryptohack.org/static/challenges/output_4b843d94b6196df152219c3165b9347f.txt)
 
 ---
+
+Bài này mình cũng phân tích bằng factorDB và dễ dàng có dc đáp án.
 
 ```python
 
@@ -468,6 +476,8 @@ Challenge files:
 
 ---
 
+Do bài này n là một số nguyên tố nên ta có thể tính phi = n - 1, sau đó tìm d rồi dễ dàng có flag.
+
 ```python
 
 
@@ -502,6 +512,8 @@ Challenge files:
   - [output.txt](https://cryptohack.org/static/challenges/output_00dace150c0bc52f7abf03fc3e9529d2.txt)
 
 ---
+
+Có n là bình phương của một số nên ta áp dụng công thức tính phi = n * (n - 1), từ đó giải quyết xong bài này.
 
 ```python
 
@@ -546,6 +558,8 @@ Challenge files:
   - [output.txt](https://cryptohack.org/static/challenges/output_5a478a5d4764257d0bbdfaed340fcbdd.txt)
     
 ---
+
+Mình thử phân tích trên factorDB thì dễ dàng có được factor của n. Từ đó tính phi rồi dễ dàng có flag.
 
 ```python
 
@@ -592,6 +606,8 @@ Challenge files:
 
 ---
 
+Bài này cx khá hay, có e = 1 nên phép mũ trở nên vô dụng mà n lại quá lớn khi so với plaintext nên ta có flag không thay đổi.
+
 ```python
 
 
@@ -629,6 +645,8 @@ Challenge files:
   - output.txt
 
 ---
+
+Bài này cũng khá giống bài trên nhưng do e là mã 3 nên ta lấy căn bậc 3 là xong(n quá lớn so với plaintext nên phép mod k có tác dụngdụng)
 
 ```python
 
@@ -1050,6 +1068,12 @@ Challenge files:
 
 ---
 
+Bài này sử dụng mã hóa nhiều là và dùng chung một n khác các e. Ta tìm phi từ d và e đã có rồi lần lượt mã hóa ngược lại flag.Cụ thể như sau:
+
+$$e * d = 1 \pmod{phi} \to \quad e * d = k * phi + 1\to phi = (e * d - 1)/k \forall k \in R $$
+
+Brute tìm ra phi rồi từ phi với các e đã biết ta có thể tìm ra d rồi mã hóa ra flag như đã viết.
+
 ```python
 
 
@@ -1105,7 +1129,8 @@ Challenge files:
 
 ---
 
-c1:
+Bài này mình sử dụng FActorDB nên dễ ràng có flag.
+
 ```python
 
 
@@ -1163,7 +1188,7 @@ Challenge files:
 
 ----
 
-Bài này sử dụng CRT vì tất cả các mũ e đểu bằng nhau.
+Bài này sử dụng CRT vì tất cả các mũ e đểu bằng nhau. Từ đó ta có được $m^3$ việc còn lại chỉ là tìm căn nó mà thôi :>
 
 ```python
 
@@ -1225,6 +1250,8 @@ Challenge files:
   - output.txt
 
 ---
+
+Do bài này ta dễ thấy hai số q, p là hai số nguyên tố gần nên nghĩ ngay tới việc sử dụng Fermat attack(nếu bạn cảm thấy nó khó hiểu như anh Tuệ thì có thể đọc giải thích mình đã viết ở trên). Sau đó mình có được q, p nên dễ dàng tìm ra được flag.
 
 ```python
 
@@ -1354,6 +1381,9 @@ Challenge files:
 ---
 
 
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/9077923a-4341-46c7-ad16-0451c96d1f38)
+
+
 ```python
 
 
@@ -1402,6 +1432,8 @@ Challenge files:
   - keys_and_messages.zip
 
 ---
+
+Khi đọc file đề mình thấy n, e được lưu ở file số 21 nên mở nó ra và việc còn lại để FactorDB lo.
 
 ```python
 
@@ -1557,6 +1589,20 @@ Challenge files:
 
 ---
 
+Bài này mình sử dụng copper smith attack. Đã biết được một phần của flag là "crypto{" và "}" từ đó ta hướng tới việc tìm phần còn thiếu của flag.
+
+flag = "crypto{" + "????????????????????????????" + "}" + "\x00\x00..."
+
+đặt x = bytes_to_long(flag), 
+c = bytes_to_long("crypto{" + "\x00\x00..." + "}" + "\x00\x00...")
+
+từ đó đặt f(x) = ((m + (2 **(8 * 58)) * x) ** 3 - c)//(2 ** (8 * 58 * e))
+
+với x là cái cần tìm tức đoạn flag còn chưa biết, ta chia cho (2 ** (8 * 58 * e)) là để giảm độ lớn của phép tính mà vẫn k ảnh hưởng tới tính chính xác. Việc còn lại là code sage dể giải đa thức này là dc.
+
+Để tìm hiểu rõ hơn về cách tấn công này có thể lên wu cua anh Tuệ đã viết.
+
+
 ```py
 # FLAG = b"crypto{???????????????????????????????????}"
 
@@ -1603,6 +1649,7 @@ Challenge files:
 
 ---
 
+Bài này nói chung cũng chỉ là kết nối tới sever nhận file rồi gửi file nên k có j làm khó cả.
 
 ```py
 
@@ -1835,6 +1882,9 @@ print('val=' + str(val))
 ```
 
 ---
+
+Bài này mình chỉ cần giải phương trình $val = (2*p^3 + 3*p^2 + 2023*d + 2024) \mod n$ là xong. Do đã có p, n, val nên ta chỉ cần chuyẻn vế tính toán là ra d, từ đó giải quyết bài toán.
+
 ```py
 p=9624668906109850998483974056209525089702287918278921274319270522663662804972324391632777024000004445164835957501662407824761862187844902070989943858387023
 n=119053833302549126121861824048325871200548851427704067582944667279846987236859718352655950344342118140607658877566141982226231805992080158529128384913766088413693835384148628239859123212444209064815790714735486911276979922175151535850877563374733318947140961515365118979375903413583275044196981685652967357829
