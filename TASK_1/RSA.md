@@ -1705,3 +1705,415 @@ print(check(b"admin=True", hex(enc)))
 
 
 ```
+
+## Part 4. More write up
+
+### Crypto_AES
+
+----
+
+**_TASK:_**
+
+```python
+import random
+import time
+import datetime  
+import base64
+from Crypto.Cipher import AES
+flag = b"find_me"
+iv = b"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+
+for i in range(0, 16-(len(flag) % 16)):
+    flag += b"\0"
+
+ts = time.time()
+
+print("Flag Encrypted on %s" % datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M'))
+seed = round(ts*1000)
+
+random.seed(seed)
+
+key = []
+for i in range(0,16):
+    key.append(random.randint(0,255))
+
+key = bytearray(key)
+
+
+cipher = AES.new(key, AES.MODE_CBC, iv) 
+ciphertext = cipher.encrypt(flag)
+
+enc = base64.b64encode(ciphertext).decode('utf-8')
+print(enc)
+
+
+# Flag Encrypted on 2023-08-02 10:27
+# lQbbaZbwTCzzy73Q+0sRVViU27WrwvGoOzPv66lpqOWQLSXF9M8n24PE5y4K2T6Y
+
+**_Hint:_**
++ Thời gian ở sever và máy tính có thể khác nhau
+```
+
+----
+
+Bài này cx khá đơn giản, vì các số random không thật sự ngẫu nhiên mà nó chỉ lấy đầu vào là các số ngẫu nhiên rồi biến đổi nó nên cái mình cần là seed. Khi có seed rồi thì các số dược tạo nên key cũng sẽ hoàn toàn xác định và từ đó ta có thể có cờ.
+
+Solution:
+```py
+import random
+import time
+import datetime  
+import base64
+from Crypto.Cipher import AES
+
+for x in range(0, 24):
+    date = "2023-08-02 "+ str(x) + ":27"
+    tim = time.strptime(date,'%Y-%m-%d %H:%M')
+    l = round(time.mktime(tim)*1000)
+
+    flag = "lQbbaZbwTCzzy73Q+0sRVViU27WrwvGoOzPv66lpqOWQLSXF9M8n24PE5y4K2T6Y"
+    flag = base64.b64decode(flag)
+    print(flag)
+    for i in range(l, l + 60000):
+
+        random.seed(i)
+        iv = b"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+
+        key = []
+        for i in range(0,16):
+            key.append(random.randint(0,255))
+
+        key = bytearray(key)
+
+
+        cipher = AES.new(key, AES.MODE_CBC, iv) 
+        ciphertext = cipher.decrypt(flag)
+
+        try:
+            print(ciphertext.decode('utf-8'))
+        except:
+            pass
+
+```
+
+### Crpyto
+
+
+---
+**_TAKS:_**
+
+```py
+from Crypto.Util.number import*
+from Crypto.Cipher import AES
+import os
+from flag import FLAG
+
+def pad(data):
+    padding_size = (16 - (len(data) % 16)) % 16    
+    padded_data = data.ljust(len(data) + padding_size, b'\x00')
+    return padded_data
+
+p = getStrongPrime(512)
+q = getStrongPrime(512)
+n = p*q
+d = getRandomInteger(512)
+key = long_to_bytes(2024*p + d)[:16]
+iv = os.urandom(16)
+flag = pad(FLAG)
+cipher = AES.new(iv,AES.MODE_CBC,key)
+c = bytes_to_long(cipher.encrypt(flag))
+
+val = (2*p**3 + 3*p**2 + 2023*d + 2024) % n
+assert GCD(val,p) == 1
+print('p=' + str(p))
+print('n=' + str(n))
+print('iv='+str(iv))
+print('c=' + str(c))
+print('val=' + str(val))
+```
+
+---
+```py
+p=9624668906109850998483974056209525089702287918278921274319270522663662804972324391632777024000004445164835957501662407824761862187844902070989943858387023
+n=119053833302549126121861824048325871200548851427704067582944667279846987236859718352655950344342118140607658877566141982226231805992080158529128384913766088413693835384148628239859123212444209064815790714735486911276979922175151535850877563374733318947140961515365118979375903413583275044196981685652967357829
+iv=b'A-W\x99\xfb.L\x9fG\xe1+\xbd\xb7$\xc9W'
+c=36936358040550261245517244362629450151125073316304503047163983542991113186968309568508064867910142605654621794306028
+val=15828457744456062568146561470704502856519551484048932569860646681724144906746142293423313013087062265040452331977947251485877654672141881179956278202994177828979975673529189928824770982861399794372799453399059273481330818247215001443788678911988701461334865986451514168580217214527167131248833111697944506238
+
+from Crypto.Util.number import *
+from Crypto.Cipher import AES
+"""  """
+d = pow(pow(val - 2 * p ** 3 - 3 * p ** 2 - 2024, 1, n) * pow(2023, -1, n), 1, n)
+key = long_to_bytes(2024 * p + d)[:16]
+cipher = AES.new(iv, AES.MODE_CBC, key)
+flag = cipher.decrypt(long_to_bytes(c))
+print(flag )
+
+
+
+```
+
+
+### Crypto
+
+---
+
+**_TASK:_**
+
+
+
+```python
+
+from Crypto.Util.number import *
+from Crypto.Cipher import AES
+import os
+from flag import FLAG
+
+def pad(data):
+    padding_size = (16 - (len(data) % 16)) % 16    
+    padded_data = data.ljust(len(data) + padding_size, b'\x00')
+    return padded_data
+
+p = getStrongPrime(512)
+q = getStrongPrime(512)
+n = p*q
+d = getRandomInteger(64)
+key = long_to_bytes(2024*p + d)[:16]
+iv = os.urandom(16)
+flag = pad(FLAG)
+cipher = AES.new(iv,AES.MODE_CBC,key)
+c = bytes_to_long(cipher.encrypt(flag))
+
+val = (2*p**3 + 3*p**2) % n
+
+print('n=' + str(n))
+print('iv='+str(iv))
+print('c=' + str(c))
+print('val=' + str(val))
+
+```
+---
+
+Ở đây ta dễ thấy $val \equiv 2 * p ^ 3 + 3 * p ^ 2 \pmod{n} \quad \to \quad val = p ^2 * (2 * p + 3) \pmod{n}$, mà $n = p * q$ nên từ đó ta có $gcd(val, n) = p$. Do $2024 * p >> random(64)$ mà key chỉ lấy có 16 bytes đầu của nó nên ở đây d trở nên vô dụng, từ đó ta dễ dàng có được key và hoàn thành thử thách.
+
+```
+n=116422885145248934225686914429146707250914314074098936204837356406828626206897073267773920624624570359557096258952933379700970822531971353624244003807545840017125763493920463202691952331937661437791742467140169441129657049404630272768006776625873529380414431191459118716479168976156074571723572848577917978433
+iv=b':\x88(\x7fPK\xba+\x83G\xd9+\xb4:w\x02'
+c=26003470241248183886366385521067853859993513649868770030402657395420294707645314821746877611126190234881774517848630
+val=7728896068211597749662327611345565126580093002981776126298758158041181358825984746690714615330702804921437965445589537359948914406962280207495027174049984054166471642458821726259288576073467035129599467101913206457949501633692562613026832767483110632244571322446440661984724942084414921153978748727244489994
+
+p = GCD(val,n)
+key  = long_to_bytes(2024*p)[:16]
+cipher = AES.new(iv,AES.MODE_CBC,key)
+flag = cipher.decrypt(long_to_bytes(c))
+print(flag)
+```
+
+
+### Crypto
+
+---
+
+**_TASK:_**
+```py
+from Crypto.Util.number import getPrime , bytes_to_long , GCD
+import random
+import time
+import os
+import json
+
+
+random.seed(time.time())
+
+flag = b'KCSC{T0o_much_t1mE_to_So1ve_T.T}' 
+
+KEY_SIZE = 512
+e = 65537
+banner = 'RSA, or Rivest_Shamir_Adleman, is a widely-used public-key cryptosystem for secure communication. Can you break it ?'
+print(banner)
+
+def fast_exp(a, b, n):
+    output = 1
+    while b > 0:
+        if b & 1:
+            output = output * a % n
+        a = a * a % n
+        b >>= 1 
+    return output    
+def check(p, q, n):
+    a_ = random.randint(1, 100)
+    b_ = random.randint(1, 100)
+    s = fast_exp(p, fast_exp(q, a_, (p - 1) * (q - 1)), n)
+    t = fast_exp(q, fast_exp(p, b_, (p - 1) * (q - 1)), n)
+    hint = s + t
+    print(f'{hint = }')
+def gen_RSA_params(N, e):
+    p = getPrime(N)
+    q = getPrime(N)
+    while GCD(e, (p - 1) * (q - 1)) > 1:
+        p = getPrime(N)
+        q = getPrime(N)
+    n = p * q
+    check(p, q, n) 
+    return (p, q, n)
+p, q, n = gen_RSA_params(KEY_SIZE, e)
+
+if __name__ == "__main__":
+    print("Choose your option: ")
+    print("1 : Get_Public_Key")
+    print("2 : Get_ciphertext")
+    print("3 : Check")
+    while True:
+     idx = json.loads(input())
+     if idx['option'] == 'Get_Public_Key' :
+      print(f'{n = }')
+      print(f'{e = }')
+     if idx['option'] == 'Get_ciphertext' :
+      m = bytes_to_long(os.urandom(128))
+      c = pow(m,e,n)
+      print(f'ciphertext : {c}')
+     if idx['option'] == 'check' :
+      d = int(idx['private_key'],16)
+      if pow(c,d,n) == m :
+          print(f'Here is your flag : {flag}')
+          break
+      else :
+          print('bruh')
+```
+
+---
+
+$\to$ Dễ thấy hàm fast_exp(a, b, n) = $a ^ b \pmod{n}$. Từ đó ta có hàm check sẽ tương đương như sau:
+$$\text{fast exp}(q, a, (p - 1) * (q - 1)) =  q ^ a \pmod{phi} \quad = \quad q ^ a + k * phi, \forall k \in R$$
+$$\text{fast exp}(p, \text{fast exp}(q, a, (p - 1) * (q - 1)), n) = q ^ {p ^ a + k * phi} \pmod{n} = q ^ {p ^ a} \pmod{n}$$
+
+mà ta có:
+
+
+$$
+\begin{cases}
+  p ^ {q ^ a}  \equiv 0 \equiv p \pmod{p} \\
+  p ^ {q ^ a}  \equiv p \pmod{q}
+\end{cases}
+$$
+
+$$\to p ^ {q ^ a} = p \pmod{n}$$
+
+Chứng minh cái còn lại tương tự, từ đó ta thấy hint = p + q. Nên phi = n - hint + 1
+
+```python
+
+from pwn import *
+from json import *
+from Crypto.Util.number import *
+import random
+import time
+import os
+import json
+from tqdm import *
+from factordb.factordb import FactorDB
+from gmpy2 import iroot
+
+s = process(["python3", "t.py"])
+
+
+
+print(s.recvuntil(b"hint = ").decode())
+total = int(s.recvline().decode())
+print(s.recvuntil(b"3 : Check\n").decode())
+
+dict = {"option":"Get_Public_Key"}
+s.sendline(dumps(dict).encode())
+s.recvuntil(b"n = ")
+n = int(s.recvline().decode())
+dict = {"option":"Get_ciphertext"}
+s.sendline(dumps(dict).encode())
+
+s.recvuntil(b"ciphertext : ")
+cipher = int(s.recvline().decode())
+KEY_SIZE = 512
+e = 65537
+print(f"e : {e}")
+print(f"n : {n}")
+print(f"cipher : {cipher}")
+print(f"key_size : {KEY_SIZE}")
+
+# x ^ 2 - total * x + n = 0
+delta = total * total - 4 * n
+p = (total + iroot(delta, 2)[0]) // 2
+q = n //p
+phi = (p-1)*(q-1)
+s.sendline(dumps({"option" : "check", "private_key" : hex(pow(e, -1, phi))}).encode())
+tmp = s.recv()
+if b"flag" in tmp:
+    print(tmp)
+
+```
+
+### Crypto_RSA_Lmao
+
+---
+
+**_TASK:_**
+```
+n = b'MHgzMDE5NzgzNTMzYjljZWVhNDA5YjkzM2QwMjdlZjMyZTFjYWYwZjE2OWIzYzcwNTVlZTM0Njk1MDA4NGFlN2I2YzU3NGNjN2I4ZmY1Mjc0Nw=='
+
+e = '0x61327'
+
+c = b'MHgxNjdkYTJiMzhhYmRiYjg4N2FmZmM0MDlkNGQzNGQxOTdhMDJmNjJhY2E0YTFjNWM4MTk3YjlhZjlkZWU1NDViNTQ5YjBmNWI3NjI0ZjUzNw=='
+```
+**_Hint:_**
+
++ $p - 1 \equiv 0 \pmod{e}$
++ [crypto.stack](https://crypto.stackexchange.com/questions/81949/how-to-compute-m-value-from-rsa-if-phin-is-not-relative-prime-with-the-e/81966#81966)
+
+---
+
+Có $n$ là prime mà $n - 1 \equiv 0 \pmod{e} \quad \to \quad phi = k * e$ nên ta không thể tính $d$. Thay vào đó ta sẽ tính m như sau:
+Then, one way to derive the possible plaintexts is to compute:
+
+$$C ^ {d} * L ^ {i} \mod{n}$$
+
+where:
+
++ $λ = (p − 1) * (q − 1) / gcd(p − 1, q − 1)$
++ $C$ is the ciphertext
++ $d \equiv e^{−1} \pmod{λ/e}$. (This is well defined, as $λ/e$ is an integer which is relatively prime to $e$)
++ $L \equiv k ^ {λ/e} \pmod{n}$ where k is an integer such that L≠1(and any such value L works); most values of kwork
++ $i$ is any integer $0 \leq i < e$
+
+Nhưng do ở đây $n$ là prime nên $\lambda = phi(n) = n - 1$
+
+
+```python
+
+
+from Crypto.Util.number import *
+from base64 import *
+from tqdm import *
+
+n = b'MHgzMDE5NzgzNTMzYjljZWVhNDA5YjkzM2QwMjdlZjMyZTFjYWYwZjE2OWIzYzcwNTVlZTM0Njk1MDA4NGFlN2I2YzU3NGNjN2I4ZmY1Mjc0Nw=='
+e = '0x61327'
+c = b'MHgxNjdkYTJiMzhhYmRiYjg4N2FmZmM0MDlkNGQzNGQxOTdhMDJmNjJhY2E0YTFjNWM4MTk3YjlhZjlkZWU1NDViNTQ5YjBmNWI3NjI0ZjUzNw=='
+
+n = int(b64decode(n).decode(), 16)
+e = int(e, 16)
+c = int(b64decode(c).decode(), 16)
+
+lam  = (n - 1)
+d = pow(e, -1, lam // e)
+l = pow(2, lam // e, n)
+
+for x in tqdm(range(0, e), desc = "Progress"):
+
+    flag = long_to_bytes((pow(c, d, n) * pow(l, x, n)) % n)
+    if b"KCSC" in flag :
+        print(flag)
+        break
+
+
+
+
+```
+
+
