@@ -14,6 +14,7 @@ Tables of contens
    * [6. Timing attack](#6-timing-attack)
    * [7. random fault](#7-random-fault)
    * [8. PKCS1 attack](#8-PKCS1-attack)
+   * [9. Multi-prime attack](#9-Multi-prime-attack)
 
 ## PART_1: Giới thiệu chung
 
@@ -155,7 +156,13 @@ Với $N$ có $n$ bits RSA và tin nhắn mã hóa có $m$ bits mà $m < n$ thì
      
 Khi tin nhắn được giải mã nó sẽ phải kiểm tra xem có "02" ở trong không. Nếu như không có nó sẽ gửi về lỗi nên từ đó ta sẽ biết được tin nhắn có dc pad hay k và có thể tấn công nó. Chọn một số ngẫu nhiên $r < Z_n$, tính toán $C' = c * r \pmod{N}$ gửi $C'$ đi mã hóa. Từ đó có thể giải mã $C$. 
     
+### 9. Multi-prime attack
 
+Trong RSA, ta thường  thực hiện các phép toán trên trường $Z_n$ với n = p * q, vậy nếu n là tích của nhiều số nguyên tố thì sao ?
+
+Có $n = \prod{prime}$ nên từ đó ta dễ có $phi = \prod {prime - 1}$. Vậy ta cũng có thể dễ dàng tính $d = e ^ {-1} \pmod{phi}$ và giải mã như bình thường.
+
+Vậy tại sao ta lại sử dụng chỉ haiư
 
 
               
