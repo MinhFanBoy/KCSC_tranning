@@ -1905,7 +1905,7 @@ print('val=' + str(val))
 
 ---
 
-Bài này mình chỉ cần giải phương trình $val = (2*p^3 + 3*p^2 + 2023*d + 2024) \pmod{n}$ là xong. Do đã có p, n, val nên ta chỉ cần chuyẻn vế tính toán là ra d, từ đó giải quyết bài toán.
+Bài này mình chỉ cần giải phương trình $val = (2* p ^ 3 + 3 * p ^ 2 + 2023 * d + 2024) \pmod{n}$ là xong. Do đã có p, n, val nên ta chỉ cần chuyẻn vế tính toán là ra d, từ đó giải quyết bài toán.
 
 ```py
 p=9624668906109850998483974056209525089702287918278921274319270522663662804972324391632777024000004445164835957501662407824761862187844902070989943858387023
