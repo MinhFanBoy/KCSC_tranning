@@ -15,7 +15,7 @@ Tables of contens
    * [7. random fault](#7-random-fault)
    * [8. PKCS1 attack](#8-PKCS1-attack)
    * [9. Multi-prime attack](#9-Multi-prime-attack)
-
+   * [10. Brute-force CTR leak](#10-Brute-force-attack-on-CRT)
 ## PART_1: Giới thiệu chung
 
 ### 1. Tổng quan
@@ -164,10 +164,24 @@ Có $n = \prod{prime}$ nên từ đó ta dễ có $phi = \prod {prime - 1}$. V�
 
 Vậy tại sao ta lại sử dụng nhiều số nguyên tố để tạo ra n thay vì chỉ hai số như bình thường ?
 
-Hmmm có lẽ thay vì việc muốn tạo ra một n có k key_size thì phải tìm ra hai số nguyên tố có ít nhất %\sqrt{k}$ key_size tốn nhiều thời gian và đảm bảo nó phải chưa đc factor thì ta chỉ cần tìm nhiều số nguyên tố nhỏ hơn và tỷ lệ bị factor của nó cx thấp. Còn về tính an toàn, việc phân tích một số là tích của nhiều số nguyên tố cũng khó không khác gì bài toán kia, ít nhất với máy tính bây giờ thời gian để tính của nó vẫn không khả thi. Ngoài ra, khi sử dụng n là tích của nhiều số nguyên tố, ta có thể sử dụng CRT(chinese remain theorem ) để tăng tốc độ tính toán lên nhiều lần. Nên từ đó việc sử dụng nhiều số nguyên để tạo ra n là hoàn toàn khả thi và có thể xuất hiện trong các cuộc thi CTF. 
+Hmmm có lẽ thay vì việc muốn tạo ra một n có k key_size thì phải tìm ra hai số nguyên tố có ít nhất $\sqrt{k}$ key_size tốn nhiều thời gian và đảm bảo nó phải chưa đc factor thì ta chỉ cần tìm nhiều số nguyên tố nhỏ hơn và tỷ lệ bị factor của nó cx thấp. Còn về tính an toàn, việc phân tích một số là tích của nhiều số nguyên tố cũng khó không khác gì bài toán kia, ít nhất với máy tính bây giờ thời gian để tính của nó vẫn không khả thi. Ngoài ra, khi sử dụng n là tích của nhiều số nguyên tố, ta có thể sử dụng CRT(chinese remain theorem ) để tăng tốc độ tính toán lên nhiều lần. Nên từ đó việc sử dụng nhiều số nguyên để tạo ra n là hoàn toàn khả thi và có thể xuất hiện trong các cuộc thi CTF. 
 
 
               
+### 10. Brute force attack on CRT
 
+Để sử CRT trong quá trình mã hóa ta phải tính:
+$$d_p = e ^ {-1} \pmod{p - 1}$$
+$$d_q = e ^ {-1} \pmod{q - 1}$$
 
+Vậy giả sử bằng cách nào đó ta có được $d_p$ hoặc $d_q$ thì ta sẽ làm gì?
+
+Chọn một số ngẫu nhiên $m \quad \forall m < n$
+Dễ có:
+$$m ^ {e * d_q} \equiv m ^ {1 + k (q - 1)}\pmod{p}$$
+$$m ^ {e * d_q}= m \pmod{n}$$ (Theo định lý nhỏ của fermat)
+$$\to m ^ {e * d_q} - m = k * q$$
+$$\to q = gcd(n, k *q) = gcd(n, m ^ {e * d_q})$$
+
+Từ đó ta có thể tìm ra cả p, q rồi tìm phi, tính toán theo RSA là xong.
    
