@@ -189,7 +189,7 @@ $$\to q = gcd(n, k *q) = gcd(n, m ^ {e * d_q})$$
 
 Từ đó ta có thể tìm ra cả p, q rồi tìm phi, tính toán theo RSA là xong.
    
-## 3. Write up
+## PART_3. Write up
 
 ### RSA_1
 ---
@@ -1708,7 +1708,7 @@ print(check(b"admin=True", hex(enc)))
 
 ```
 
-## Part 4. More write up
+## PART_4. More write up
 
 ### Crypto_AES
 
