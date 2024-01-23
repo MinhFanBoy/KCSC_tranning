@@ -63,8 +63,10 @@ Từ đó dễ dàng tìm được $p, q$ , để chắc chắn có thể thêm 
 
 
 ### 2. Blinding
-   Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung. với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. Từ đó mã hóa M', $S = M'^e = r^e * M^e (\mod N)$. Từ đó, $M = M'/e^r (\mod N)$
-    Kỹ thuật này bình thường thì không quan trọng, nhưng nó khá có ích trong việc ẩn danh.
+   Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung.
+  Với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. GỬi M' đi ta nhận được $c_1 = M' ^ d = (M * r) ^ d \pmod{n}$. Gửi r đi ta nhận được $c_2 = r ^ d \pmod{n}$.Từ đó :
+  $$c_1 / c_2 = (M * r) ^ d / r ^ d = (r / r * M) ^ d = M ^ d \pmod(n)$$
+  Từ đâu tùy thuộc vào yêu cầu của bài toán mà ta sẽ tính toán thêm. (Chú ý: Kỹ thuật này hay được sử dụng để ký các đoạn mã hóa.)
 
 ### 3. Low private exponent
 
