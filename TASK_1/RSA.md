@@ -68,7 +68,7 @@ Từ đó dễ dàng tìm được $p, q$ , để chắc chắn có thể thêm 
    Với $(N, e)$ là khóa chung, $(N, d)$ là khóa chung.
   Với M là tin nhắn chưa được mã hóa, chọn một số r thuộc $Z_n^*$ lấy $M' = r * M$. GỬi M' đi ta nhận được $c_1 = M' ^ d = (M * r) ^ d \pmod{n}$. Gửi r đi ta nhận được $c_2 = r ^ d \pmod{n}$.Từ đó :
   $$c_1 / c_2 = (M * r) ^ d / r ^ d = (r / r * M) ^ d = M ^ d \pmod(n)$$
-  Từ đâu tùy thuộc vào yêu cầu của bài toán mà ta sẽ tính toán thêm. (Chú ý: Kỹ thuật này hay được sử dụng để ký các đoạn mã hóa.)
+  Từ đó tùy thuộc vào yêu cầu của bài toán mà ta sẽ tính toán thêm. (Chú ý: Kỹ thuật này hay được sử dụng để ký các đoạn mã hóa.)
 
 ### 3. Low private exponent
 
@@ -155,10 +155,17 @@ Trong một vài trường hợp có thể sảy ra lỗi như sau: $${c_q} ^ e 
 
 ### 8. PKCS1 attack
 
+. Tấn công này là một tấn công ciphertext được chọn trên mã hóa RSA khai thác lỗ hổng của gói đệm PKCS#1 v1.5 1. Tấn công hoạt động bằng cách khai thác việc gói đệm là xác định và kẻ tấn công có thể sử dụng một bộ phận để xác định liệu một ciphertext cụ thể có được đệm đúng hay không. Tấn công có thể được sử dụng để khôi phục các plaintext được mã hóa bằng RSA với đệm PKCS#1 v1.5. Tấn công đã được sử dụng để phá vỡ mã hóa SSL/TLS.
+
 Với $N$ có $n$ bits RSA và tin nhắn mã hóa có $m$ bits mà $m < n$ thì trước khi được mã hóa tin nhắn thường được pad thêm sao cho $m' = n$. Tiêu chuẩn thường dược sử dụng để pad là PKCS1, nó có dạng:
     $$02 + random + 00 + M$$
-     
-Khi tin nhắn được giải mã nó sẽ phải kiểm tra xem có "02" ở trong không. Nếu như không có nó sẽ gửi về lỗi nên từ đó ta sẽ biết được tin nhắn có dc pad hay k và có thể tấn công nó. Chọn một số ngẫu nhiên $r < Z_n$, tính toán $C' = c * r \pmod{N}$ gửi $C'$ đi mã hóa. Từ đó có thể giải mã $C$. 
+
+Có một máy chủ SSL, máy chủ này sẽ gửi các thông báo lỗi riêng biệt tùy thuộc vào việc có tìm thấy phần đệm PKCS#1 thích hợp hay không. Ngoài ra, hai trường hợp có thể được phân biệt thông qua một số rò rỉ thông tin khác (ví dụ: máy chủ mất nhiều thời gian hơn để phản hồi nếu phần đệm chính xác). Bây giờ ta lấy được bản mã c và biết $c = m ^ e \pmod{n}$ với c là bản mã, m là bản rõ, (e, n) là cặp khóa publickey. Bây giừo ta muốn đọc được m, hoặc ít nhất cx muốn biết nó chứa thông tin gì.
+
+Bây giờ ta bắt đầu nhiều kết nối đến máy chủ. Đối với mỗi kết nối, kẻ tấn công tạo ra một giá trị s và gửi nó tới mấy chủ dưới dạng $c' = (s * c)*e \pmod{n}$ máy chủ sẽ giải nó và gửi về cho ta $c' ^ d = s * c \pmod{n}$
+. Hầu hết thời gian, giá trị $m * s$ sẽ không được đệm đúng cách (nó sẽ không bắt đầu bằng 0x00 0x02 hoặc sẽ không chứa thêm 0x00). Tuy nhiên, với xác suất thấp nhưng không đáng kể (khoảng 30000 đến 130000 lần thử một lần), ta có thể có $m * s$. Khi đó giá trị trông có vẻ đệm. Nếu đúng như vậy thì máy chủ sẽ thông báo. Với giá trị này s (biết điều đó vì anh ta đã chọn nó), sau đó $m * s \pmod{n}$ nằm trong một phạm vi cụ thể (phạm vi số nguyên bắt đầu bằng 0x00 0x02 khi được mã hóa theo byte bằng quy ước big-endian).
+
+Phần còn lại của cuộc tấn công đang được thử lại với các giá trị ngẫu nhiên được lựa chọn cẩn thận. Mỗi lần máy chủ phản hồi với "đó là phần đệm PKCS#1 thích hợp", điều này sẽ cung cấp một số thông tin giúp kẻ tấn công thu hẹp dự đoán của hắn về m. Sau vài triệu kết nối, ta có thể xác định chính xác m
     
 ### 9. Multi-prime attack
 
@@ -178,16 +185,31 @@ Hmmm có lẽ thay vì việc muốn tạo ra một n có k key_size thì phải
 $$d_p = e ^ {-1} \pmod{p - 1}$$
 $$d_q = e ^ {-1} \pmod{q - 1}$$
 
-Vậy giả sử bằng cách nào đó ta có được $d_p$ hoặc $d_q$ thì ta sẽ làm gì?
+Vậy giả sử bằng cách nào đó ta có được $d_p$ hoặc $d_q$ thì ta sẽ làm gì? Nếu số e được chọn đủ tệ để tạo ra các $d_p, d_q$ đủ nhỏ để brute thì ta sẽ làm gì ?
+
 
 Chọn một số ngẫu nhiên $m \quad \forall m < n$
+
+
 Dễ có:
+
+$$d_q * e = 1 \pmod{q - 1}$$
+
+$$d_q * e = 1 + k * (q - 1) \quad \forall k \in R$$
+
 $$m ^ {e * d_q} \equiv m ^ {1 + k (q - 1)}\pmod{p}$$
-$$m ^ {e * d_q}= m \pmod{n}$$ (Theo định lý nhỏ của fermat)
+
+$$m ^ {e * d_q}= m \pmod{n} \text{(Theo định lý nhỏ của fermat)}$$
+
 $$\to m ^ {e * d_q} - m = k * q$$
+
 $$\to q = gcd(n, k *q) = gcd(n, m ^ {e * d_q})$$
 
-Từ đó ta có thể tìm ra cả p, q rồi tìm phi, tính toán theo RSA là xong.
+$$q = gcd(q * p, k * q)$$
+
+Từ đó ta có thể tìm ra cả q. Từ q, co p = n // q, phi = (n // q - 1) * (q - 1)
+
+(Không biết viết gì nữa nhưng vẫn cố viết cái gì đó vào đây để cho nó nhìn dài dài ra một tý mặc dù nó chẳng có tác dụng gì.Bị anh Tuệ dí gắt quá nên cố viết vào cho dài :>)
    
 ## PART_3. Write up
 
