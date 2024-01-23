@@ -162,7 +162,9 @@ Trong RSA, ta thường  thực hiện các phép toán trên trường $Z_n$ v�
 
 Có $n = \prod{prime}$ nên từ đó ta dễ có $phi = \prod {prime - 1}$. Vậy ta cũng có thể dễ dàng tính $d = e ^ {-1} \pmod{phi}$ và giải mã như bình thường.
 
-Vậy tại sao ta lại sử dụng chỉ haiư
+Vậy tại sao ta lại sử dụng nhiều số nguyên tố để tạo ra n thay vì chỉ hai số như bình thường ?
+
+Hmmm có lẽ thay vì việc muốn tạo ra một n có k key_size thì phải tìm ra hai số nguyên tố có ít nhất %\sqrt{k}$ key_size tốn nhiều thời gian và đảm bảo nó phải chưa đc factor thì ta chỉ cần tìm nhiều số nguyên tố nhỏ hơn và tỷ lệ bị factor của nó cx thấp. Còn về tính an toàn, việc phân tích một số là tích của nhiều số nguyên tố cũng khó không khác gì bài toán kia, ít nhất với máy tính bây giờ thời gian để tính của nó vẫn không khả thi. Ngoài ra, khi sử dụng n là tích của nhiều số nguyên tố, ta có thể sử dụng CRT(chinese remain theorem ) để tăng tốc độ tính toán lên nhiều lần. Nên từ đó việc sử dụng nhiều số nguyên để tạo ra n là hoàn toàn khả thi và có thể xuất hiện trong các cuộc thi CTF. 
 
 
               
