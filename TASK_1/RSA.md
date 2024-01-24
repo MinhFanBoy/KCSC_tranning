@@ -2190,4 +2190,107 @@ for x in tqdm(range(0, e), desc = "Progress"):
 
 ```
 
+### Crypto
+
+
+```py
+from Crypto.Util.number import*
+from Crypto.Cipher import AES
+import os
+from flag import FLAG
+
+def pad(data):
+    padding_size = (16 - (len(data) % 16)) % 16    
+    padded_data = data.ljust(len(data) + padding_size, b'\x00')
+    return padded_data
+
+p = getStrongPrime(512)
+q = getStrongPrime(512)
+n = p*q
+assert n**0.4 <p < n**0.5 and n**0.5 <q < n**0.6 
+random = getRandomInteger(64)
+d = p**2 + 2023*p + random 
+key = long_to_bytes(2024*p + d)[:16]
+iv = os.urandom(16)
+flag = pad(FLAG)
+cipher = AES.new(iv,AES.MODE_CBC,key)
+c = bytes_to_long(cipher.encrypt(flag))
+val = (2*d**3 + 3*d**2 + pow(2024,2023,n)*d + pow(2023,2024,n)) % n
+assert GCD(val,p) == 1
+print('n=' + str(n))
+print('iv='+str(iv))
+print('c=' + str(c))
+print('val=' + str(val))
+n=142999029343358149662443097604976747149889090072418385001202757765412807102794121676470074077745347521711600216686223755592471644777386772752828715272883803776637467307260243598922717717430378428346324530435952902140546517524282746208308333525505122994592661438040867038101159049208880230622261413767942142899
+iv=b'K\xf3\xa1*e\xbf-<\x1d\xfd\x91Y0T\x8cC'
+c=35260492240097997303991122370438160834896641282850629162240901531615420795101121531531378708194860237459245665887783
+val=70156641495735636837250712165710253952947005832933959682127322686854887620192055132242994711727701574635292973129375275947527025543419041137384040724483962599342431159651204942389005208600195434478927233540663125221124326257296063411788927862801717458400080626132989001264778380940137062679553487367937251196
+```
+
+haizz viết rồi nhưng bị mất nên k viết nx.
+```py
+
+from Crypto.Util.number import*
+from Crypto.Cipher import AES
+import os
+from Crypto.Util.number import bytes_to_long, getRandomNBitInteger
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Hash import SHA256
+
+n=142999029343358149662443097604976747149889090072418385001202757765412807102794121676470074077745347521711600216686223755592471644777386772752828715272883803776637467307260243598922717717430378428346324530435952902140546517524282746208308333525505122994592661438040867038101159049208880230622261413767942142899
+iv=b'K\xf3\xa1*e\xbf-<\x1d\xfd\x91Y0T\x8cC'
+c=35260492240097997303991122370438160834896641282850629162240901531615420795101121531531378708194860237459245665887783
+val=70156641495735636837250712165710253952947005832933959682127322686854887620192055132242994711727701574635292973129375275947527025543419041137384040724483962599342431159651204942389005208600195434478927233540663125221124326257296063411788927862801717458400080626132989001264778380940137062679553487367937251196
+
+"""
+delta = getRandomNBitInteger(64)
+x = p**2 + 1337*p + delta
+
+val = (pow(2,e,n)*(x**3) + pow(3,e,n)*(x**2) + pow(5,e,n)*x + pow(7,e,n)) % n
+"""
+
+def small_roots(f, X, beta=1.0, m=None):
+    N = f.parent().characteristic()
+    delta = f.degree()
+    if m is None:
+        epsilon = RR(beta^2/f.degree() - log(2*X, N))
+        m = max(beta**2/(delta * epsilon), 7*beta/delta).ceil()
+    t = int((delta*m*(1/beta - 1)).floor())
+    print(f"m = {m}")
+    
+    f = f.monic().change_ring(ZZ)
+    P,(x,) = f.parent().objgens()
+    g  = [x**j * N**(m-i) * f**i for i in range(m) for j in range(delta)]
+    g.extend([x**i * f**m for i in range(t)]) 
+    B = Matrix(ZZ, len(g), delta*m + max(delta,t))
+
+    for i in range(B.nrows()):
+        for j in range(g[i].degree()+1):
+            B[i,j] = g[i][j]*X**j
+
+    B =  B.LLL()
+    f = sum([ZZ(B[0,i]//X**i)*x**i for i in range(B.ncols())])
+    roots = set([f.base_ring()(r) for r,m in f.roots() if abs(r) <= X])
+    return [root for root in roots if N.gcd(ZZ(f(root))) >= N**beta]
+
+PR.<d> = PolynomialRing(Zmod(n))
+
+f = (2*d**3 + 3*d**2 + pow(2024,2023,n)*d + pow(2023,2024,n)) - val
+
+f = f.monic()
+
+random = small_roots(f, beta = 0.1, X = 2 ** 64, m = 3)[0]
+
+p = int(gcd(int(f(random)), n))
+q = n // p
+
+d = p**2 + 2023*p + random 
+key = long_to_bytes(2024*p + d)[:16]
+
+cipher = AES.new(iv,AES.MODE_CBC,key)
+c = (cipher.decrypt(long_to_bytes(c)))
+print(c)
+```
+
 
