@@ -147,4 +147,12 @@ a. Tổng quan
    + Mix columns - trộn dữu liệu
    + AddRoundKeys - chèn khóa vòng
 
-+ Hàm shift rows:
++ Hàm shift rows: Là phép chuyển đổi các phần tử trong hàng, nó giữ nguyên hàng đầu tiên của ma trận trạng thái. Hàng thứ hai được dịch chuyển qua một cột ở bên trái. Hàng thứ ba được dịch chuyển hai cột, hàng thứ tư được dịch chuyển ba cột.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7ee52c17-7d56-4723-8db2-0a6c070bd4bf)
+
+ 
++ Hàm AddRoundKeys: Hàm này sẽ lấy giá trị của từng phần tử của trạng thái hiện tại(plaintext đang được mã hóa) với từng phần tử tại vị trí tương ứng của key
+  
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/411b7cc5-4ac4-44f7-942c-b65835dcaf39)
+
