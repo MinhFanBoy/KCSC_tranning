@@ -26,8 +26,10 @@ Mật mã khóa đối xứng là một loại sơ đồ mã hóa trong đó m�
 
 a. Tổng quan về DES
 
-+ Đầu vào của DES là các block 64 bit và các đầu ra cũng có 64 bit. Với khóa k có độ dài 56 bit(thực ra ban đầu là 64 bit nhưng trong quá trình mã hóa các bit chia hết cho 8 được lấy để kiểm tra tính chắn lẻ nên còn lại 56)
-+Thuật toán : Đâu tiên trước khi đi vào mã hóa nó sẽ chia thông tin của bản rõ thành các khối 64 bit, từng khối này sẽ lần lượt được đưa vào mã hóa. Mỗi lần mã hóa sẽ có 16 chu trình chính.
++ Được phát triển bởi NIST năm 1977
++ Đầu vào của DES là các block 64 bit và các đầu ra cũng có 64 bit.
++ Với khóa k có độ dài 56 bit(thực ra ban đầu là 64 bit nhưng trong quá trình mã hóa các bit chia hết cho 8 được lấy để kiểm tra tính chắn lẻ nên còn lại 56)
++ Thuật toán : Đâu tiên trước khi đi vào mã hóa nó sẽ chia thông tin của bản rõ thành các khối 64 bit, từng khối này sẽ lần lượt được đưa vào mã hóa. Mỗi lần mã hóa sẽ có 16 chu trình chính.
 
 b. Chi tiết
 
@@ -44,10 +46,35 @@ Phần tạo khóa:
 Phần input:
 
 - Cho 64 bit qua hoán vị Sau đó lấy 64 bit chia làm 2 phần $l_0$ và $R_0$. Đưa $R_0$ qua hoán vị mở rộng E. Mục đích của nó là để tăng số bit lên 48 để $XOR$ với cả $key$ cũng có 48 bits.
+
+Bảng hoán vị
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/e445d333-af9d-4100-b77b-aba8fb5376d6)
+
 - Hoán vị mở rộng E là lặp lại hai bit cuối của hàng trước hoặc hàng sau.
+
+
+
+  
 - Sau khi $R_0$ xor với $K_0$ thì ta cho nó qua vòng s-box để chuyển nó về lại 32 bit.
 - Tiếp tục cho hoán vị PC-1. Sau đó lấy L0 Xor với kết quả vừa có. Rồi gán bằng R1.
   
 Tiếp tực làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
+
+IP(-1) (Inverse initial permutation):
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/60b91532-f0b8-4f12-95b5-27fa87306ef0)
+
++ Cách nhìn trực quan mã hóa DES:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/35dc8acf-a6c4-4ebe-8e67-d883106ccfcb)
+
++ Từng vòng của DES:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/fe33099f-e1ce-4c30-a461-78ede91a279e)
+
+Vây ta có:
++ $l_{i} = R _ {i - 1}$
++ $R_{i} = L_{i - 1} \oplus F(R_{i - 1}, k_i)$
 
 
