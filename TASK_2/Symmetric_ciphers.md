@@ -73,7 +73,7 @@ IP(-1) (Inverse initial permutation):
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/fe33099f-e1ce-4c30-a461-78ede91a279e)
 
-Vây ta có:
+Vậy ta có:
 + $l_{i} = R _ {i - 1}$
 + $R_{i} = L_{i - 1} \oplus F(R_{i - 1}, k_i)$
 
