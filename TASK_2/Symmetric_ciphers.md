@@ -3,7 +3,7 @@ Tables of contens
 * [I. Tổng quan](#i-tổng-quan-về-mã-khóa-đối-xứng)
   * [1. Mật mã đối xứng là gì](#1-mật-mã-đối-xứng-là-gì-)
   * [2. Một vài thông tin phụ](#2-một-vài-thông-tin-bổ-sung)
-  * [3. Mã khóa](#3-các-loại-mã-khóa)
+* [II. Mã khóa](#iiii-các-loại-mã-khóa)
 
 ## I. Tổng quan về mã khóa đối xứng
 
@@ -20,9 +20,9 @@ Mật mã khóa đối xứng là một loại sơ đồ mã hóa trong đó m�
 - Mã khóa đối xứng chỉ đặc biệt ở cách nó mã khóa từng khối và mode mã khóa của nó. Đây là điểm khiến nó trở nên khó phá vỡ nếu hông đủ am hiểu về loại mã và mode đó thì việc phá nó gần như là không thể.
 - Không hiểu sao các mã khóa cơ bản như ceasar, hill các thứ cũng cùng là mx khóa đối xứng mà không thấy nói đến 🙃
 
-### 3. Các loại mã khóa
+## II. Các loại mã khóa
 
-#### 1. DES (data encrpyted standard)
+### 1. DES (data encrpyted standard)
 
 a. Tổng quan về DES
 
@@ -90,7 +90,7 @@ c. Thông tin thêm
 + Với khóa thật sự được dùng trong DES là 56( Thay vì 64 như đầu vào) thì để bruteforce tất cả key (giả sử mỗi lần giải mã mất một giây) thì ta tốn hơn 1000 năm để hoàn thành
 + Hiện tại DES được xem là không an toàn nữa.
 
-#### 2. 3DES
+### 2. 3DES
 
 a. Tổng quan về 3DES
 
@@ -112,11 +112,12 @@ c. Thông tin thêm
 + 2DES đã bị phá vỡ bởi các cuộc tấn công vì độ dài khóa quá ngắn.
 + 3DES sử dụng ba khóa DES để mã hóa dữ liệu, mỗi khóa có độ dài 56 bit. 3DES được coi là một phiên bản an toàn hơn của DES và được sử dụng rộng rãi trong các sản phẩm mật mã dân sự. 3DES cũng được sử dụng trong các sản phẩm bảo mật như thẻ tín dụng và các sản phẩm bảo mật thông tin khác
 
-#### 3. AES(advanced encryption standard)
+### 3. AES(advanced encryption standard)
 
-1. Tổng quan
+a. Tổng quan
 + Được phát triển bởi NIST năm 2001.
 + **AES (Advanced Encryption Standard)** là một thuật toán mã hóa khối đối xứng được sử dụng rộng rãi trong các sản phẩm bảo mật thông tin. Thuật toán này được thiết kế để thay thế cho thuật toán DES (Data Encryption Standard) cũ hơn. AES sử dụng kích thước khối 128 bit và có ba kích thước khóa khác nhau: 128, 192 và 256 bit. AES được coi là một trong những thuật toán mã hóa đối xứng an toàn nhất hiện nay.(Trong bài viết này để dễ ràng hiểu và viết thì mình chỉ viết với AES có kích thước khóa là 128bit)
+
 <picture>
   <img src="https://lilthawg29.files.wordpress.com/2021/06/image-2.png" width="30%" height="30%">
 </picture>
@@ -125,16 +126,25 @@ c. Thông tin thêm
 + Trong khi mã hóa có các khóa mở rộng được sinh ra từ chu trình Rijndeal. Hầu hết các phép toán trong AES đều được thực hiện trên trường hữu hạn của các bytes. Mỗi khối 128 bit dc chia thành 4 cột với mỗi cột 16 bytes xếp thành một ma trận 4x4, còn dược gọi là ma trận trạng thái. Tùy thuộc vào độ dài của khóa mà ta có số lần lặp trong một vòng khác nhau.
 + Gồm hai bước chính là Bước sinh khóa(key generated) và mã hóa(encrypt).
 
-2. Chi tiết
+. Chi tiết
 
-+ Tổng quát:
++ Tổng quát cả quá trình mã hóa:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/ce64b0f9-770b-4e2e-a453-142eea0b2f01)
 
++ Chi tiết hơn:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/0348bb66-dd0c-4f9b-9904-1b150f9abf13)
+
++ Các bước chính:
+   + b1 : Khởi tạo plaintext kết hợp với key thông qua addRoundKey
+   + b2 : Lặp mã hóa, sử dụng kết quả của bước 1 rồi thông qua 4 hàm chính.
+   + b3 : Sau N - 1 vòng, ta cho nó qua 3 hàm (bỏ qua MixColumns) để hoàn thành mã hóa.
+  
 + Có N vòng lặp và có N-1 vòng lặp chính(1 -> N - 1).Chủ yếu thực hiện các hàm sau:
    + Subbytes - thay thế các bytes dữ liệu bằng bytes phụ
-   + Shifrows - dịch vòng dữ liệu
+   + Shift rows - dịch vòng dữ liệu
    + Mix columns - trộn dữu liệu
    + AddRoundKeys - chèn khóa vòng
 
- 
++ Hàm shift rows:
