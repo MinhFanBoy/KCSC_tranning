@@ -1,7 +1,7 @@
 Tables of contens
 =================
 * [I. Tổng quan](#i-tổng-quan-về-mã-khóa-đối-xứng)
-  * [1. Mật mã đối xứng là gì](#1-mật-mã-đối-xứng-là-gì)
+  * [1. Mật mã đối xứng là gì](#1-mật-mã-đối-xứng-là-gì-)
   * [2. Một vài thông tin phụ](#2-một-vài-thông-tin-bổ-xung)
 
 ## I. Tổng quan về mã khóa đối xứng
