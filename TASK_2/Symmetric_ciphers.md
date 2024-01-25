@@ -38,12 +38,13 @@ Phần tạo khóa:
   
 + Từ khóa 64 bit ban đầu qua phần (Hoán vị PC-1) Permuted choice - 1 loại bỏ các bit ở vị trí chia hết cho 8(từ đó khóa còn lại 56 bit). Tách các bit còn lại làm 2 phần mỗi phần có 28 bỉt là 28 bit đầu và 28 bit cuối(ký hiệu: 28 bit đầu $C_0$, 28 bit cuối $D_0$)
 + Dịch trái: ở các vòng(1, 2, 9, 16) thì ta dich trái 1 bit, các vòng còn lại dịch trái 2 bit.
-+ Sau khi dịch vòng trái cho C0 và D0 thì ta sẽ cho vào hoán vị PC-2 . Hoán vị PC-2 về cơ bản là giống hoán vị PC-1 chỉ khác ở sự hoán vị khi các bít 9, 18, 25, 35, 38, 43 bị lược bỏ. Khi này đầu ra của nó sẽ là 18.Lưu lại kết quả sau khi vòng dịch trái rồi gán nó vào C1, D1
++ Sau khi dịch vòng trái cho $C_0$ và $D_0$ thì ta sẽ cho vào hoán vị PC-2 . Hoán vị PC-2 về cơ bản là giống hoán vị PC-1 chỉ khác ở sự hoán vị khi các bít 9, 18, 25, 35, 38, 43 bị lược bỏ. Khi này đầu ra của nó sẽ là 18. Lưu lại kết quả sau khi vòng dịch trái rồi gán nó vào $C_1$, $D_1$
 
 Phần input:
 + Cách nhìn trực quan mã hóa DES:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/35dc8acf-a6c4-4ebe-8e67-d883106ccfcb)
+
 + Từng vòng của DES:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/fe33099f-e1ce-4c30-a461-78ede91a279e)
@@ -72,7 +73,7 @@ Phần input:
 
 > Sau 16 vòng
 
-Tiếp tực làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
+Tiếp tụtục làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/60b91532-f0b8-4f12-95b5-27fa87306ef0)
 
@@ -96,6 +97,7 @@ a. Tổng quan về 3DES
 + Cũng là DES nhưng được mã hóa nhiều lần với các key khác nhau.
 + Yêu cầu đầu vào và đầu ra cũng giống như DES.
 + Tránh được việc bị bruteforce hay tấn công khác.
++ 
 b. 3DES
 
 + 2DES: Sau khi mã hóa lần 1 ta lấy ciphertext đó làm plaintext của lần 2 và mã hóa. Việc giải mã thì ta giải mã với trình tự ngược lại, lấy ciphertext của lần mã hóa thứ 2 mã hóa trước xong tiếp tục mã hóa nó là ta sẽ có thông tin ban đầu.
