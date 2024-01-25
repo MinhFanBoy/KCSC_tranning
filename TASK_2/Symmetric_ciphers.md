@@ -81,4 +81,10 @@ Vậy ta có:
 + $l_{i} = R _ {i - 1}$
 + $R_{i} = L_{i - 1} \oplus F(R_{i - 1}, k_i)$
 
+c. Thông tin thêm
 
++ DES có hiệu ứng tuyết lở mạnh:
+  + với mỗi một bit plaintext bị thay đổi có thể thay đổi ít nhất 34 bit ở ciphertext
+  + Mỗi một bit ở Key bị thay đổi khiến ciphertext thay đổi ít nhất 35 bit
++ Với khóa thật sự được dùng trong DES là 56( Thay vì 64 như đầu vào) thì để bruteforce tất cả key (giả sử mỗi lần giải mã mất một giây) thì ta tốn hơn 1000 năm để hoàn thành
++ Hiện tại DES được xem là không an toàn nữa.
