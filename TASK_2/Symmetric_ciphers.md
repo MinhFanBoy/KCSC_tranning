@@ -97,7 +97,7 @@ a. Tổng quan về 3DES
 + Cũng là DES nhưng được mã hóa nhiều lần với các key khác nhau.
 + Yêu cầu đầu vào và đầu ra cũng giống như DES.
 + Tránh được việc bị bruteforce hay tấn công khác.
-+ 
+
 b. 3DES
 
 + 2DES: Sau khi mã hóa lần 1 ta lấy ciphertext đó làm plaintext của lần 2 và mã hóa. Việc giải mã thì ta giải mã với trình tự ngược lại, lấy ciphertext của lần mã hóa thứ 2 mã hóa trước xong tiếp tục mã hóa nó là ta sẽ có thông tin ban đầu.
