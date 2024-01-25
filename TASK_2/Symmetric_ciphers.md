@@ -33,9 +33,6 @@ a. Tổng quan về DES
 
 b. Chi tiết
 
-có 16 vòng:
-
-ở vòng 1 chúng ta làm các việc sau:
 
 Phần tạo khóa:
   
@@ -44,34 +41,41 @@ Phần tạo khóa:
 + Sau khi dịch vòng trái cho C0 và D0 thì ta sẽ cho vào hoán vị PC-2 . Hoán vị PC-2 về cơ bản là giống hoán vị PC-1 chỉ khác ở sự hoán vị khi các bít 9, 18, 25, 35, 38, 43 bị lược bỏ. Khi này đầu ra của nó sẽ là 18.Lưu lại kết quả sau khi vòng dịch trái rồi gán nó vào C1, D1
 
 Phần input:
-
-- Cho 64 bit qua hoán vị Sau đó lấy 64 bit chia làm 2 phần $l_0$ và $R_0$. Đưa $R_0$ qua hoán vị mở rộng E. Mục đích của nó là để tăng số bit lên 48 để $XOR$ với cả $key$ cũng có 48 bits.
-
-Bảng hoán vị
-
-![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/e445d333-af9d-4100-b77b-aba8fb5376d6)
-
-- Hoán vị mở rộng E là lặp lại hai bit cuối của hàng trước hoặc hàng sau.
-
-
-
-  
-- Sau khi $R_0$ xor với $K_0$ thì ta cho nó qua vòng s-box để chuyển nó về lại 32 bit.
-- Tiếp tục cho hoán vị PC-1. Sau đó lấy L0 Xor với kết quả vừa có. Rồi gán bằng R1.
-  
-Tiếp tực làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
-
-IP(-1) (Inverse initial permutation):
-
-![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/60b91532-f0b8-4f12-95b5-27fa87306ef0)
-
 + Cách nhìn trực quan mã hóa DES:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/35dc8acf-a6c4-4ebe-8e67-d883106ccfcb)
-
 + Từng vòng của DES:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/fe33099f-e1ce-4c30-a461-78ede91a279e)
+
+
+> Bắt đầu
+- Cho 64 bit qua hoán vị Sau đó lấy 64 bit chia làm 2 phần $l_0$ và $R_0$.
+  
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/e445d333-af9d-4100-b77b-aba8fb5376d6)
+
+- $R_0$ được đưa vào hàm F.
+  
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/b313f020-d7c2-4957-b188-c12f8b82fff6)
+
+- Đưa $R_0$ qua hoán vị mở rộng E. Hoán vị mở rộng E là lặp lại hai bit cuối của hàng trước hoặc hàng sau. Mục đích của nó là để tăng số bit lên 48 để $XOR$ với cả $key$ cũng có 48 bits.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/78a27ded-a166-4310-b2e0-d2294ea221fb)
+
+- Sau khi $R_0$ xor với $K_0$ thì ta cho nó qua vòng s-box để chuyển nó về lại 32 bit.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/1c374294-e742-4df6-9be9-5e91b665efe1)
+
+- Tiếp tục cho hoán vị PC-1. Sau đó lấy $L_0$ $XOR$ với kết quả vừa có. Rồi gán bằng $R_1$.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/83470541-6257-4c8e-9556-53d87046adba)
+
+> Sau 16 vòng
+
+Tiếp tực làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/60b91532-f0b8-4f12-95b5-27fa87306ef0)
+
 
 Vậy ta có:
 + $l_{i} = R _ {i - 1}$
