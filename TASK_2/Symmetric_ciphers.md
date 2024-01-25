@@ -88,3 +88,20 @@ c. Thông tin thêm
   + Mỗi một bit ở Key bị thay đổi khiến ciphertext thay đổi ít nhất 35 bit
 + Với khóa thật sự được dùng trong DES là 56( Thay vì 64 như đầu vào) thì để bruteforce tất cả key (giả sử mỗi lần giải mã mất một giây) thì ta tốn hơn 1000 năm để hoàn thành
 + Hiện tại DES được xem là không an toàn nữa.
+
+#### 2. 3DES
+
+a. Tổng quan về 3DES
+
++ Cũng là DES nhưng được mã hóa nhiều lần với các key khác nhau.
++ Tránh được việc bị bruteforce hay tấn công khác.
+b. 2DES và 3DES
+
++ 2DES: Sau khi mã hóa lần 1 ta lấy ciphertext đó làm plaintext của lần 2 và mã hóa. Việc giải mã thì ta giải mã với trình tự ngược lại, lấy ciphertext của lần mã hóa thứ 2 mã hóa trước xong tiếp tục mã hóa nó là ta sẽ có thông tin ban đầu.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/01b82852-8e66-4161-bdea-2747d6a66ab5)
+
++ 3DES: Ta thực hiên như sau:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2cf7808c-0bfa-4f6e-8f77-9faeb2029f6b)
+
