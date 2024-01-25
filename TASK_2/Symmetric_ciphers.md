@@ -1,6 +1,6 @@
 Tables of contens
 =================
-* [I. Tổng quan](i-Tổng-quan-về-mã-khóa-đối-xứng)
+* [I. Tổng quan](#i-tổng-quan-về-mã-khóa-đối-xứng)
 
 ## I. Tổng quan về mã khóa đối xứng
 
