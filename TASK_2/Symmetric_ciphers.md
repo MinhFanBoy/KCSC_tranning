@@ -2,7 +2,7 @@ Tables of contens
 =================
 * [I. Tổng quan](#i-tổng-quan-về-mã-khóa-đối-xứng)
   * [1. Mật mã đối xứng là gì](#1-mật-mã-đối-xứng-là-gì-)
-  * [2. Một vài thông tin phụ](#2-một-vài-thông-tin-bổ-xung)
+  * [2. Một vài thông tin phụ](#2-một-vài-thông-tin-bổ-sung)
   * [3. Mã khóa](#3-các-loại-mã-khóa)
 
 ## I. Tổng quan về mã khóa đối xứng
@@ -11,7 +11,7 @@ Tables of contens
 
 Mật mã khóa đối xứng là một loại sơ đồ mã hóa trong đó một khóa giống nhau sẽ vừa được dùng để mã hóa, vừa được dùng để giải mã các tệp tin. Mật mã khóa đối xứng được sử dụng rộng rãi trên nhiều hệ thống máy tính khác nhau nhằm tăng cường bảo mật cho dữ liệu. Một sơ đồ mã hóa đối xứng thường sử dụng một khóa đơn được chia sẻ giữa 2 hoặc nhiều người dùng với nhau. Khóa duy nhất này sẽ được dùng cho cả 2 tác vụ mã hóa và giải mã các văn bản thô (các tin nhắn hoặc mảnh dữ liệu cần được mã hóa). Các thuật toán khóa đối xứng được sử dụng rộng rãi trên nhiều hệ thống máy tính khác nhau nhằm tăng cường bảo mật cho dữ liệu. Mức độ bảo mật của các hệ thống mã hóa đối xứng sẽ phụ thuộc vào độ khó trong việc suy đoán ngẫu nhiên ra khóa đối xứng theo hình thức tấn công brute force. Trong số các sơ đồ mã hóa đối xứng được sử dụng ngày nay thì có 2 loại thông dụng nhất là nền tảng mật mã block và stream.
 
-### 2. Một vài thông tin bổ xung
+### 2. Một vài thông tin bổ sung
 
 - Một trong những mã khóa đối xứng phổ biến nhẩt đến hiện tại là AES được công bố năm 2001. Hiên tại nó phổ biến tới mưc một số phần mêm máy tính có phần tệp lệnh riêng để thực hiên AES. !) nó là một mã khóa hay có trong CTF nên cần tập trung vào nó.
 - Về cơ bản mã khóa đối xứng được chia làm hai loại cơ bản là Mã khóa khối (block cipher) và Mã khóa dòng (stream cipher)
@@ -94,8 +94,9 @@ c. Thông tin thêm
 a. Tổng quan về 3DES
 
 + Cũng là DES nhưng được mã hóa nhiều lần với các key khác nhau.
++ Yêu cầu đầu vào và đầu ra cũng giống như DES.
 + Tránh được việc bị bruteforce hay tấn công khác.
-b. 2DES và 3DES
+b. 3DES
 
 + 2DES: Sau khi mã hóa lần 1 ta lấy ciphertext đó làm plaintext của lần 2 và mã hóa. Việc giải mã thì ta giải mã với trình tự ngược lại, lấy ciphertext của lần mã hóa thứ 2 mã hóa trước xong tiếp tục mã hóa nó là ta sẽ có thông tin ban đầu.
 
@@ -105,3 +106,33 @@ b. 2DES và 3DES
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2cf7808c-0bfa-4f6e-8f77-9faeb2029f6b)
 
+c. Thông tin thêm
++ 2DES đã bị phá vỡ bởi các cuộc tấn công vì độ dài khóa quá ngắn.
++ 3DES sử dụng ba khóa DES để mã hóa dữ liệu, mỗi khóa có độ dài 56 bit. 3DES được coi là một phiên bản an toàn hơn của DES và được sử dụng rộng rãi trong các sản phẩm mật mã dân sự. 3DES cũng được sử dụng trong các sản phẩm bảo mật như thẻ tín dụng và các sản phẩm bảo mật thông tin khác
+
+#### 3. AES(advanced encryption standard)
+
+1. Tổng quan
++ Được phát triển bởi NIST năm 2001.
++ **AES (Advanced Encryption Standard)** là một thuật toán mã hóa khối đối xứng được sử dụng rộng rãi trong các sản phẩm bảo mật thông tin. Thuật toán này được thiết kế để thay thế cho thuật toán DES (Data Encryption Standard) cũ hơn. AES sử dụng kích thước khối 128 bit và có ba kích thước khóa khác nhau: 128, 192 và 256 bit. AES được coi là một trong những thuật toán mã hóa đối xứng an toàn nhất hiện nay.(Trong bài viết này để dễ ràng hiểu và viết thì mình chỉ viết với AES có kích thước khóa là 128bit)
+<picture>
+  <img src="https://lilthawg29.files.wordpress.com/2021/06/image-2.png" width="30%" height="30%">
+</picture>
+
++ Với plaintext = 128 bit, key = 128 bit, 192 bit, or 256 bit.
++ Trong khi mã hóa có các khóa mở rộng được sinh ra từ chu trình Rijndeal. Hầu hết các phép toán trong AES đều được thực hiện trên trường hữu hạn của các bytes. Mỗi khối 128 bit dc chia thành 4 cột với mỗi cột 16 bytes xếp thành một ma trận 4x4, còn dược gọi là ma trận trạng thái. Tùy thuộc vào độ dài của khóa mà ta có số lần lặp trong một vòng khác nhau.
++ Gồm hai bước chính là Bước sinh khóa(key generated) và mã hóa(encrypt).
+
+2. Chi tiết
+
++ Tổng quát:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/ce64b0f9-770b-4e2e-a453-142eea0b2f01)
+
++ Có N vòng lặp và có N-1 vòng lặp chính(1 -> N - 1).Chủ yếu thực hiện các hàm sau:
+   + Subbytes - thay thế các bytes dữ liệu bằng bytes phụ
+   + Shifrows - dịch vòng dữ liệu
+   + Mix columns - trộn dữu liệu
+   + AddRoundKeys - chèn khóa vòng
+
+ 
