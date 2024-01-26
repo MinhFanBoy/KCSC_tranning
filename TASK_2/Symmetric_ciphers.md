@@ -1319,3 +1319,104 @@ if __name__ == "__main__":
 ```
 
 > crypto{p3n6u1n5_h473_3cb}
+
+
+### Flipping Cookie
+
+---
+
+**_TASK:_**
+
+You can get a cookie for my website, but it won't help you read the flag... I think.
+
+Play at https://aes.cryptohack.org/flipping_cookie
+
+**_FILE_**
+
+```py
+from Crypto.Cipher import AES
+import os
+from Crypto.Util.Padding import pad, unpad
+from datetime import datetime, timedelta
+
+
+KEY = ?
+FLAG = ?
+
+
+@chal.route('/flipping_cookie/check_admin/<cookie>/<iv>/')
+def check_admin(cookie, iv):
+    cookie = bytes.fromhex(cookie)
+    iv = bytes.fromhex(iv)
+
+    try:
+        cipher = AES.new(KEY, AES.MODE_CBC, iv)
+        decrypted = cipher.decrypt(cookie)
+        unpadded = unpad(decrypted, 16)
+    except ValueError as e:
+        return {"error": str(e)}
+
+    if b"admin=True" in unpadded.split(b";"):
+        return {"flag": FLAG}
+    else:
+        return {"error": "Only admin can read the flag"}
+
+
+@chal.route('/flipping_cookie/get_cookie/')
+def get_cookie():
+    expires_at = (datetime.today() + timedelta(days=1)).strftime("%s")
+    cookie = f"admin=False;expiry={expires_at}".encode()
+
+    iv = os.urandom(16)
+    padded = pad(cookie, 16)
+    cipher = AES.new(KEY, AES.MODE_CBC, iv)
+    encrypted = cipher.encrypt(padded)
+    ciphertext = iv.hex() + encrypted.hex()
+
+    return {"cookie": ciphertext}
+```
+---
+
+Haizz, sau khi tham khảo(copy code) anh phúc mình đã có hướng làm bài này như sau:
+Ta thấy IV được random dài 32 kí tự (16byte) cookie được đệm thêm để dài bằng IV, sau đó được mang đi mã hóa. Hàm check_admin() kiểm tra “admin=True” mới trả về flag.
+IV là 32 kí tự đầu tiên của ciphertext,
+vì khi chế độ CBC giải mã (tạm gọi phần 16 bytes đầu tiên sau khi mã hóa nhưng vẫn chưa dc xor là block_1) nó sẽ xor lại với iv để lấy lại thông tin ban đầu
+
+"admin=False;expi" = block_1 $\oplus$ iv (mà iv ở đây là iv ban đầu k thể thay đổi)
+$\to$ block_1 = "admin=False;expi" $\oplus$ iv
+
+ta muốn có : "admin=True;expir" = block_1 $\oplus$ $iv_1$ = "admin=False;expi" $\oplus$ $iv_1$
+
+mà $iv_1$ là iv ta có thể thay đổi nên từ đó ta gửi đi $iv_1$ = "admin=False;expi" $\oplus$"admin=True;expir" là ta sẽ vượt qua.
+
+
+```py
+
+from pwn import xor
+from requests import *
+from Crypto.Util.number import *
+
+def decrypt(cookie, iv):
+    s = "https://aes.cryptohack.org/flipping_cookie/check_admin/" + cookie + "/" + iv + "/"
+    tmp = get(s).json()
+    return tmp
+
+def get_cookie():
+    url = "https://aes.cryptohack.org/flipping_cookie/get_cookie/"
+    tmp = get(url).json()["cookie"]
+    tmp = bytes.fromhex(tmp)
+    return tmp[:16], tmp[16:]
+
+def main():
+    iv, cookie = get_cookie()
+    target = b"admin=True;expir"
+    iv = xor(iv, b"admin=False;expi", target).hex()
+    print(decrypt(cookie.hex(), iv))
+
+
+if __name__ == "__main__":
+    main()
+
+```
+
+> crypto{4u7h3n71c4710n_15_3553n714l}
