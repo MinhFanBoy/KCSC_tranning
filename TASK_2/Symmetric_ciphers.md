@@ -261,7 +261,8 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
   - Tính lan sai: Khi sai một bit trong khối mã thì việc giải, mã tất cả các khối sau nó sẽ bị sai
 
  
-![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7e814b45-0e62-4f9c-bf9c-546a13058658)
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/072a2115-17b7-4a53-b4c3-0c4e5c4604dd)
+
 
 
 3. CFB
