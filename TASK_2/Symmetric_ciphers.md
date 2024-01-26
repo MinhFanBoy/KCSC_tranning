@@ -59,7 +59,10 @@ Phần input:
   
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/b313f020-d7c2-4957-b188-c12f8b82fff6)
 
+> Bên trong hàm F()
+
 - Đưa $R_0$ qua hoán vị mở rộng E. Hoán vị mở rộng E là lặp lại hai bit cuối của hàng trước hoặc hàng sau. Mục đích của nó là để tăng số bit lên 48 để $XOR$ với cả $key$ cũng có 48 bits.
+
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/78a27ded-a166-4310-b2e0-d2294ea221fb)
 
@@ -70,10 +73,18 @@ Phần input:
 - Tiếp tục cho hoán vị PC-1. Sau đó lấy $L_0$ $XOR$ với kết quả vừa có. Rồi gán bằng $R_1$.
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/83470541-6257-4c8e-9556-53d87046adba)
+> Kết thúc hàm F()
+
+Sau đó ta đặt:
+
++ $l_{i} = R _ {i - 1}$
++ $R_{i} = L_{i - 1} \oplus F(R_{i - 1}, k_i)$
+
+Lấy phần $L _ {i}, R _ {i}$ tiếp tục thực hàm như trên.
 
 > Sau 16 vòng
 
-Tiếp tụtục làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
+Tiếp tục làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/60b91532-f0b8-4f12-95b5-27fa87306ef0)
 
@@ -104,7 +115,7 @@ b. 3DES
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/01b82852-8e66-4161-bdea-2747d6a66ab5)
 
-+ 3DES: Ta thực hiên như sau:
++ 3DES: Ta thực hiên như sau: Lấy plaintext mã hóa với $key_1$, giải mã bằng $key_2$ xong rồi tiếp tục mã hóa bằng $key_1$.
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2cf7808c-0bfa-4f6e-8f77-9faeb2029f6b)
 
@@ -126,7 +137,7 @@ a. Tổng quan
 + Trong khi mã hóa có các khóa mở rộng được sinh ra từ chu trình Rijndeal. Hầu hết các phép toán trong AES đều được thực hiện trên trường hữu hạn của các bytes. Mỗi khối 128 bit dc chia thành 4 cột với mỗi cột 16 bytes xếp thành một ma trận 4x4, còn dược gọi là ma trận trạng thái. Tùy thuộc vào độ dài của khóa mà ta có số lần lặp trong một vòng khác nhau.
 + Gồm hai bước chính là Bước sinh khóa(key generated) và mã hóa(encrypt).
 
-. Chi tiết
+b. Chi tiết
 
 + Tổng quát cả quá trình mã hóa:
 
@@ -156,3 +167,24 @@ a. Tổng quan
   
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/411b7cc5-4ac4-44f7-942c-b65835dcaf39)
 
++ MixColums : Hàm này thay đổi giá trị của từng cột bằng cách nhân với ma trận. Nó còn được gọi là hàm xtime(hàm nhân x). Mình sẽ giải thích rõ hàm này hơn ở phần cơ sở toán học.
+<picture>
+   <img src="https://lilthawg29.files.wordpress.com/2021/09/image-238.png?w=1024" width="70%" heigth="70%"
+</picture>
+
+  + SubBytes - mỗi bytes của state được thay thế bằng 1 bytes khác trên S-box
+    - Là quá trình thay thế phi tuyến tính trong đó mỗi bytes được thay thế bằng một bytes khác trong bảng tra
+    - S-box là bẳng 16 x 16 chứa hoán vị của 256 ký tự
+    - Mỗi bytes trạng thái được thay thế bởi 4 bit trái và cột xác định bởi 4 bit phải
+    - VD: 6D sẽ được thay thế bởi S-box[6][D]
+    - Hộp thế s-box được xây dựng trên phép biến đổi phi tuyến (cái này không hiểu lắm)
+
+c. quá trình tạo khóa mở rộng
+
++ KeyExpansion: Được thực hiện theo hàm quy nạp.
+  
++ Với Rcon = [01, 02, 04, 08, 10, 20, 40, 80, 1b, 36]
+  
+<picture>
+   <img src="https://lilthawg29.files.wordpress.com/2021/09/image-244.png?w=1024" width="70%" heigth="70%"
+</picture>
