@@ -350,3 +350,111 @@ What is the name for the best single-key attack against AES?
 Hỏi google là ta có ngay đáp án. The best publicly known single-key attack on AES is the **biclique attack** which is still the best publicly known single-key attack on AES as of April 2019. The computational complexity of the attack is, and for AES128, AES192 and AES256, respectively. It is the only publicly known single-key attack on AES that attacks the full number of rounds².
 
 > crypto{biclique}
+
+### Structure of AES
+
+---
+
+**_TASK:_**
+
+Included is a bytes2matrix function for converting our initial plaintext block into a state matrix. Write a matrix2bytes function to turn that matrix back into bytes, and submit the resulting plaintext as the flag.
+
+**_File:_**
+
+```py
+def bytes2matrix(text):
+    """ Converts a 16-byte array into a 4x4 matrix.  """
+    return [list(text[i:i+4]) for i in range(0, len(text), 4)]
+
+def matrix2bytes(matrix):
+    """ Converts a 4x4 matrix into a 16-byte array.  """
+    ????
+
+matrix = [
+    [99, 114, 121, 112],
+    [116, 111, 123, 105],
+    [110, 109, 97, 116],
+    [114, 105, 120, 125],
+]
+
+print(matrix2bytes(matrix))
+```
+
+---
+
+Bài này ta chỉ phải hoàn thành nốt hàm matrix to bytes nên cũng khá dễ.
+
+```py
+def matrix2bytes(matrix):
+    """ Converts a 4x4 matrix into a 16-byte array.  """
+    return bytes(matrix[0] + matrix[1] + matrix[2] + matrix[3])
+
+```
+> crypto{inmatrix}
+
+### Round Keys
+
+---
+
+**_TASK:_**
+
+Complete the add_round_key function, then use the matrix2bytes function to get your next flag.
+
+**_FILE:_**
+```py
+state = [
+    [206, 243, 61, 34],
+    [171, 11, 93, 31],
+    [16, 200, 91, 108],
+    [150, 3, 194, 51],
+]
+
+round_key = [
+    [173, 129, 68, 82],
+    [223, 100, 38, 109],
+    [32, 189, 53, 8],
+    [253, 48, 187, 78],
+]
+
+
+def add_round_key(s, k):
+    ???
+
+
+print(add_round_key(state, round_key))
+
+
+```
+---
+
+Hoàn thành nốt hàm này bằng lý thuyết ta vừa học, lấy từng phần tử của trạng thái cộng với phần tử ở vị trí tương ứng của trạng thái là ok 10 điểm.
+
+```py
+state = [
+    [206, 243, 61, 34],
+    [171, 11, 93, 31],
+    [16, 200, 91, 108],
+    [150, 3, 194, 51],
+]
+
+round_key = [
+    [173, 129, 68, 82],
+    [223, 100, 38, 109],
+    [32, 189, 53, 8],
+    [253, 48, 187, 78],
+]
+
+
+def add_round_key(s, k):
+    return [[s[i][j] ^ k[i][j] for j in range(4)] for i in range(4)]
+
+def matrix2bytes(matrix):
+    """ Converts a 4x4 matrix into a 16-byte array.  """
+    return bytes(matrix[0] + matrix[1] + matrix[2] + matrix[3])
+
+
+print(matrix2bytes(add_round_key(state, round_key)))
+
+```
+
+> crypto{r0undk3y}
