@@ -240,7 +240,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 ### 6. Modes of block cipher
 
-1. ECB
+#### 1. ECB
 + Các thông tin sẽ được chia thành các khối độc lập, sau đó mã từng khối riêng lẻ với nhau
 + Các Khối được mã độc lập với các khối khác $C_i = E(P_i)$, do vậy nó được dùng để truyền an toàn từng giá trị riêng lẻ
 + Tính chất:
@@ -251,7 +251,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
    
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2532b32e-c5d0-41af-8c30-53ab655430e3)
 
-2. CBC
+#### 2. CBC
 + Mẩu tin được chia thành các khối
 + Các block sếp thành dãy trong quá trình mã hóa, giải mã
 + Sử dụng vector IV để bắt đầu quá trình $c_i = e(p_i xor c_i-1), c_-1 = IV$
@@ -265,7 +265,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 
 
-3. CFB
+#### 3. CFB
 + Thông tin khi đi vào sẽ dc chia thành các khối
 + các bản rõ dc sắp xếp nên khi giải mã cx yêu cầu thứ tự các bản mã phải đúng.
 + $c_i = p_i \oplus e(k, c_{i-1})$ với $c_{-1} = IV$
@@ -279,7 +279,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 
     
-4. OFB
+#### 4. OFB
 + Nhìn chung thì cũng giống các mode trước nhưng khác tý: $c_i = p_1 \oplus e_i(k, c_{i - 1})$ với $c_{-1} = IV$
 + Khi mã hóa của một khối bị sai cũng không ảnh hưởng tới các khối khác
 + Tính bảo mật cao, có thể mã hóa được nhiều khối cùng một lúc nên được tận dụng trong việc truyền tải âm thanh 
@@ -287,7 +287,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/c261a31d-11d5-4977-b0c2-953a9641f9a2)
 
   
-5. CTR
+#### 5. CTR
 + Tạo ra một bộ đếm bằng văn bản gốc, gọi là R(). Mỗi khối nhận được một bộ đếm và một khóa riêng để tạo ra khối đầu ra
 + Khối đầu ra được xor với bản rõ để tạo thành bản mã
   + $c_i = e(R_i) xor p_i$
@@ -300,7 +300,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 ## III. Attack
 
-1. Man in the middle.
+### 1. Man in the middle.
 
 Man in the middle (MITM) hay còn được gọi là tấn công trung gian được hellman và mackey chỉ ra năm 1977.
 Nó là một kiểu tấn công mạng nhằm chặ toàn bộ thông tin của hai bên và mạo danh để có thể làm chủ nhiều thông tin nhạy cảm theo ý của kẻ tấn công. AES, DES và nhiều mã hóa khác được coi là không an toàn trước kiểu tấn công này. Để bảo vệ trước cuộc tấn công này ta cần phải mã hóa thông tin và ký trước khi gửi đồng thời có thể dùng nhiều giao thức bảo mật khác nhằn tăng tính an toàn.
@@ -312,7 +312,7 @@ Giả sử bạn là nhà giải mã có quyền truy cập vào văn bản thu�
 Bắt đầu với AAA và thử tất cả $2 ^ 56$ cách kết hợp khóa bí mật bằng cách mã hóa AAA. Điều này sẽ cung cấp cho bạn một danh sách lớn các giá trị có thể có cho XXX. Tiếp theo, bạn lấy ZZZ và thử tất cả 256 tổ hợp khóa bí mật bằng cách giải mã ZZZ. Điều này sẽ cung cấp cho bạn một danh sách lớn các giá trị có thể có cho XXX.
 Bây giờ hãy thực hiện tra cứu đơn giản giữa hai danh sách để tìm giá trị phù hợp. Ngay khi bạn thấy giá trị XXX phù hợp trong cả hai danh sách, bạn đã tìm ra khóa bí mật. Vì vậy, điều này có nghĩa là với nỗ lực $2 ^ 57$ khóa, bạn đã phá vỡ được mã hóa. EZ attack 😲
 
-2. Padding Oracle
+### 2. Padding Oracle
    
 **Padding Oracle** là một loại tấn công mật mã khai thác xác thực phần đệm của thông điệp mật mã để giải mã văn bản mã hóa. Cuộc tấn công này chủ yếu liên quan đến **chế độ CBC** hoạt động được sử dụng trong mật mã khối. Trong đó “oracle” (thường là máy chủ) rò rỉ dữ liệu về việc liệu phần đệm của tin nhắn được mã hóa có chính xác hay không. Dữ liệu như vậy có thể cho phép những kẻ tấn công giải mã (và đôi khi mã hóa) tin nhắn thông qua oracle bằng cách sử dụng khóa của oracle mà không cần biết khóa mã hóa.
 Việc triển khai tiêu chuẩn của giải mã CBC trong mật mã khối là giải mã tất cả các khối bản mã, xác thực phần đệm, xóa phần đệm PKCS7 và trả về văn bản thuần túy của tin nhắn. Nếu máy chủ trả về lỗi “đệm không hợp lệ” thay vì lỗi chung “giải mã không thành công”, kẻ tấn công có thể sử dụng máy chủ như một oracle đệm để giải mã (và đôi khi mã hóa) message.
