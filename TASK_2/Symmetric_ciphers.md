@@ -231,58 +231,58 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 ### 6. Modes of block cipher
 
 1. ECB
-   + Các thông tin sẽ được chia thành các khối độc lập, sau đó mã từng khối riêng lẻ với nhau
-   + Các Khối được mã độc lập với các khối khác $C_i = E(P_i)$, do vậy nó được dùng để truyền an toàn từng giá trị riêng lẻ
-   + Tính chất:
-       - Các khối mã như nhau sẽ có bản mã giống nhau (dưới cùng một khóa)
-       - Sự phụ thuộc không có nên việc thay đổi sắp xếp các block với nhau thì các bản rõ cũng phải được sắp xếp lại tương ứng
-       - Tính lan sai : Khi một hay nhiều bit sai trong một khối đơn lẻ thì nó chỉ ảnh hưởng trong khối đó và không ảnh hưởng tới các khối khác
-       - Nó có thể sứ lý nhiều khối song song
-      
++ Các thông tin sẽ được chia thành các khối độc lập, sau đó mã từng khối riêng lẻ với nhau
++ Các Khối được mã độc lập với các khối khác $C_i = E(P_i)$, do vậy nó được dùng để truyền an toàn từng giá trị riêng lẻ
++ Tính chất:
+    - Các khối mã như nhau sẽ có bản mã giống nhau (dưới cùng một khóa)
+    - Sự phụ thuộc không có nên việc thay đổi sắp xếp các block với nhau thì các bản rõ cũng phải được sắp xếp lại tương ứng
+    - Tính lan sai : Khi một hay nhiều bit sai trong một khối đơn lẻ thì nó chỉ ảnh hưởng trong khối đó và không ảnh hưởng tới các khối khác
+    - Nó có thể sứ lý nhiều khối song song
+   
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2532b32e-c5d0-41af-8c30-53ab655430e3)
 
 2. CBC
-   + Mẩu tin được chia thành các khối
-   + Các block sếp thành dãy trong quá trình mã hóa, giải mã
-   + Sử dụng vector IV để bắt đầu quá trình $c_i = e(p_i xor c_i-1), c_-1 = IV$
-   + Tính chất :
-     - các bản rõ giống nhau cũng chưa chắc cho ra bản mã giống nhau. vì nó còn phụ thuộc vào IV
-     - Sự phụ thuộc móc xích: cơ chế mã hóa làm cho bản mã $c_i$ phụ thuộc vào bản mã $c_{i-1}$ nên nếu thay đổi cách sắp xếp các bản sẽ rất khó tấn công. Việc giải mã khối này thì cũng đòi hỏi phải giải đúng khối trước nó nó
-     - Tính lan sai: Khi sai một bit trong khối mã thì việc giải, mã tất cả các khối sau nó sẽ bị sai
++ Mẩu tin được chia thành các khối
++ Các block sếp thành dãy trong quá trình mã hóa, giải mã
++ Sử dụng vector IV để bắt đầu quá trình $c_i = e(p_i xor c_i-1), c_-1 = IV$
++ Tính chất :
+  - các bản rõ giống nhau cũng chưa chắc cho ra bản mã giống nhau. vì nó còn phụ thuộc vào IV
+  - Sự phụ thuộc móc xích: cơ chế mã hóa làm cho bản mã $c_i$ phụ thuộc vào bản mã $c_{i-1}$ nên nếu thay đổi cách sắp xếp các bản sẽ rất khó tấn công. Việc giải mã khối này thì cũng đòi hỏi phải giải đúng khối trước nó nó
+  - Tính lan sai: Khi sai một bit trong khối mã thì việc giải, mã tất cả các khối sau nó sẽ bị sai
 
-    
+ 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7e814b45-0e62-4f9c-bf9c-546a13058658)
 
 
 3. CFB
-   + Thông tin khi đi vào sẽ dc chia thành các khối
-   + các bản rõ dc sắp xếp nên khi giải mã cx yêu cầu thứ tự các bản mã phải đúng.
-   + $c_i = p_i \oplus e(k, c_{i-1})$ với $c_{-1} = IV$
-   + Tính chất:
-     - Các bản rõ giống nhau: giống như CBC
-     - Sự phụ thuộc móc xích: giống như CBC
-     - Tính lan sai: giống như CBC
-     - Không thể thực hiên quá trình giải mã song song vì xử lý của khối sau phụ thuộc vào khối trước
++ Thông tin khi đi vào sẽ dc chia thành các khối
++ các bản rõ dc sắp xếp nên khi giải mã cx yêu cầu thứ tự các bản mã phải đúng.
++ $c_i = p_i \oplus e(k, c_{i-1})$ với $c_{-1} = IV$
++ Tính chất:
+  - Các bản rõ giống nhau: giống như CBC
+  - Sự phụ thuộc móc xích: giống như CBC
+  - Tính lan sai: giống như CBC
+  - Không thể thực hiên quá trình giải mã song song vì xử lý của khối sau phụ thuộc vào khối trước
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/f2a5c50f-1fce-44c5-85d6-56955693f674)
 
 
-       
+    
 4. OFB
-   + Nhìn chung thì cũng giống các mode trước nhưng khác tý: $c_i = p_1 \oplus e_i(k, c_{i - 1})$ với $c_{-1} = IV$
-   + Khi mã hóa của một khối bị sai cũng không ảnh hưởng tới các khối khác
-   + Tính bảo mật cao, có thể mã hóa được nhiều khối cùng một lúc nên được tận dụng trong việc truyền tải âm thanh 
++ Nhìn chung thì cũng giống các mode trước nhưng khác tý: $c_i = p_1 \oplus e_i(k, c_{i - 1})$ với $c_{-1} = IV$
++ Khi mã hóa của một khối bị sai cũng không ảnh hưởng tới các khối khác
++ Tính bảo mật cao, có thể mã hóa được nhiều khối cùng một lúc nên được tận dụng trong việc truyền tải âm thanh 
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/c261a31d-11d5-4977-b0c2-953a9641f9a2)
 
-     
-5. CRT
-   + Tạo ra một bộ đếm bằng văn bản gốc, gọi là R(). Mỗi khối nhận được một bộ đếm và một khóa riêng để tạo ra khối đầu ra
-   + Khối đầu ra được xor với bản rõ để tạo thành bản mã
-     + $c_i = e(R_i) xor p_i$
-     + $p_i = e(R_i) xor c_i$
-   + Tính chất:
-     - Có hiệu quả cao, thực hiện giải mã hoặc mã hóa trên nhiều block
-     - có tính an ninh cao không kém các mode khác khi thực hiện đúng cách
-     - đơn giản về mặt cấu trúc
-     - các biến đếm phải có yêu cầu không được lặp lại để tránh khóa yếu
+  
+5. CTR
++ Tạo ra một bộ đếm bằng văn bản gốc, gọi là R(). Mỗi khối nhận được một bộ đếm và một khóa riêng để tạo ra khối đầu ra
++ Khối đầu ra được xor với bản rõ để tạo thành bản mã
+  + $c_i = e(R_i) xor p_i$
+  + $p_i = e(R_i) xor c_i$
++ Tính chất:
+  - Có hiệu quả cao, thực hiện giải mã hoặc mã hóa trên nhiều block
+  - có tính an ninh cao không kém các mode khác khi thực hiện đúng cách
+  - đơn giản về mặt cấu trúc
+  - các biến đếm phải có yêu cầu không được lặp lại để tránh khóa yếu
