@@ -1321,7 +1321,7 @@ if __name__ == "__main__":
 > crypto{p3n6u1n5_h473_3cb}
 
 
-### Flipping Cookie
+### 12. Flipping Cookie
 
 ---
 
@@ -1385,9 +1385,9 @@ vì khi chế độ CBC giải mã (tạm gọi phần 16 bytes đầu tiên sau
 "admin=False;expi" = block_1 $\oplus$ iv (mà iv ở đây là iv ban đầu k thể thay đổi)
 $\to$ block_1 = "admin=False;expi" $\oplus$ iv
 
-ta muốn có : "admin=True;expir" = block_1 $\oplus$ $iv_1$ = "admin=False;expi" $\oplus$ $iv_1$
+ta muốn có : "admin=True;expir" = block_1 $\oplus$ $iv_1$ = "admin=False;expi" $\oplus$ iv $\oplus$ $iv_1$
 
-mà $iv_1$ là iv ta có thể thay đổi nên từ đó ta gửi đi $iv_1$ = "admin=False;expi" $\oplus$"admin=True;expir" là ta sẽ vượt qua.
+mà $iv_1$ là iv ta có thể thay đổi nên từ đó ta gửi đi $iv_1$ = "admin=False;expi" $\oplus$ iv $\oplus$"admin=True;expir" là ta sẽ vượt qua.
 
 
 ```py
