@@ -312,6 +312,7 @@ Bắt đầu với AAA và thử tất cả $2 ^ 56$ cách kết hợp khóa bí
 Bây giờ hãy thực hiện tra cứu đơn giản giữa hai danh sách để tìm giá trị phù hợp. Ngay khi bạn thấy giá trị XXX phù hợp trong cả hai danh sách, bạn đã tìm ra khóa bí mật. Vì vậy, điều này có nghĩa là với nỗ lực $2 ^ 57$ khóa, bạn đã phá vỡ được mã hóa. EZ attack 😲
 
 2. Padding Oracle
+   
+**Padding Oracle** là một loại tấn công mật mã khai thác xác thực phần đệm của thông điệp mật mã để giải mã văn bản mã hóa. Cuộc tấn công này chủ yếu liên quan đến **chế độ CBC** hoạt động được sử dụng trong mật mã khối. Trong đó “oracle” (thường là máy chủ) rò rỉ dữ liệu về việc liệu phần đệm của tin nhắn được mã hóa có chính xác hay không. Dữ liệu như vậy có thể cho phép những kẻ tấn công giải mã (và đôi khi mã hóa) tin nhắn thông qua oracle bằng cách sử dụng khóa của oracle mà không cần biết khóa mã hóa.
+Việc triển khai tiêu chuẩn của giải mã CBC trong mật mã khối là giải mã tất cả các khối bản mã, xác thực phần đệm, xóa phần đệm PKCS7 và trả về văn bản thuần túy của tin nhắn. Nếu máy chủ trả về lỗi “đệm không hợp lệ” thay vì lỗi chung “giải mã không thành công”, kẻ tấn công có thể sử dụng máy chủ như một oracle đệm để giải mã (và đôi khi mã hóa) message.
 
-   
-   
