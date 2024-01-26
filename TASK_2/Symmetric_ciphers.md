@@ -320,3 +320,32 @@ Việc triển khai tiêu chuẩn của giải mã CBC trong mật mã khối l�
 <picture>
   <img src="https://i.imgur.com/BW82maM.png">
 <\picture>
+
+## IV. Write up
+
+### Keyed Permutations
+
+---
+**_TASK:_**
+
+What is the mathematical term for a one-to-one correspondence?
+
+---
+
+Trong toán học thuật ngữ một-một làm ta nhớ tới song ánh, khi nó hàm song ánh ta có thể hoàn toàn tìm được hàm nghịch đảo của nó một yêu cầu quan trọng trong việc giải, mã .
+
+> crypto{bijection}
+
+### Resisting Bruteforce
+
+---
+
+**_TASK:_**
+
+What is the name for the best single-key attack against AES?
+
+---
+
+Hỏi google là ta có ngay đáp án. The best publicly known single-key attack on AES is the **biclique attack** which is still the best publicly known single-key attack on AES as of April 2019. The computational complexity of the attack is, and for AES128, AES192 and AES256, respectively. It is the only publicly known single-key attack on AES that attacks the full number of rounds².
+
+> crypto{biclique}
