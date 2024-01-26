@@ -240,7 +240,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 ### 6. Modes of block cipher
 
-#### 1. ECB
+#### 6.1. ECB
 + Các thông tin sẽ được chia thành các khối độc lập, sau đó mã từng khối riêng lẻ với nhau
 + Các Khối được mã độc lập với các khối khác $C_i = E(P_i)$, do vậy nó được dùng để truyền an toàn từng giá trị riêng lẻ
 + Tính chất:
@@ -251,7 +251,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
    
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2532b32e-c5d0-41af-8c30-53ab655430e3)
 
-#### 2. CBC
+#### 6.2. CBC
 + Mẩu tin được chia thành các khối
 + Các block sếp thành dãy trong quá trình mã hóa, giải mã
 + Sử dụng vector IV để bắt đầu quá trình $c_i = e(p_i xor c_i-1), c_-1 = IV$
@@ -265,7 +265,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 
 
-#### 3. CFB
+#### 6.3. CFB
 + Thông tin khi đi vào sẽ dc chia thành các khối
 + các bản rõ dc sắp xếp nên khi giải mã cx yêu cầu thứ tự các bản mã phải đúng.
 + $c_i = p_i \oplus e(k, c_{i-1})$ với $c_{-1} = IV$
@@ -279,7 +279,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 
     
-#### 4. OFB
+#### 6.4. OFB
 + Nhìn chung thì cũng giống các mode trước nhưng khác tý: $c_i = p_1 \oplus e_i(k, c_{i - 1})$ với $c_{-1} = IV$
 + Khi mã hóa của một khối bị sai cũng không ảnh hưởng tới các khối khác
 + Tính bảo mật cao, có thể mã hóa được nhiều khối cùng một lúc nên được tận dụng trong việc truyền tải âm thanh 
@@ -287,7 +287,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/c261a31d-11d5-4977-b0c2-953a9641f9a2)
 
   
-#### 5. CTR
+#### 6.5. CTR
 + Tạo ra một bộ đếm bằng văn bản gốc, gọi là R(). Mỗi khối nhận được một bộ đếm và một khóa riêng để tạo ra khối đầu ra
 + Khối đầu ra được xor với bản rõ để tạo thành bản mã
   + $c_i = e(R_i) xor p_i$
