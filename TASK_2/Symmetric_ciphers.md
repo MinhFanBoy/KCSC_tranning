@@ -211,4 +211,13 @@ e. Độ an toàn
   + Rcon khác nhau hạn chế tính đối xứng
   + Tính chất phi tuyến tính
   + Các cấu trúc hóa giải mã khác nhau hạn chế được khóa yếu
-  + Tuy nhiên AES vẫn còn 
+
+### 4. PKCS#7
+
+Các loại mở rộng thường được dùng để ký hiệu: $.p7b, .p7s, .p7m, .p7c, .p7r$
+
+Phát triển bởi	RSA Security, 1 March 1998
+
+PKCS#7 là một chuẩn cú pháp cho việc lưu trữ dữ liệu được ký và/hoặc mã hóa. Nó là một trong các chuẩn thuộc họ chuẩn mã hóa khóa công khai (PKCS) được tạo ra bởi RSA Laboratories. Chuẩn này được sử dụng rộng rãi trong các ứng dụng bảo mật thông tin, ví dụ như để lưu trữ chứng chỉ và danh sách thu hồi chứng chỉ (CRL). Phiên bản mới nhất của chuẩn PKCS#7 là 1.5 và có thể được tìm thấy trong RFC 2315. Chuẩn này cho phép đệ quy, thuộc tính, và các loại nội dung khác nhau, chẳng hạn như dữ liệu, dữ liệu đã ký, dữ liệu đã gửi và dữ liệu đã ký và gửi. Nó cũng cho phép lưu trữ chứng chỉ và/hoặc danh sách thu hồi chứng chỉ (CRL)
+
+PKCS#7 được lưu trữ dưới dạng DER hoặc PEM. Dạng PEM cũng giống như DER nhưng được mã hóa Base64 và có đặt ‑‑‑‑‑BEGIN PKCS7‑‑‑‑‑, ‑‑‑‑‑END PKCS7‑‑‑‑‑ để phân biệt.
