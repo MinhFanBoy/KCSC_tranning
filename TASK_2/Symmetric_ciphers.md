@@ -37,8 +37,18 @@ b. Chi tiết
 Phần tạo khóa:
   
 + Từ khóa 64 bit ban đầu qua phần (Hoán vị PC-1) Permuted choice - 1 loại bỏ các bit ở vị trí chia hết cho 8(từ đó khóa còn lại 56 bit). Tách các bit còn lại làm 2 phần mỗi phần có 28 bỉt là 28 bit đầu và 28 bit cuối(ký hiệu: 28 bit đầu $C_0$, 28 bit cuối $D_0$)
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/9c503081-35cf-4c3d-be0f-4706976b7ec4)
+
+  
 + Dịch trái: ở các vòng(1, 2, 9, 16) thì ta dich trái 1 bit, các vòng còn lại dịch trái 2 bit.
-+ Sau khi dịch vòng trái cho $C_0$ và $D_0$ thì ta sẽ cho vào hoán vị PC-2 . Hoán vị PC-2 về cơ bản là giống hoán vị PC-1 chỉ khác ở sự hoán vị khi các bít 9, 18, 25, 35, 38, 43 bị lược bỏ. Khi này đầu ra của nó sẽ là 18. Lưu lại kết quả sau khi vòng dịch trái rồi gán nó vào $C_1$, $D_1$
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/63cd27a9-8bad-4ac0-b9b2-aab70b453c7b)
+
++ Sau khi dịch vòng trái cho $C_0$ và $D_0$ thì ta sẽ cho vào hoán vị PC-2 . Hoán vị PC-2 về cơ bản là giống hoán vị PC-1 chỉ khác ở sự hoán vị khi các bít 9, 18, 25, 35, 38, 43 bị lược bỏ. Khi này đầu ra của nó sẽ là 18. Lưu lại kết quả sau khi vòng dịch trái rồi gán nó vào $C_1$, $D_1$\
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/803f165d-406e-4d1b-aec7-fa44a06b734e)
+
 
 Phần input:
 + Cách nhìn trực quan mã hóa DES:
@@ -66,7 +76,7 @@ Phần input:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/78a27ded-a166-4310-b2e0-d2294ea221fb)
 
-- Sau khi $R_0$ xor với $K_0$ thì ta cho nó qua vòng s-box để chuyển nó về lại 32 bit.
+- Sau khi $R_0$ xor với $K_0$ thì ta cho nó qua vòng s-box để chuyển nó về lại 32 bit. Trong S_box ta tách mỗi phần tử của trạng thái thành hai phần gồm hai bit ở đầu và cuối [0][-1] và các bit còn lại [1:-2], đối chiếu nó theo bảng sau đây:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/1c374294-e742-4df6-9be9-5e91b665efe1)
 
@@ -286,3 +296,4 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
   - có tính an ninh cao không kém các mode khác khi thực hiện đúng cách
   - đơn giản về mặt cấu trúc
   - các biến đếm phải có yêu cầu không được lặp lại để tránh khóa yếu
+
