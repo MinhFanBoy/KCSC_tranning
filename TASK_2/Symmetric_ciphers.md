@@ -170,22 +170,45 @@ b. Chi tiết
 + MixColums : Hàm này thay đổi giá trị của từng cột bằng cách nhân với ma trận. Nó còn được gọi là hàm xtime(hàm nhân x). Mình sẽ giải thích rõ hàm này hơn ở phần cơ sở toán học.
   
 <picture>
-   <img src="https://lilthawg29.files.wordpress.com/2021/09/image-238.png?w=1024" width="70%" heigth="70%"
+   <img src="https://lilthawg29.files.wordpress.com/2021/09/image-238.png?w=1024" width="70%" heigth="70%">
 </picture>
 
 + SubBytes - mỗi bytes của state được thay thế bằng 1 bytes khác trên S-box
   - Là quá trình thay thế phi tuyến tính trong đó mỗi bytes được thay thế bằng một bytes khác trong bảng tra
   - S-box là bẳng 16 x 16 chứa hoán vị của 256 ký tự
-  - Mỗi bytes trạng thái được thay thế bởi 4 bit trái và cột xác định bởi 4 bit phải
-  - VD: 6D sẽ được thay thế bởi S-box[6][D]
+  - Mỗi bytes trạng thái được thay thế bởi 4 bit trái và cột xác định bởi 4 bit phải, VD: 6D sẽ được thay thế bởi S-box[6][D]
   - Hộp thế s-box được xây dựng trên phép biến đổi phi tuyến (cái này không hiểu lắm)
-
-c. quá trình tạo khóa mở rộng
+    
+c. Quá trình tạo khóa mở rộng
 
 + KeyExpansion: Được thực hiện theo hàm quy nạp.
-
 + Với Rcon = [01, 02, 04, 08, 10, 20, 40, 80, 1b, 36]
++ Với 128 bit key ta có được 16 bytes key, từ đó chia ra làm 4 đoạn key phụ được goi là word được đánh số từ 0 đến 3.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/35e4d27e-75fd-48f8-9007-36a84d1fbdc2)
+
++ các word sau được tính theo công thức như sau:
+  + $word_i = word_{i - 1} \oplus word_{i - 4}$ với mọi $4 \le t < 44$ và i không phải là bội của 4
+  + $word_i = g(word_{i - 1}) \oplus word_{i - 4}$ với i là bội của 4
 
 <picture>
-  <img src="https://lilthawg29.files.wordpress.com/2021/09/image-244.png?w=1024" width="70%" heigth="70%"
+   <img src="https://lilthawg29.files.wordpress.com/2021/09/image-244.png?w=1024" width="70%" heigth="70%">
 </picture>
+
++ Hàm g() là hàm thay đổi gồm các bước dịch trái, đổi chỗ với s_box và xor với Rcon:
+  + Dịch trái 1 đơn vị các phần tử của word
+  + Đổi chỗ với s_box(hàm nãy cũng giống hàn subbytes trong hàm chính)
+  + Xor với Rcon[i/4] vì i khi này chi hết cho 4.
+    
+d. Cơ sở toán học của AES
+  + Trong AES các phép toán được thực hiện trên trường hữu hạn GF(2^8)
+  + Phép cộng: $A( a_1, a_2, a_3,..), B( b_1, b_2, b_3, ...)$ => $C = A + B = (c_1, c_2, c_3, ...)$ với $c_i = (a_i + b_i) \pmod{2}$
+  + Phép nhân: Được thưc hiện trên trường GF(2^8) bằng cách nhân 2 đa thức trong modul bất khả quy m(x).Trong AES $m(x) = x^8 + x^4 + x^3 + x + 1$
+  + Phép xtime: (là phép nhân với x) đọc k hiểu j cả hic
+
+e. Độ an toàn
+  + tính chất phức tạp của biểu thức s-box trên $GF(2^8)$ cùng với hiệu ứng khuếch tán giúp cho thuật toán không bị phân tích bằng phương pháp nội suy
+  + Rcon khác nhau hạn chế tính đối xứng
+  + Tính chất phi tuyến tính
+  + Các cấu trúc hóa giải mã khác nhau hạn chế được khóa yếu
+  + Tuy nhiên AES vẫn còn 
