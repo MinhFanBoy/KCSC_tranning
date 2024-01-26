@@ -297,3 +297,21 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
   - đơn giản về mặt cấu trúc
   - các biến đếm phải có yêu cầu không được lặp lại để tránh khóa yếu
 
+## III. Attack
+
+1. Man in the middle.
+
+Man in the middle (MITM) hay còn được gọi là tấn công trung gian được hellman và mackey chỉ ra năm 1977.
+Nó là một kiểu tấn công mạng nhằm chặ toàn bộ thông tin của hai bên và mạo danh để có thể làm chủ nhiều thông tin nhạy cảm theo ý của kẻ tấn công. AES, DES và nhiều mã hóa khác được coi là không an toàn trước kiểu tấn công này. Để bảo vệ trước cuộc tấn công này ta cần phải mã hóa thông tin và ký trước khi gửi đồng thời có thể dùng nhiều giao thức bảo mật khác nhằn tăng tính an toàn.
+
+Trên thực tế mã hóa 2DES không thật sự làm tằng số key khóa lên $2 ^ 112$ . Ứng dụng phân tích mật mã (1996), được xuất bản trên Tạp chí Mật mã học, 1999. Họ tuyên bố rằng 2DES cung cấp "chỉ nhiều hơn 17 bit bảo mật" so với DES (con số đó vẫn có thể cao hơn một trăm nghìn lần). Nó vẫn còn rất lớn nên nếu tấn công bằng MITM thì ta sẽ giảm thời tấn công xuống $2 ^ 57$ tức chỉ gấp đôi so với DES.
+
+Giả sử bạn là nhà giải mã có quyền truy cập vào văn bản thuần túy và văn bản được mã hóa. Mục đích của bạn là khôi phục khóa bí mật. Giả sử AAA (bản rõ) -> XXX (Sau lần mã hóa đầu tiên) -> ZZZ (sau lần mã hóa thứ 2).
+
+Bắt đầu với AAA và thử tất cả $2 ^ 56$ cách kết hợp khóa bí mật bằng cách mã hóa AAA. Điều này sẽ cung cấp cho bạn một danh sách lớn các giá trị có thể có cho XXX. Tiếp theo, bạn lấy ZZZ và thử tất cả 256 tổ hợp khóa bí mật bằng cách giải mã ZZZ. Điều này sẽ cung cấp cho bạn một danh sách lớn các giá trị có thể có cho XXX.
+Bây giờ hãy thực hiện tra cứu đơn giản giữa hai danh sách để tìm giá trị phù hợp. Ngay khi bạn thấy giá trị XXX phù hợp trong cả hai danh sách, bạn đã tìm ra khóa bí mật. Vì vậy, điều này có nghĩa là với nỗ lực $2 ^ 57$ khóa, bạn đã phá vỡ được mã hóa. EZ attack 😲
+
+2. Padding Oracle
+
+   
+   
