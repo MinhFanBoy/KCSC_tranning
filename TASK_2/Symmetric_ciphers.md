@@ -1094,7 +1094,7 @@ def encrypt_flag():
 ```
 ---
 
-Ta có thể dễ dàng thấy key nằm trong web ở trong file nên ta cần tả hết các key có thể rồi brute trùng key là ra flag.
+Ta có thể dễ dàng thấy key nằm trong web ở trong file nên ta cần các key có thể rồi brute từng key là ra flag.
 
 ```py
 
@@ -1128,5 +1128,84 @@ for keyword in words:
         break
     
 
+
+```
+> crypto{k3y5__r__n07__p455w0rdz?}
+
+### 10. ECB CBC WTF
+
+---
+
+**_TASK:_**
+
+Here you can encrypt in CBC but only decrypt in ECB. That shouldn't be a weakness because they're different modes... right?
+
+Play at https://aes.cryptohack.org/ecbcbcwtf
+
+**_FILE:_**
+```py
+from Crypto.Cipher import AES
+
+
+KEY = ?
+FLAG = ?
+
+
+@chal.route('/ecbcbcwtf/decrypt/<ciphertext>/')
+def decrypt(ciphertext):
+    ciphertext = bytes.fromhex(ciphertext)
+
+    cipher = AES.new(KEY, AES.MODE_ECB)
+    try:
+        decrypted = cipher.decrypt(ciphertext)
+    except ValueError as e:
+        return {"error": str(e)}
+
+    return {"plaintext": decrypted.hex()}
+
+
+@chal.route('/ecbcbcwtf/encrypt_flag/')
+def encrypt_flag():
+    iv = os.urandom(16)
+
+    cipher = AES.new(KEY, AES.MODE_CBC, iv)
+    encrypted = cipher.encrypt(FLAG.encode())
+    ciphertext = iv.hex() + encrypted.hex()
+
+    return {"ciphertext": ciphertext}
+```
+---
+
+Mã hóa bằng CBC và giải mã bằng CBC, trước khi mã hóa nó dc xor với ciphertext trước nó(khối đầu tiên xor với cv), giải mã của ciphertext ta nhận được thì sẽ có các khối như sau:
+
+ciphertext = enc_block_1 +  enc_block_2 + enc_block_3 + enc_block_4 + ...
+plaintext = iv $\oplus$ flag_1 +  enc_block_1 $\oplus$ flag_2 ...
+
+từ đó ta dễ thấy nếu lấy ciphertext[:16] $\plus$ plaintext[16:32] thì sẽ có flag, cứ tiếp tục cho tới khi có đủ flag.
+
+```py
+
+from pwn import xor
+from requests import *
+from Crypto.Util.number import *
+
+def decrypt(flag: str):
+    flag_hex = flag
+    s = "https://aes.cryptohack.org/ecbcbcwtf/" + "decrypt/" + flag_hex
+    tmp = get(s).json()
+    return tmp["plaintext"]
+
+def encrypt():
+    url = "https://aes.cryptohack.org/ecbcbcwtf/encrypt_flag/"
+    tmp = get(url).json()
+    return int("0x" + tmp["ciphertext"], 16)
+
+def main():
+    enc_flag = long_to_bytes(encrypt())
+    flag = long_to_bytes(int(decrypt(hex(bytes_to_long(enc_flag))[2:]), 16))
+    print(xor(enc_flag[:16], flag[16 : 32]).decode() + xor(enc_flag[16:32], flag[32:]).decode())
+
+if __name__ == "__main__":
+    main()
 
 ```
