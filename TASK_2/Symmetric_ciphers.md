@@ -318,14 +318,15 @@ Bây giờ hãy thực hiện tra cứu đơn giản giữa hai danh sách để
 Việc triển khai tiêu chuẩn của giải mã CBC trong mật mã khối là giải mã tất cả các khối bản mã, xác thực phần đệm, xóa phần đệm PKCS7 và trả về văn bản thuần túy của tin nhắn. Nếu máy chủ trả về lỗi “đệm không hợp lệ” thay vì lỗi chung “giải mã không thành công”, kẻ tấn công có thể sử dụng máy chủ như một oracle đệm để giải mã (và đôi khi mã hóa) message.
 
 <picture>
-  <img src="https://i.imgur.com/BW82maM.png">
-<\picture>
+   <img src="https://i.imgur.com/BW82maM.png">
+</picture>
 
 ## IV. Write up
 
 ### Keyed Permutations
 
 ---
+
 **_TASK:_**
 
 What is the mathematical term for a one-to-one correspondence?
