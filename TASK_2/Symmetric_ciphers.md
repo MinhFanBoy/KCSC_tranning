@@ -221,3 +221,10 @@ Phát triển bởi	RSA Security, 1 March 1998
 PKCS#7 là một chuẩn cú pháp cho việc lưu trữ dữ liệu được ký và/hoặc mã hóa. Nó là một trong các chuẩn thuộc họ chuẩn mã hóa khóa công khai (PKCS) được tạo ra bởi RSA Laboratories. Chuẩn này được sử dụng rộng rãi trong các ứng dụng bảo mật thông tin, ví dụ như để lưu trữ chứng chỉ và danh sách thu hồi chứng chỉ (CRL). Phiên bản mới nhất của chuẩn PKCS#7 là 1.5 và có thể được tìm thấy trong RFC 2315. Chuẩn này cho phép đệ quy, thuộc tính, và các loại nội dung khác nhau, chẳng hạn như dữ liệu, dữ liệu đã ký, dữ liệu đã gửi và dữ liệu đã ký và gửi. Nó cũng cho phép lưu trữ chứng chỉ và/hoặc danh sách thu hồi chứng chỉ (CRL)
 
 PKCS#7 được lưu trữ dưới dạng DER hoặc PEM. Dạng PEM cũng giống như DER nhưng được mã hóa Base64 và có đặt ‑‑‑‑‑BEGIN PKCS7‑‑‑‑‑, ‑‑‑‑‑END PKCS7‑‑‑‑‑ để phân biệt.
+
+### 5. PKCS#7 Padding
+
+PKCS#7 Padding là một chuẩn cú pháp được sử dụng trong các thuật toán mã hóa khối như DES và AES để đảm bảo rằng dữ liệu được mã hóa có độ dài bằng bội số của kích thước khối. Nó được định nghĩa trong RFC 5652 và được sử dụng rộng rãi trong các ứng dụng bảo mật thông tin. Khi dữ liệu cần được mã hóa không phải là bội số của kích thước khối, PKCS#7 Padding sẽ thêm vào các byte padding để đảm bảo rằng dữ liệu có độ dài bằng bội số của kích thước khối. Các byte padding này có giá trị bằng số lượng byte padding được thêm vào. Ví dụ, nếu cần thêm 6 byte padding, mỗi byte đó sẽ có giá trị là 0x06 . Tuy nhiên, nếu độ dài của dữ liệu cần được mã hóa đã là bội số của kích thước khối, PKCS#7 Padding vẫn sẽ thêm vào các byte padding để tránh nhầm lẫn.
+
+Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ buộc phải nhập đủ 4 bytes vào thì nó mới có thể được mã hóa. Trong trường hợp không đủ 4 bytes thì ta có thể dùng PKCS#7 để padding nó như sau: input : \x11\x11\x11, thì sau khi padding ta sẽ có output: \x11\x11\x11\x01. Tương tự với các trường hợp khác.(Nếu input không có gì thì nó sẽ trả về bội số của 4 bytes để tránh nhầm lẫn)
+
