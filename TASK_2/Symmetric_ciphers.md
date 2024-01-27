@@ -4,6 +4,7 @@ Tables of contens
   * [1. Mật mã đối xứng là gì](#1-mật-mã-đối-xứng-là-gì-)
   * [2. Một vài thông tin phụ](#2-một-vài-thông-tin-bổ-sung)
 * [II. Mã khóa](#ii-các-loại-mã-khóa)
+* [III]
 
 ## I. Tổng quan về mã khóa đối xứng
 
@@ -1420,3 +1421,177 @@ if __name__ == "__main__":
 ```
 
 > crypto{4u7h3n71c4710n_15_3553n714l}
+
+### 13. 
+
+---
+
+**_TASK:_**
+
+I'm just a lazy dev and want my CBC encryption to work. What's all this talk about initialisations vectors? Doesn't sound important.
+
+Play at https://aes.cryptohack.org/lazy_cbc
+
+**_FILE:_**
+
+```py
+
+from Crypto.Cipher import AES
+
+
+KEY = ?
+FLAG = ?
+
+
+@chal.route('/lazy_cbc/encrypt/<plaintext>/')
+def encrypt(plaintext):
+    plaintext = bytes.fromhex(plaintext)
+    if len(plaintext) % 16 != 0:
+        return {"error": "Data length must be multiple of 16"}
+
+    cipher = AES.new(KEY, AES.MODE_CBC, KEY)
+    encrypted = cipher.encrypt(plaintext)
+
+    return {"ciphertext": encrypted.hex()}
+
+
+@chal.route('/lazy_cbc/get_flag/<key>/')
+def get_flag(key):
+    key = bytes.fromhex(key)
+
+    if key == KEY:
+        return {"plaintext": FLAG.encode().hex()}
+    else:
+        return {"error": "invalid key"}
+
+
+@chal.route('/lazy_cbc/receive/<ciphertext>/')
+def receive(ciphertext):
+    ciphertext = bytes.fromhex(ciphertext)
+    if len(ciphertext) % 16 != 0:
+        return {"error": "Data length must be multiple of 16"}
+
+    cipher = AES.new(KEY, AES.MODE_CBC, KEY)
+    decrypted = cipher.decrypt(ciphertext)
+
+    try:
+        decrypted.decode() # ensure plaintext is valid ascii
+    except UnicodeDecodeError:
+        return {"error": "Invalid plaintext: " + decrypted.hex()}
+
+    return {"success": "Your message has been received"}
+```
+
+---
+
+Bài ta dễ thấy, thay vì tạo IV mới thì nó dùng luôn KEY để thay IV. Mà ta có:
+
+Nếu ta gửi đi 2 blck1, block2 giống nhau.
+
+plintext = "aaaaaaaaaaaaaaaa" + "aaaaaaaaaaaaaaaa"
+
+cipher text = enc(Key $\oplus$ "aaaaaaaaaaaaaaaa") + enc(enc(Key $\oplus$ "aaaaaaaaaaaaaaaa") $\oplus$ "aaaaaaaaaaaaaaaa")
+
+từ đó nếu ta đi mã hóa phần enc(enc(Key $\oplus$ "aaaaaaaaaaaaaaaa") $\oplus$ "aaaaaaaaaaaaaaaa") ta sẽ có:
+
+text = enc(Key $\oplus$ "aaaaaaaaaaaaaaaa") $\oplus$ "aaaaaaaaaaaaaaaa" $\oplus$ KEY (bởi vì ở đây IV = KEY mình đã nói rõ ở đầu)
+
+Mà ở đây ta đã có tất cả thiếu mỗi KEY nên ta có thể tính KEY = text $\oplus$ enc(Key $\oplus$ "aaaaaaaaaaaaaaaa") $\oplus$ "aaaaaaaaaaaaaaaa" 
+
+```py
+
+from pwn import xor
+from requests import *
+from Crypto.Util.number import *
+
+def decrypt(cookie):
+    s = "https://aes.cryptohack.org//lazy_cbc/receive/" + cookie + "/"
+    tmp = get(s).json()["error"].split(": ")[-1]
+    return tmp
+
+def encrypt(text):
+    url = "https://aes.cryptohack.org//lazy_cbc/encrypt/" + text + "/"
+    tmp = get(url).json()["ciphertext"]
+    tmp = tmp
+    return tmp
+
+def flag(key):
+    url = "https://aes.cryptohack.org/lazy_cbc/get_flag/" + key + "/"
+    tmp = get(url).json()["plaintext"]
+    return tmp
+
+def main():
+    enc = bytes.fromhex(encrypt((b"a"*32).hex()))
+    dec = decrypt((enc[16:]).hex())
+    print(long_to_bytes(int(flag(xor(b"a"*16, bytes.fromhex(dec), enc[:16]).hex()), 16)))
+
+if __name__ == "__main__":
+    main()
+```
+
+### 14. Triple DES
+
+---
+
+**_TASK:_**
+
+Data Encryption Standard was the forerunner to AES, and is still widely used in some slow-moving areas like the Payment Card Industry. This challenge demonstrates a strange weakness of DES which a secure block cipher should not have.
+
+Play at https://aes.cryptohack.org/triple_des
+
+Challenge contributed by randomdude999
+
+**_FILE:_**
+```pypy
+from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad
+
+
+IV = os.urandom(8)
+FLAG = ?
+
+
+def xor(a, b):
+    # xor 2 bytestrings, repeating the 2nd one if necessary
+    return bytes(x ^ y for x,y in zip(a, b * (1 + len(a) // len(b))))
+
+
+
+@chal.route('/triple_des/encrypt/<key>/<plaintext>/')
+def encrypt(key, plaintext):
+    try:
+        key = bytes.fromhex(key)
+        plaintext = bytes.fromhex(plaintext)
+        plaintext = xor(plaintext, IV)
+
+        cipher = DES3.new(key, DES3.MODE_ECB)
+        ciphertext = cipher.encrypt(plaintext)
+        ciphertext = xor(ciphertext, IV)
+
+        return {"ciphertext": ciphertext.hex()}
+
+    except ValueError as e:
+        return {"error": str(e)}
+
+
+@chal.route('/triple_des/encrypt_flag/<key>/')
+def encrypt_flag(key):
+    return encrypt(key, pad(FLAG.encode(), 8).hex())
+
+```
+---
+
+Đọc đề ta thấy để encrypt flag ta có thể tự chon khóa và mã hóa các thồn tin khác bằng khóa của 
+
+Bài này mình sẽ sử dụng đến một cái khá hay trong  khóa yếu(cũng có ca khóa bán yếu nữa nhưng k quan trọng lắm). Nghĩa là nếu một plaintext dc mã hóa bằng khóa yếu thì ta có thể mã hóa tiếp một lần nữa để có được plaintext ban đầu.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/dd29e9d9-aa94-4ba7-884b-38c2ee3bcacc)
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/4d8dcaca-dbc8-41f6-b8a7-3a5be533fb42)
+
+Solution:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/94786f53-594b-425f-9923-5c4bc1823ff8)
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/1b5ccd9e-7cae-4f5d-a07a-1521af669058)
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/b2ec3aa3-71b3-4b0b-98d6-3f1c61184091)
+
+> crypto{n0t_4ll_k3ys_4r3_g00d_k3ys}
