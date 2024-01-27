@@ -319,6 +319,11 @@ Bây giờ hãy thực hiện tra cứu đơn giản giữa hai danh sách để
 **Padding Oracle** là một loại tấn công mật mã khai thác xác thực phần đệm của thông điệp mật mã để giải mã văn bản mã hóa. Cuộc tấn công này chủ yếu liên quan đến **chế độ CBC** hoạt động được sử dụng trong mật mã khối. Trong đó “oracle” (thường là máy chủ) rò rỉ dữ liệu về việc liệu phần đệm của tin nhắn được mã hóa có chính xác hay không. Dữ liệu như vậy có thể cho phép những kẻ tấn công giải mã (và đôi khi mã hóa) tin nhắn thông qua oracle bằng cách sử dụng khóa của oracle mà không cần biết khóa mã hóa.
 Việc triển khai tiêu chuẩn của giải mã CBC trong mật mã khối là giải mã tất cả các khối bản mã, xác thực phần đệm, xóa phần đệm PKCS7 và trả về văn bản thuần túy của tin nhắn. Nếu máy chủ trả về lỗi “đệm không hợp lệ” thay vì lỗi chung “giải mã không thành công”, kẻ tấn công có thể sử dụng máy chủ như một oracle đệm để giải mã (và đôi khi mã hóa) message.
 
+Ta có:
++ $P_i = D(c_i) \oplus i_{i-1}, c_{-1} = IV$
+
+Từ đó ta thấy mỗi một bytes thay đổi trên $C_{i-1}$ sẽ khiến $C_i$ thay đổi một bytes tuong ứng. Giả sử muốn tấn công vào hai block $C_1, C_2$ với $C_2$ là block dc padding theo PKCS#7. Thay đổi $C_1$ thành $C_1 ^ {'}$ bằng cách brute. Bây giờ ta sẽ gửi $(IV, C_1 ^ {'}, C_2)$ tới sever. Thường thì sever sẽ trả lại lỗi  "decryption failed" nhưng sẽ có những trường hợp sever trả về là thỏa mã PKCS#7 padding. Từ đó ta hoàn toàn có thể kết luận bytes cuối $D(C_2) \oplus C_1 ^ {'} = \0x01$. Tương tự như thế ta có thể hoàn toàn tìm được các bytes còn lại tronng bolck.
+
 <picture>
    <img src="https://i.imgur.com/BW82maM.png">
 </picture>
