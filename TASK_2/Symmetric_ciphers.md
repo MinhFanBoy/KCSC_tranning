@@ -4,7 +4,8 @@ Tables of contens
   * [1. Mật mã đối xứng là gì](#1-mật-mã-đối-xứng-là-gì-)
   * [2. Một vài thông tin phụ](#2-một-vài-thông-tin-bổ-sung)
 * [II. Mã khóa](#ii-các-loại-mã-khóa)
-* [III]
+* [III. Attack](#iii-attack)
+* [IV. Write up](#iv-write-up)
 
 ## I. Tổng quan về mã khóa đối xứng
 
