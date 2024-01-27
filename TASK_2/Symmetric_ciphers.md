@@ -814,7 +814,7 @@ Mình tổng hợp lại các hàm ở bài trước rồi dựa vào thuật to
 
 Từ đó ta có các bước để decrypt như sau:
 + B1: tạo bảng khóa mở rộng
-+ B2: thực hiện hàm ADD ROUND KEY, riêng hàm hàm này ta k cần viết lại vì tính chất của phép xor
++ B2: thực hiện hàm ADD ROUND KEY, riêng hàm này ta k cần viết lại vì tính chất của phép xor
 + B3: Thực hiện inv_shift, inv_sub, add_key, inv_mix 9 lần
 + B4: Thực hiện nốt 3 vòng inv_shift, inv_sub, add_key là ta sẽ có dc plaintext.
 
