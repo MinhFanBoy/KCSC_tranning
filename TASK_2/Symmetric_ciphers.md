@@ -322,7 +322,7 @@ Việc triển khai tiêu chuẩn của giải mã CBC trong mật mã khối l�
 Ta có:
 + $P_i = D(c_i) \oplus i_{i-1}, c_{-1} = IV$
 
-Từ đó ta thấy mỗi một bytes thay đổi trên $C_{i-1}$ sẽ khiến $C_i$ thay đổi một bytes tuong ứng. Giả sử muốn tấn công vào hai block $C_1, C_2$ với $C_2$ là block dc padding theo PKCS#7. Thay đổi $C_1$ thành $C_1 ^ {'}$ bằng cách brute. Bây giờ ta sẽ gửi $(IV, C_1 ^ {'}, C_2)$ tới sever. Thường thì sever sẽ trả lại lỗi  "decryption failed" nhưng sẽ có những trường hợp sever trả về là thỏa mã PKCS#7 padding. Từ đó ta hoàn toàn có thể kết luận bytes cuối $D(C_2) \oplus C_1 ^ {'} = \0x01$. Tương tự như thế ta có thể hoàn toàn tìm được các bytes còn lại tronng bolck.
+Từ đó ta thấy mỗi một bytes thay đổi trên $C_{i-1}$ sẽ khiến $C_i$ thay đổi một bytes tuong ứng. Giả sử muốn tấn công vào hai block $C_1, C_2$ với $C_2$ là block dc padding theo PKCS#7. Thay đổi $C_1$ thành $C_1 ^ {'}$ bằng cách brute. Bây giờ ta sẽ gửi $(IV, C_1 ^ {'}, C_2)$ tới sever. Thường thì sever sẽ trả lại lỗi  "decryption failed" nhưng sẽ có những trường hợp sever trả về là thỏa mã PKCS#7 padding. Từ đó ta hoàn toàn có thể kết luận bytes cuối $D(C_2) \oplus C_1 ^ {'} = \0x01$. Tương tự như thế ta có thể hoàn toàn tìm được các bytes còn lại trong bolck.
 
 <picture>
    <img src="https://i.imgur.com/BW82maM.png">
@@ -1428,7 +1428,7 @@ if __name__ == "__main__":
 
 > crypto{4u7h3n71c4710n_15_3553n714l}
 
-### 13. 
+### 13. LAZY
 
 ---
 
