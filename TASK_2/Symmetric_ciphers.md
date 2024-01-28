@@ -15,7 +15,7 @@ Mật mã khóa đối xứng là một loại sơ đồ mã hóa trong đó m�
 
 ### 2. Một vài thông tin bổ sung
 
-- Một trong những mã khóa đối xứng phổ biến nhẩt đến hiện tại là AES được công bố năm 2001. Hiên tại nó phổ biến tới mưc một số phần mêm máy tính có phần tệp lệnh riêng để thực hiên AES. !) nó là một mã khóa hay có trong CTF nên cần tập trung vào nó.
+- Một trong những mã khóa đối xứng phổ biến nhẩt đến hiện tại là AES được công bố năm 2001. Hiên tại nó phổ biến tới mưc một số phần mêm máy tính có phần tệp lệnh riêng để thực hiên AES!) nó là một mã khóa hay có trong CTF nên cần tập trung vào nó.
 - Về cơ bản mã khóa đối xứng được chia làm hai loại cơ bản là Mã khóa khối (block cipher) và Mã khóa dòng (stream cipher)
   - Mã khóa khối là mã khóa mã khóa chia các đoạn bản rõ thành các phần bằng nhau rồi mã khóa lần lượt từng phần (AES, DES, ...) với cùng một key.
   - Mã khóa dòng là mã khóa mà khi mã khóa nó chỉ mã khóa từng bytes hoặc nhiều bytes bằng cách xor nó với một loạt các khóa giả (cũng là AES, DES, ...)
@@ -43,7 +43,7 @@ Phần tạo khóa:
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/9c503081-35cf-4c3d-be0f-4706976b7ec4)
 
   
-+ Dịch trái: ở các vòng(1, 2, 9, 16) thì ta dich trái 1 bit, các vòng còn lại dịch trái 2 bit.
++ Dịch trái: ở các vòng(1, 2, 9, 16) thì ta dịdịch trái 1 bit, các vòng còn lại dịch trái 2 bit.
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/63cd27a9-8bad-4ac0-b9b2-aab70b453c7b)
 
@@ -96,7 +96,7 @@ Lấy phần $L _ {i}, R _ {i}$ tiếp tục thực hàm như trên.
 
 > Sau 16 vòng
 
-Tiếp tục làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có dc ciphertext.
+Tiếp tục làm như vậy trong 16 vòng. Rồi cho qua hoán vi IP(-1) thì ta sẽ có được ciphertext.
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/60b91532-f0b8-4f12-95b5-27fa87306ef0)
 
@@ -108,7 +108,7 @@ Vậy ta có:
 c. Thông tin thêm
 
 + DES có hiệu ứng tuyết lở mạnh:
-  + với mỗi một bit plaintext bị thay đổi có thể thay đổi ít nhất 34 bit ở ciphertext
+  + VVới mỗi một bit plaintext bị thay đổi có thể thay đổi ít nhất 34 bit ở ciphertext
   + Mỗi một bit ở Key bị thay đổi khiến ciphertext thay đổi ít nhất 35 bit
 + Với khóa thật sự được dùng trong DES là 56( Thay vì 64 như đầu vào) thì để bruteforce tất cả key (giả sử mỗi lần giải mã mất một giây) thì ta tốn hơn 1000 năm để hoàn thành
 + Hiện tại DES được xem là không an toàn nữa.
@@ -146,7 +146,7 @@ a. Tổng quan
 </picture>
 
 + Với plaintext = 128 bit, key = 128 bit, 192 bit, or 256 bit.
-+ Trong khi mã hóa có các khóa mở rộng được sinh ra từ chu trình Rijndeal. Hầu hết các phép toán trong AES đều được thực hiện trên trường hữu hạn của các bytes. Mỗi khối 128 bit dc chia thành 4 cột với mỗi cột 16 bytes xếp thành một ma trận 4x4, còn dược gọi là ma trận trạng thái. Tùy thuộc vào độ dài của khóa mà ta có số lần lặp trong một vòng khác nhau.
++ Trong khi mã hóa có các khóa mở rộng được sinh ra từ chu trình Rijndeal. Hầu hết các phép toán trong AES đều được thực hiện trên trường hữu hạn của các bytes. Mỗi khối 128 bit đượcđược chia thành 4 cột với mỗi cột 16 bytes xếp thành một ma trận 4x4, còn dược gọi là ma trận trạng thái. Tùy thuộc vào độ dài của khóa mà ta có số lần lặp trong một vòng khác nhau.
 + Gồm hai bước chính là Bước sinh khóa(key generated) và mã hóa(encrypt).
 
 b. Chi tiết
@@ -175,7 +175,7 @@ b. Chi tiết
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7ee52c17-7d56-4723-8db2-0a6c070bd4bf)
 
  
-+ Hàm AddRoundKeys: Hàm này sẽ lấy giá trị của từng phần tử của trạng thái hiện tại(plaintext đang được mã hóa) với từng phần tử tại vị trí tương ứng của key
++ Hàm AddRoundKeys: Hàm này sẽ lấy giá trị của từng phần tử của trạng thái hiện tại(plaintext đang được mã hóa) xor với từng phần tử tại vị trí tương ứng của key
   
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/411b7cc5-4ac4-44f7-942c-b65835dcaf39)
 
@@ -185,7 +185,8 @@ b. Chi tiết
    <img src="https://lilthawg29.files.wordpress.com/2021/09/image-238.png?w=1024" width="70%" heigth="70%">
 </picture>
 
-+ SubBytes - mỗi bytes của state được thay thế bằng 1 bytes khác trên S-box
++ SubBytes
+  - Mỗi bytes của state được thay thế bằng 1 bytes khác trên S-box
   - Là quá trình thay thế phi tuyến tính trong đó mỗi bytes được thay thế bằng một bytes khác trong bảng tra
   - S-box là bẳng 16 x 16 chứa hoán vị của 256 ký tự
   - Mỗi bytes trạng thái được thay thế bởi 4 bit trái và cột xác định bởi 4 bit phải, VD: 6D sẽ được thay thế bởi S-box[6][D]
@@ -199,7 +200,7 @@ c. Quá trình tạo khóa mở rộng
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/35e4d27e-75fd-48f8-9007-36a84d1fbdc2)
 
-+ các word sau được tính theo công thức như sau:
++ CCác word sau được tính theo công thức như sau:
   + $word_i = word_{i - 1} \oplus word_{i - 4}$ với mọi $4 \le t < 44$ và i không phải là bội của 4
   + $word_i = g(word_{i - 1}) \oplus word_{i - 4}$ với i là bội của 4
 
@@ -258,7 +259,7 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 + Các block sếp thành dãy trong quá trình mã hóa, giải mã
 + Sử dụng vector IV để bắt đầu quá trình $c_i = e(p_i \text{xor} c_{i-1}), c_{-1} = IV$
 + Tính chất :
-  - các bản rõ giống nhau cũng chưa chắc cho ra bản mã giống nhau. vì nó còn phụ thuộc vào IV
+  - Các bản rõ giống nhau cũng chưa chắc cho ra bản mã giống nhau. Vì nó còn phụ thuộc vào IV
   - Sự phụ thuộc móc xích: cơ chế mã hóa làm cho bản mã $c_i$ phụ thuộc vào bản mã $c_{i-1}$ nên nếu thay đổi cách sắp xếp các bản sẽ rất khó tấn công. Việc giải mã khối này thì cũng đòi hỏi phải giải đúng khối trước nó nó
   - Tính lan sai: Khi sai một bit trong khối mã thì việc giải, mã tất cả các khối sau nó sẽ bị sai
 
@@ -268,8 +269,8 @@ Ví dụ: Một loại mã khóa cần có đầu vào là 4 bytes thì ta sẽ 
 
 
 #### 6.3. CFB
-+ Thông tin khi đi vào sẽ dc chia thành các khối
-+ CCác bản rõ dc sắp xếp nên khi giải mã cx yêu cầu thứ tự các bản mã phải đúng.
++ Thông tin khi đi vào sẽ được chia thành các khối
++ Các bản rõ dc sắp xếp nên khi giải mã cx yêu cầu thứ tự các bản mã phải đúng.
 + $c_i = p_i \oplus e(k, c_{i-1})$ với $c_{-1} = IV$
 + Tính chất:
   - Các bản rõ giống nhau: giống như CBC
@@ -312,6 +313,7 @@ Trên thực tế mã hóa 2DES không thật sự làm tằng số key khóa l�
 Giả sử bạn là nhà giải mã có quyền truy cập vào văn bản thuần túy và văn bản được mã hóa. Mục đích của bạn là khôi phục khóa bí mật. Giả sử AAA (bản rõ) -> XXX (Sau lần mã hóa đầu tiên) -> ZZZ (sau lần mã hóa thứ 2).
 
 Bắt đầu với AAA và thử tất cả $2 ^ {56}$ cách kết hợp khóa bí mật bằng cách mã hóa AAA. Điều này sẽ cung cấp cho bạn một danh sách lớn các giá trị có thể có cho XXX. Tiếp theo, bạn lấy ZZZ và thử tất cả $2 ^ {56}$ tổ hợp khóa bí mật bằng cách giải mã ZZZ. Điều này sẽ cung cấp cho bạn một danh sách lớn các giá trị có thể có cho XXX.
+
 Bây giờ hãy thực hiện tra cứu đơn giản giữa hai danh sách để tìm giá trị phù hợp. Ngay khi bạn thấy giá trị XXX phù hợp trong cả hai danh sách, bạn đã tìm ra khóa bí mật. Vì vậy, điều này có nghĩa là với nỗ lực $2 ^ 57$ khóa, bạn đã phá vỡ được mã hóa. EZ attack 😲
 
 ### 2. Padding Oracle
