@@ -1603,3 +1603,81 @@ Solution:
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/b2ec3aa3-71b3-4b0b-98d6-3f1c61184091)
 
 > crypto{n0t_4ll_k3ys_4r3_g00d_k3ys}
+
+15. Symmetry
+
+---
+
+**_TASK:_**
+
+I've struggled to get PyCrypto's counter mode doing what I want, so I've turned ECB mode into CTR myself. My counter can go both upwards and downwards to throw off cryptanalysts! There's no chance they'll be able to read my picture.
+
+Play at https://aes.cryptohack.org/bean_counter
+
+**_FILE:_**
+
+```py
+from Crypto.Cipher import AES
+
+
+KEY = ?
+FLAG = ?
+
+
+@chal.route('/symmetry/encrypt/<plaintext>/<iv>/')
+def encrypt(plaintext, iv):
+    plaintext = bytes.fromhex(plaintext)
+    iv = bytes.fromhex(iv)
+    if len(iv) != 16:
+        return {"error": "IV length must be 16"}
+
+    cipher = AES.new(KEY, AES.MODE_OFB, iv)
+    encrypted = cipher.encrypt(plaintext)
+    ciphertext = encrypted.hex()
+
+    return {"ciphertext": ciphertext}
+
+
+@chal.route('/symmetry/encrypt_flag/')
+def encrypt_flag():
+    iv = os.urandom(16)
+
+    cipher = AES.new(KEY, AES.MODE_OFB, iv)
+    encrypted = cipher.encrypt(FLAG.encode())
+    ciphertext = iv.hex() + encrypted.hex()
+
+    return {"ciphertext": ciphertext}
+```
+
+---
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/99378454-7807-447a-afd9-a4bee8ea3bba)
+
+
+Ta có : enc_flag = flag $\oplus$ enc(iv, key) :L mà ta dễ thấy iv, enc đã có(đề bài có) và enc(iv, key) thì ta rất dễ có nên ta giải như sau:
+gửi lại cho sever một plaintext' = enc_flag = flag $\oplus$ enc(iv, key)
+
+Từ đó enc_plaintext = enc_flag $\oplus$ enc(iv, key) = flag $\oplus$ enc(iv, key) $\oplus$ enc(iv, key) = flag
+
+```py
+
+from Crypto.Cipher import AES
+from Crypto.Util.number import *
+from requests import *
+
+def get_enc_flag():
+    url = "https://aes.cryptohack.org/symmetry/encrypt_flag/"
+
+    r = bytes.fromhex(get(url).json()["ciphertext"])
+    return r[:16], r[16:]
+
+def encrypt(plaintext: str, iv: str) -> str:
+    url = f"https://aes.cryptohack.org/symmetry/encrypt/{plaintext}/{iv}/"
+    r = bytes.fromhex(get(url).json()["ciphertext"])
+    return r
+
+iv, enc = get_enc_flag()
+print(encrypt(enc.hex(), iv.hex()))
+```
+
+> crypto{0fb_15_5ymm37r1c4l_!!!11!}
