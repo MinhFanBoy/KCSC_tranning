@@ -1681,3 +1681,106 @@ print(encrypt(enc.hex(), iv.hex()))
 ```
 
 > crypto{0fb_15_5ymm37r1c4l_!!!11!}
+
+### 16. Bean Counter
+
+---
+**_TASK:_**
+
+I've struggled to get PyCrypto's counter mode doing what I want, so I've turned ECB mode into CTR myself. My counter can go both upwards and downwards to throw off cryptanalysts! There's no chance they'll be able to read my picture.
+
+Play at https://aes.cryptohack.org/bean_counter
+
+**_FILE:_**
+
+```py
+from Crypto.Cipher import AES
+
+
+KEY = ?
+
+
+class StepUpCounter(object):
+    def __init__(self, step_up=False):
+        self.value = os.urandom(16).hex()
+        self.step = 1
+        self.stup = step_up
+
+    def increment(self):
+        if self.stup:
+            self.newIV = hex(int(self.value, 16) + self.step)
+        else:
+            self.newIV = hex(int(self.value, 16) - self.stup)
+        self.value = self.newIV[2:len(self.newIV)]
+        return bytes.fromhex(self.value.zfill(32))
+
+    def __repr__(self):
+        self.increment()
+        return self.value
+
+
+
+@chal.route('/bean_counter/encrypt/')
+def encrypt():
+    cipher = AES.new(KEY, AES.MODE_ECB)
+    ctr = StepUpCounter()
+
+    out = []
+    with open("challenge_files/bean_flag.png", 'rb') as f:
+        block = f.read(16)
+        while block:
+            keystream = cipher.encrypt(ctr.increment())
+            xored = [a^b for a, b in zip(block, keystream)]
+            out.append(bytes(xored).hex())
+            block = f.read(16)
+
+    return {"encrypted": ''.join(out)}
+```
+
+---
+
+Đọc hàm sau ta dễ thấy:
+
+```py
+        if self.stup:
+            self.newIV = hex(int(self.value, 16) + self.step)
+        else:
+            self.newIV = hex(int(self.value, 16) - self.stup)
+        self.value = self.newIV[2:len(self.newIV)]
+```
+
+Mà stup = False = 0 nên từ đó các IV luôn giống nhau dẫn tới các khối được xor với từng block của flag cũng luôn giống nhau. Từ đó:
+
+enc_block_1 = block_flag_1 xor enc(IV, KEY)
+enc_block_2 = block_flag_2 xor enc(IV, KEY)
+...
+enc_block_n = block_flag_n xor enc(IV, KEY)
+
+Mà trong file png 16 bytes đầu của file luôn cố định
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/82a4726e-8185-4dc8-af47-0103a55d3767)
+
+Từ đó ta có thể dễ dàng tìm ra key và mã hóa lại png.
+
+```py
+
+
+from requests import *
+from pwn import xor
+
+
+
+def encrypt() -> str:
+    url = f"https://aes.cryptohack.org/bean_counter/encrypt/"
+    r = bytes.fromhex(get(url).json()["encrypted"])
+    return r
+
+
+image = encrypt()
+key = xor(bytes.fromhex("89504E470D0A1A0A0000000D49484452"), image[:16])
+
+image = xor(image,key)
+print(image)
+open("flag.png", "wb").write(image)
+```
+> crypto{hex_bytes_}
