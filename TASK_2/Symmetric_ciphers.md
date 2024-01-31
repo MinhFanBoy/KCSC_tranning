@@ -1751,10 +1751,13 @@ def encrypt():
 
 Mà stup = False = 0 nên từ đó các IV luôn giống nhau dẫn tới các khối được xor với từng block của flag cũng luôn giống nhau. Từ đó:
 
-enc_block_1 = block_flag_1 xor enc(IV, KEY)
-enc_block_2 = block_flag_2 xor enc(IV, KEY)
+enc_block_1 = block_flag_1 $\oplus$ enc(IV, KEY)
+
+enc_block_2 = block_flag_2 $\oplus$ enc(IV, KEY)
+
 ...
-enc_block_n = block_flag_n xor enc(IV, KEY)
+
+enc_block_n = block_flag_n $\oplus$ enc(IV, KEY)
 
 Mà trong file png 16 bytes đầu của file luôn cố định
 
