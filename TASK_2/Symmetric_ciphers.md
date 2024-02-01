@@ -1856,3 +1856,112 @@ while not flag.endswith(b"}"):
 ```
 
 > crypto{CRIME_571ll_p4y5}
+
+### 19. STREAM OF CONSCIOUSNESS
+
+---
+
+**_TASK:_**
+
+Talk to me and hear a sentence from my encrypted stream of consciousness.
+
+Play at https://aes.cryptohack.org/stream_consciousness
+
+**_FILE:_**
+
+```py
+
+from Crypto.Cipher import AES
+from Crypto.Util import Counter
+import random
+
+
+KEY = ?
+TEXT = ['???', '???', ..., FLAG]
+
+
+@chal.route('/stream_consciousness/encrypt/')
+def encrypt():
+    random_line = random.choice(TEXT)
+
+    cipher = AES.new(KEY, AES.MODE_CTR, counter=Counter.new(128))
+    encrypted = cipher.encrypt(random_line.encode())
+
+    return {"ciphertext": encrypted.hex()}
+
+```
+
+---
+
+Bài này mọe như c. Nói chung bài này mình cũng chỉ đơn giản là ngồi xor các ciphertext với nhau cho tới khi ra flag.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7aaea65a-ced1-4768-80e0-de13c9a62dea)
+
+Từ đó nếu:
+
+ciphertext = enc(nounce) $\oplus$ plaintext
+
+ciphertext_1 $\oplus$ ciphertext_2 = plaintext_1 $\oplus$ plaintext_2
+
+Nếu lấy ngẫu nhiên thì chắc chắc sẽ có kả năng  plaintext = flag, nên từ đó ta đoán plaintext còn lại rồi tìm flag bằng cách xor là xong.
+
+
+```py
+
+from Crypto.Util.number import *
+from pwn import *
+from requests import *
+
+def recive() -> bytes:
+    url = "https://aes.cryptohack.org/stream_consciousness/encrypt/"
+
+    return bytes.fromhex(get(url).json()["ciphertext"])
+
+t = True
+flag = b"Dress-making"
+flag = b"But I will see"
+flag = b'Perhaps he had'
+flag = b'Three boys runed'
+flag = b"No, I'll go to"
+flag = b"What a lot of"
+flag = b"No, I'll go in"
+flag = b'crypto{k3y57r3'
+flag = b'As if I had an e'
+flag = b'Our? Why our? '
+flag = b'And I shall is'
+flag = b'Love, probably'
+flag = b'But I will show'
+flag = b'I shall lose every'
+flag = b"I shall, I'll lose "
+flag = b"Would I have believe"
+flag = b"Love, probably? They are"
+flag = b'I\'m unhappy, I deserve '
+flag = b'Three boys running, pleas '
+flag = b'What a nasty smell thing '
+flag = b'I shall lose everything '
+flag = b"How proud and happy he"
+flag = b'But I will show him '
+flag = b'Would I have believed '
+flag = b'But I will show him. '
+flag = b"It can't be torn out "
+flag = b'Dolly will think that '
+flag = b'I shall lose everything '
+flag = b'Would I have believed in '
+flag = b"I shall, I'll lose everything "
+flag = b'What a lot of things that then '
+falg = b'Perhaps he has missed the train'
+flag = b'What a nasty smell this paint has '
+flag = b"I shall, I'll lose everything if "
+while t:
+    tmp = xor(recive(), recive(), flag)
+    print(tmp)
+    if b"crypto" in tmp and b"}" in tmp:
+        print("flag: ",tmp)
+        break
+
+# crypto{k3y57r34m_r3u53_15_f474l}
+
+
+```
+
+> crypto{k3y57r34m_r3u53_15_f474l}
