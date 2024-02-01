@@ -1786,4 +1786,73 @@ image = xor(image,key)
 print(image)
 open("flag.png", "wb").write(image)
 ```
-> crypto{hex_bytes_}
+> crypto{hex_bytes_beans}
+
+### 17. CTRIME
+
+---
+
+**_TASK:_**
+
+There may be a lot of redundancy in our plaintext, so why not compress it first?
+
+Play at https://aes.cryptohack.org/ctrime
+
+**_FILE:_**
+```py
+from Crypto.Cipher import AES
+from Crypto.Util import Counter
+import zlib
+
+
+KEY = ?
+FLAG = ?
+
+
+@chal.route('/ctrime/encrypt/<plaintext>/')
+def encrypt(plaintext):
+    plaintext = bytes.fromhex(plaintext)
+
+    iv = int.from_bytes(os.urandom(16), 'big')
+    cipher = AES.new(KEY, AES.MODE_CTR, counter=Counter.new(128, initial_value=iv))
+    encrypted = cipher.encrypt(zlib.compress(plaintext + FLAG.encode()))
+
+    return {"ciphertext": encrypted.hex()}
+```
+---
+
+Ở này đề sẽ mã hóa zlib.compress(plaintext + FLAG.encode()) với plaintext là cái mình gửi. Mà zlib.compress là thư viện ném, nó sẽ nén plaintext với plag lại. Nếu có hai ký tự giống nhau nó sẽ gộp lại làm một từ đó làm dò gỉ độ dài của FLAG. Nên ta thử brute tất cả cá chữ có thể nếu ciphertext ta nhận được có độ dài không đổi thì đó là ký tự đúng. (K hiểu lắm, :L)
+
+```py
+
+
+from requests import *
+from string import *
+from tqdm import *
+
+alphabet = punctuation + digits  + ascii_letters
+
+def enc(plaintext) -> bytes:
+    url = f"https://aes.cryptohack.org/ctrime/encrypt/{plaintext.hex()}/"
+    tmp = get(url).json()
+    return bytes.fromhex(tmp["ciphertext"])
+
+flag = b"crypto{"
+
+
+while not flag.endswith(b"}"):
+
+    length = len(enc(flag))
+    
+    if flag.endswith(b"M"):
+        flag += b"E"   
+    for i in alphabet:
+
+        if len(enc(flag + i.encode())) == length:
+            flag += i.encode()
+            break
+
+
+```
+
+> crypto{CRIME_571ll_p4y5}
