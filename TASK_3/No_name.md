@@ -118,3 +118,22 @@ For the finite field with p = 28151 find the smallest element g which is a primi
 This problem can be solved by brute-force, but there's also clever ways to speed up the calculation.
 
 ---
+
+
+```py
+
+p = 28151
+
+def find(x):
+    for y in range(2, p):
+        if pow(x, y, p) == x:
+            return False
+    return True
+
+for x in range(2, p):
+    if find(x):
+        print(f"Find: {x}")
+        exit()
+```
+
+C2:
