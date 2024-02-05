@@ -1,9 +1,9 @@
 
 Tables of contens
 =================
-*[I. Tổng quát](#i-Tổng-quát)
+[I. Tổng quát](#i-Tổng-quát)
 
-*[II. Write up](#ii-Writes-up)
+[II. Write up](#ii-Writes-up)
 
 
 ## I. Tổng quát
