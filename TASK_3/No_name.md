@@ -1,4 +1,10 @@
 
+Tables of contens
+=================
+*[I. Tổng quát](#i-Tổng-quát)
+*[II. Write up](#ii-Writes-up)
+
+
 ## I. Tổng quát
 
 ### 1. Group (Nhóm)
@@ -70,3 +76,6 @@ Cũng là ngoài ra, nếu ord(G) = n thì nhóm $|Z_{n}^{*}| = \phi(n)$ với $
 
 
 Ví dụ: Nhóm(R, +) ta dễ thấy $|G| = \infty$ vì số thực là vô hạn.
+
+
+## II. Writes up
