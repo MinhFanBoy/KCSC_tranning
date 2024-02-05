@@ -32,9 +32,41 @@ Cặp $(G, *)$ được gọi là một nhóm nếu thỏa mãn các tính chấ
 
 Ngoài ra, nếu nhóm có tính giao hoán ta gọi là nhóm Abel, thỏa mãn: $(ab)c = a(bc)$ $\forall a, b, c \in G$ 
 
+Ví dụ: Với nhóm (R, +), ta dễ thấy:
+
++ Tính kết hợp $\forall a, b, c \in R$ ta có: $a + b + c = a + (b + c) = (a + b) + c$
++ Có phần tử trung hòa $\forall x \in r$, $\exists 0 \in R$ sao cho: $x + 0 = x$
++ Có phần tử đối $\forall x \in R$, $\exists -x \in R$  sao cho: $x + (-x) = 0$ với 0 là phần tử trung hòa
++ Có tính giao hoán: $(a + b) + c = a + (b + c)$ $\forall a, b, c \in R$
+
+Vậy (R, +) là một nhóm Abel.
+
 #### c. Một số tính chất
 
 1. Phần tử trung hòa $e$ là duy nhất.
 2. Phần tử đối $x'$ của $x$ là duy nhất.
 3. Có quy tắc giản ước: $a ∗ x = a ∗ y \to x = y$
 4. Phương trình $x ∗ a = b$ có nghiệm duy nhất $x = b ∗ a'$
+
+Thật vậy, theo ví dụ trên (R, +) ta hoàn toàn khồn thể tìm ra một phần tử trung hòa nào khác 0. Phần tử đối cũng như vậy.
+
+Quy tắc giản ước $a + b = a + c \to a + b + (-a) = a + c + (-a)$ mà đây là nhóm giao hoán và (-a) là phần tử đối của a.
+
+Vậy $a + (-a) + b = a + (-a) + c \to 0 + b = 0 + c$
+
+Quy tắc giản ước: $x + a = b \to x + a + (-a) = b + (-a) \to x + 0 = x = b + (-a)$
+
+### 3. Cấp của nhóm
+
+Trong toán học, cấp của một nhóm hữu hạn là số phần tử của nhóm đó, nếu nhóm đó có vô số phần tử ta gọi đó là nhóm có cấp vô hạn. Cấp của một phần tử trong nhóm là cấp của nhóm phụ lớn nhất có thể sinh ra được từ phần tử đó. Nếu phép toán của nhóm đó là phép nhân, ta có thể định nghĩa cấp của một phần tử là số $m$ nhỏ nhất thỏa mãn $a ^ m = e$ với e là phần tử trung hòa, m là cấp của phần tử a, $a^m$ là tích của m lần a. Nếu không tồn tại m thỏa mãn ta nói cấp của phần tử a là vô hạn.
+
+Ký hiệu: 
++ Cấp của nhóm G: ord(G) hay |G|
++ Cấp của phần tử a: ord(a) hay |a|
+
+Ngoài ra, theo định lý Lagrange (la gờ răng :L) thì cấp của nhóm phụ hữu hạn thuộc G (nhóm G hữu hạn) thì sẽ luôn chia hết, kiểu ord(G)|ord(a). Từ đó nhóm có bậc là số nguyên tố sẽ chỉ có hai nhóm con cấp 1 và chính nó.
+
+Cũng là ngoài ra, nếu ord(G) = n thì nhóm $|Z_{n}^{*}| = \phi(n)$ với $\phi(n)$ tính theo hàm Euler.
+
+
+Ví dụ: Nhóm(R, +) ta dễ thấy $|G| = \inf$ vì số thực là vô hạn.
