@@ -1,8 +1,8 @@
 Tables of contens
 =================
 * [I. Tổng quát](#i-Tổng-quát)
-    * [1. Group](##1-Group)
-    * [2. Tính chất](##2-Tính-chất)
+   * [1. Group](##1-Group)
+   * [2. Tính chất](##2-Tính-chất)
 * [II. Write up](#ii-Writes-up)
 
 
