@@ -52,7 +52,7 @@ Thật vậy, theo ví dụ trên (R, +) ta hoàn toàn khồn thể tìm ra m�
 
 Quy tắc giản ước $a + b = a + c \to a + b + (-a) = a + c + (-a)$ mà đây là nhóm giao hoán và (-a) là phần tử đối của a.
 
-Vậy $a + (-a) + b = a + (-a) + c \to 0 + b = 0 + c$
+Vậy $a + (-a) + b = a + (-a) + c \to 0 + b = 0 + c \to b = c$
 
 Quy tắc giản ước: $x + a = b \to x + a + (-a) = b + (-a) \to x + 0 = x = b + (-a)$
 
@@ -69,4 +69,4 @@ Ngoài ra, theo định lý Lagrange (la gờ răng :L) thì cấp của nhóm p
 Cũng là ngoài ra, nếu ord(G) = n thì nhóm $|Z_{n}^{*}| = \phi(n)$ với $\phi(n)$ tính theo hàm Euler.
 
 
-Ví dụ: Nhóm(R, +) ta dễ thấy $|G| = \inf$ vì số thực là vô hạn.
+Ví dụ: Nhóm(R, +) ta dễ thấy $|G| = \infty$ vì số thực là vô hạn.
