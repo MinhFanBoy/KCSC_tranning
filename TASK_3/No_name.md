@@ -80,3 +80,41 @@ Ví dụ: Nhóm(R, +) ta dễ thấy $|G| = \infty$ vì số thực là vô hạ
 
 
 ## II. Writes up
+
+### 1. Diffie-Hellman Starter 1
+
+---
+
+**_TASK:_**
+
+The set of integers modulo n, together with the operations of both addition and multiplication is a ring. This means that adding or multiplying any two elements in the set returns another element in the set.
+
+When the modulus is prime: n = p, we are guaranteed an inverse of every element in the set, and so the ring is promoted to a field. We refer to this field as a finite field Fp.
+
+The Diffie-Hellman protocol works with elements of some finite field Fp, where the prime modulus is typically a large prime.
+
+Given the prime p = 991, and the element g = 209, find the inverse element d such that g * d mod 991 = 1.
+
+---
+
+Bài này yêu cầu ta tìm d sao cho $209 * d \equiv 1 \pmod{991}$. Nên mình chuyển vế $d \equiv 209 ^ {-1} \pmod{991}$. Từ đó dễ dàng có được đáp án.
+
+`print(pow(209, -1, 991))`
+
+> 569
+
+### 2. Diffie-Hellman Starter 2
+
+---
+
+**_TASK:_**
+
+Every element of a finite field Fp can be used to make a subgroup H under repeated action of multiplication. In other words, for an element g: H = {g, g^2, g^3, ...}
+
+A primitive element of Fp is an element whose subgroup H = Fp, i.e., every element of Fp, can be written as g^n mod p for some integer n. Because of this, primitive elements are sometimes called generators of the finite field.
+
+For the finite field with p = 28151 find the smallest element g which is a primitive element of Fp.
+
+This problem can be solved by brute-force, but there's also clever ways to speed up the calculation.
+
+---
