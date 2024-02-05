@@ -123,7 +123,7 @@ Bài này nói chung có nhiều cách làm(nhiều cách khá hay nên đọc t
 
 C1: Mình chủ yếu dựa vào tính chất của nó khi mũ tạo ra các phần tử khác nhau để tạo nên một nhóm phụ mới có p - 1 phần tử.
 
-Theo định lý Fermat nhỏ $x ^ {\phi(n)} = n \pmod{n}$ nên với mọi mũ lớn hơn phi n đều bị lặp lại nên bỏ đi để giảm thời gian tính.
+Theo định lý Fermat nhỏ $x ^ {\phi(n)} = xx \pmod{n}$ nên với mọi mũ lớn hơn phi n đều bị lặp lại nên bỏ đi để giảm thời gian tính.
 
 Từ đó nếu trong khoảng [0, phi] mà $a ^ {x} = a \pmod{n}$ khiến con sẽ bị mất đi một phần tử vì a, 1 đều có chung một giá trị (?) trong mod p nên từu đó điều kiện là phần tử sinh không được thỏa mãn.
 
@@ -204,6 +204,7 @@ Chọn hai số publickey (g, p), privatekey (a, b) trong đó mỗi bên giữ 
 Tính:
 
 $A = g ^ a \pmod{p}$
+
 $B = g ^ b \pmod{p}$
 
 sau đó gửi A, B cho đối phương.
