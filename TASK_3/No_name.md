@@ -29,3 +29,12 @@ Cặp $(G, *)$ được gọi là một nhóm nếu thỏa mãn các tính chấ
 + Tính kết hợp $\forall a, b, c \in G$ ta có: $abc = a(bc) = (ab)c$
 + Có phần tử trung hòa $\forall x \in G$, $\exists e \in G$ sao cho: $x * e = x$
 + Có phần tử đối $\forall x \in G$, $\exists x' \in G$  sao cho: $x * x' = e$ với e là phần tử trung hòa
+
+Ngoài ra, nếu nhóm có tính giao hoán ta gọi là nhóm Abel, thỏa mãn: $(ab)c = a(bc)$ $\forall a, b, c \in G$ 
+
+#### c. Một số tính chất
+
+1. Phần tử trung hòa $e$ là duy nhất.
+2. Phần tử đối $x'$ của $x$ là duy nhất.
+3. Có quy tắc giản ước: $a ∗ x = a ∗ y \to x = y$
+4. Phương trình $x ∗ a = b$ có nghiệm duy nhất $x = b ∗ a'$
