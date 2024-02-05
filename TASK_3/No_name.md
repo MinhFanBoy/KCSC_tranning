@@ -119,6 +119,14 @@ This problem can be solved by brute-force, but there's also clever ways to speed
 
 ---
 
+Bài này nói chung có nhiều cách làm(nhiều cách khá hay nên đọc thêm).
+
+C1: Mình chủ yếu dựa vào tính chất của nó khi mũ tạo ra các phần tử khác nhau để tạo nên một nhóm phụ mới có p - 1 phần tử.
+
+Theo định lý Fermat nhỏ $x ^ {\phi(n)} = n \pmod{n}$ nên với mọi mũ lớn hơn phi n đều bị lặp lại nên bỏ đi để giảm thời gian tính.
+
+Từ đó nếu trong khoảng [0, phi] mà $a ^ {x} = a \pmod{n}$ khiến con sẽ bị mất đi một phần tử vì a, 1 đều có chung một giá trị (?) trong mod p nên từu đó điều kiện là phần tử sinh không được thỏa mãn.
+
 ```py
 
 p = 28151
@@ -136,6 +144,10 @@ for x in range(2, p):
 ```
 
 C2:
+
+Cách này dựa vào định lý trong trường:
+
+Nếu p > 2 là prime, $a \in Z_{p}^{*}$ khiến $a ^ {(p - 1)/q} \neq -1 \forall q|(p - 1)$. Nói tóm lại a là phần tử sinh nếu cái lằng nhằng kia khác -1 với mọi q là số nguyên tố chia hết cho (p - 1)
 
 ```py
 
