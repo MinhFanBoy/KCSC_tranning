@@ -119,7 +119,6 @@ This problem can be solved by brute-force, but there's also clever ways to speed
 
 ---
 
-
 ```py
 
 p = 28151
@@ -137,3 +136,26 @@ for x in range(2, p):
 ```
 
 C2:
+
+```py
+
+
+from factordb.factordb import FactorDB
+
+p = 28151
+
+t = FactorDB(p - 1)
+t.connect()
+tmp = [(p - 1) // x for x in t.get_factor_list()]
+
+def find(k: int) -> bool:
+    for i in tmp:
+        if pow(k, i, p) == 1:
+            return False
+    return True
+
+for x in range(2, p):
+    if find(x):
+        print(x)
+        exit()
+```
