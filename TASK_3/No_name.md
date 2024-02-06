@@ -375,3 +375,98 @@ Use the script from "Diffie-Hellman Starter 5" to decrypt the flag once you've r
 Connect at socket.cryptohack.org 13371
 
 ---
+
+Bài này sử dụng MITM, đã được nhắc đến từ TASK2(có thể xem lại nếu quên)
+
+A malicious Malory, that has a MitM (man in the middle) position, can manipulate the communications between Alice and Bob, and break the security of the key exchange.
+
+Các bước cảu tấn công man in the middle:
+
+Step 1: Chon public key (g, p) trong đó p là số modulus, g là số base.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/370576d5-e146-40f6-a9ab-f92d7f7ab4d6)
+
+Step 2: Chon privatekey. Let Alice pick a private random number a and let Bob pick a private random number b, Malory picks 2 random numbers c and d.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/392af297-47a1-42cc-9262-73ee41807be9)
+
+Step 3: Intercepting public values,
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/87d2d684-1b2b-4075-b712-24770fb3cb61)
+
+Malory intercepts Alice’s public value $A = g ^ a \pmod{p}$, block it from reaching Bob, and instead sends Bob her own public value $p$ (có thể gửi $g ^ c \pmod{p}$ cũng được với c là số mình chọn), Malory intercepts Bob’s public value $B = g ^ b \pmod{p}$, block it from reaching Alice, and instead sends Alice her own public value $p$
+
+Step 4: Computing secret key
+
+Tính key sai: $S = p ^ a = p ^ b = 0 \pmod{p}$
+
+Từ đó ta có secret = 0.
+
+```py
+
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+from pwn import *
+from json import *
+
+def is_pkcs7_padded(message):
+    padding = message[-message[-1]:]
+    return all(padding[i] == len(padding) for i in range(0, len(padding)))
+
+
+def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Decrypt flag
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = bytes.fromhex(iv)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext)
+
+    if is_pkcs7_padded(plaintext):
+        return unpad(plaintext, 16).decode('ascii')
+    else:
+        return plaintext.decode('ascii')
+
+# socket.cryptohack.org 13371
+    
+s = connect("socket.cryptohack.org", 13371)
+
+s.recv().decode()
+public_key = loads(s.recvuntil(b"}"))
+
+tmp = public_key
+tmp["A"] = public_key["p"]
+
+
+s.recvuntil(b":").decode()
+
+s.send(dumps(tmp).encode())
+
+s.recvuntil(b":").decode()
+
+tmp = loads(s.recvline())
+
+s.recv().decode()
+
+
+tmp["B"] = public_key["p"]
+
+s.send(dumps(tmp).encode())
+
+s.recvuntil(b":").decode()
+
+tmp = loads(s.recvuntil(b"}"))
+
+shared_secret = 0
+iv = tmp["iv"]
+ciphertext = tmp["encrypted_flag"]
+
+print(f"This is flag: {decrypt_flag(shared_secret, iv, ciphertext)}")
+```
+
+> crypto{n1c3_0n3_m4ll0ry!!!!!!!!}
