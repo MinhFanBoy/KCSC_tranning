@@ -571,3 +571,169 @@ You've just finished eavesdropping on a conversation between Alice and Bob. Now 
 Connect at socket.cryptohack.org 13373
 
 ---
+
+F***! Bài này hơi lừa. Khi kết nối đến server ,hệ thống cho 1 bộ khóa công khai của Alice, sau đó ta có thệ tạo với Bob một cặp khóa với g, p, a do ta chọn. Khi gửi khóa công Khai của Alice, Bob sẽ gửi lại khóa Công khai của anh ta B .Khi chúng ta gửi cho Bob giá trị của khóa công khai của Alice với g = A . Bob sau đó sẽ tính toán và gửi cho chúng ta bí mật được chia sẻ.
+
+Có một vài cách giải khá hay nên tìm hiểu thêm. Cách giải mình sử dụng là gửi A cho Bob, từ đó nhận được.$A ^ b \pmod{p} = $secret. Nhưng secret ở đây chưa được mod p nên nhớ mod vào.
+
+```py
+
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+from pwn import *
+from json import *
+def is_pkcs7_padded(message):
+    padding = message[-message[-1]:]
+    return all(padding[i] == len(padding) for i in range(0, len(padding)))
+
+
+def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Decrypt flag
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = bytes.fromhex(iv)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext)
+
+    if is_pkcs7_padded(plaintext):
+        return unpad(plaintext, 16)
+    else:
+        return plaintext
+# socket.cryptohack.org 13373
+
+s = remote("socket.cryptohack.org", 13373)
+
+s.recv()
+
+public_key = loads(s.recvline())
+
+s.recvuntil(b":")
+
+Bob_key_1 = loads(s.recvuntil(b"}"))
+
+s.recvuntil(b":")
+
+dict_1 = loads(s.recvuntil(b"}"))
+
+s.recv()
+
+tmp = {}
+
+tmp["p"] = public_key["p"]
+
+tmp["g"] = public_key["A"]
+tmp["A"] = "0x01"
+s.send(dumps(tmp).encode())
+
+s.recvuntil(b":")
+
+Bob_key_2 = loads(s.recvuntil(b"}"))
+s.recvuntil(b":")
+
+dict_2 = loads(s.recvuntil(b"}"))
+
+shared_secret = int(Bob_key_2["B"], 16) % int(public_key["p"], 16)
+iv = dict_1["iv"]
+ciphertext = dict_1["encrypted"]
+
+print(f"This is flag: {decrypt_flag(shared_secret, iv, ciphertext)}")
+
+```
+
+> crypto{n07_3ph3m3r4l_3n0u6h}
+
+### 9. Additive
+
+---
+
+**_TASK:_**
+
+Alice and Bob decided to do their DHKE in an additive group rather than a multiplicative group. What could go wrong?
+
+Use the script from "Diffie-Hellman Starter 5" to decrypt the flag once you've recovered the shared secret.
+
+Connect at socket.cryptohack.org 13380
+
+---
+
+Sau khi tìm hiểu (copy code) mình thấy:
++ $A = g * a \pmod{p}$
++ $B = g * b \pmod{p}$
++ secret = $g * a * b \pmod{p}$
+
++ $\to a = A * g ^ {-1} \pmod{p}$
++ $\to b = B * g ^ {-1} \pmod{p}$
++ $\to \text{secret} = g ^ {-1} * A * B\pmod{p}$
+
+Áp dụng đúng công thức trên là ta có flag.
+
+```py
+
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+from pwn import *
+from json import *
+def is_pkcs7_padded(message):
+    padding = message[-message[-1]:]
+    return all(padding[i] == len(padding) for i in range(0, len(padding)))
+
+
+def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Decrypt flag
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = bytes.fromhex(iv)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext)
+
+    if is_pkcs7_padded(plaintext):
+        return unpad(plaintext, 16)
+    else:
+        return plaintext
+# socket.cryptohack.org 13380
+
+s = remote("socket.cryptohack.org", 13380)
+
+s.recv()
+
+public = loads(s.recvline())
+
+s.recvuntil(b": ")
+
+key = loads(s.recvline())
+
+s.recvuntil(b": ")
+
+tmp = loads(s.recvline())
+
+shared_secret = int(public["A"], 16) * int(key["B"], 16) * pow(2, -1, int(public["p"], 16)) % int(public["p"], 16)
+iv = tmp["iv"]
+ciphertext = tmp["encrypted"]
+
+print(f"This is flag: {decrypt_flag(shared_secret, iv, ciphertext)}")
+
+```
+
+> crypto{cycl1c_6r0up_und3r_4dd1710n?}
+
+### 10. Static Client 2
+
+---
+
+**_TASK:_**
+
+Bob got a bit more careful with the way he verifies parameters. He's still insisting on using the p and g values provided by his partner. Wonder if he missed anything?
+
+Connect at socket.cryptohack.org 13378
+
+---
