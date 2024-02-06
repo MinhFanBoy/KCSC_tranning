@@ -306,7 +306,7 @@ Decrypt this to obtain your flag!
 ```
 ---
 
-Bài này khá đơn giản, giống như kiến thức của bài trên. Do ta đã có A,b nên tính secret = $A ^ b \pomd{q}$ là có được flag. Sử dụng file giải mã có sẵn của đề bài sẽ nhanh hơn.
+Bài này khá đơn giản, giống như kiến thức của bài trên. Do ta đã có A,b nên tính secret = $A ^ b \pmodpmod{q}$ là có được flag. Sử dụng file giải mã có sẵn của đề bài sẽ nhanh hơn.
 
 ```py
 
@@ -361,3 +361,17 @@ ciphertext = tmp["encrypted_flag"]
 print(decrypt_flag(shared_secret, iv, ciphertext))
 ```
 > crypto{sh4r1ng_s3cret5_w1th_fr13nd5}
+
+### 6. Parameter Injection
+
+---
+
+**_TASK:_**
+
+You're in a position to not only intercept Alice and Bob's DH key exchange, but also rewrite their messages. Think about how you can play with the DH equation that they calculate, and therefore sidestep the need to crack any discrete logarithm problem.
+
+Use the script from "Diffie-Hellman Starter 5" to decrypt the flag once you've recovered the shared secret.
+
+Connect at socket.cryptohack.org 13371
+
+---
