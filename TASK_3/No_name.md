@@ -470,3 +470,104 @@ print(f"This is flag: {decrypt_flag(shared_secret, iv, ciphertext)}")
 ```
 
 > crypto{n1c3_0n3_m4ll0ry!!!!!!!!}
+
+### 7. Export-grade
+
+---
+
+**_TASK:_**
+Alice and Bob are using legacy codebases and need to negotiate parameters they both support. You've man-in-the-middled this negotiation step, and can passively observe thereafter. How are you going to ruin their day this time?
+
+Connect at socket.cryptohack.org 13379
+
+---
+
+Bài này mình sử dụng MITM để làm. Thử thách này mô phỏng cuộc tấn công Logjam khét tiếng trên nhiều giao thức internet như HTTPS, SSH, IPsec, SMTPS và các giao thức dựa trên TLS sử dụng trao đổi khóa Diffie-Hellman. Cuộc tấn công Logjam cho phép kẻ tấn công trung gian hạ cấp các kết nối TLS dễ bị tấn công xuống mật mã cấp xuất 512 bit, vì có một tùy chọn cho khách hàng quay lại khi bài báo được xuất bản để sử dụng cấp độ bảo mật DHE_EXPORT. Không có dấu hiệu nào về bộ mật mã mà máy chủ đã chọn, vì vậy MiTM có thể dễ dàng sửa đổi bộ mật mã của máy khách thành DHE_EXPORT.
+
+Ý tưởng này được sử dụng trong thử thách. Ban đầu, Alice đưa ra một danh sách chứa danh sách các bộ mật mã được hỗ trợ, từ DH1536 đến DH64. Không có gì ngăn cản chúng tôi sửa đổi thông báo này, do đó chúng tôi có thể chọn tùy chọn yếu nhất trong danh sách, đó là DH64. Sau đó, quá trình trao đổi khóa thông thường được thực hiện và chúng tôi nhận được thông tin về g, p, A, B và iv, mã hóa_flag được tạo từ bí mật chung.
+
+Một giải pháp khác là sử dụng thuật toán Pohlig-Hellman. Số nguyên tố yếu (chúng ta luôn có thể xem FactorDB) và do đó con số sẽ trơn tru. Hoặc chúng ta có thể bỏ qua tất cả công việc này và sử dụng chức năng discrete_log do Sage cung cấp.
+​
+```py
+
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+from pwn import *
+from json import *
+from sage.all import *
+
+def is_pkcs7_padded(message):
+    padding = message[-message[-1]:]
+    return all(padding[i] == len(padding) for i in range(0, len(padding)))
+
+
+def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Decrypt flag
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = bytes.fromhex(iv)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext)
+
+    if is_pkcs7_padded(plaintext):
+        return unpad(plaintext, 16)
+    else:
+        return plaintext
+
+# socket.cryptohack.org 13379
+"""    
+s = connect("socket.cryptohack.org", 13379)
+
+print(s.recv())
+
+public_key = loads(s.recvline())
+
+print(s.recv())
+
+s.send(dumps({'supported': ['DH64']}).encode())
+
+print(s.recv())
+
+B = loads(s.recvline())
+
+s.send(dumps(B).encode())
+
+print(s.recv())
+print(s.recv())
+print(s.recv())
+
+"""
+dict = {"p": "0xde26ab651b92a129", "g": "0x2", "A": "0x8ec01998f435699b","B": "0xc6302eb03e9f60cf", "iv": "5050ae8ba228bce32488e24cfde43ba9", "encrypted_flag": "4070080abe7edb188368dd0cc6e4af1833619f821b34dc9ce139a3d187741f65"}
+
+g = Mod(int(2), int(dict["p"], 16))
+A = Mod(int(dict["A"], 16), int(dict["p"], 16))
+
+a = discrete_log(A, g)
+
+a = 3390858232315700143
+
+shared_secret = pow(int(dict["B"], 16), a, int(dict["p"], 16))
+iv = dict["iv"]
+ciphertext = dict["encrypted_flag"]
+
+print(f"This is flag: {decrypt_flag(shared_secret, iv, ciphertext)}")
+```
+
+> crypto{d0wn6r4d35_4r3_d4n63r0u5}
+
+### 8. Static Client
+
+---
+
+**_TASK:_**
+
+You've just finished eavesdropping on a conversation between Alice and Bob. Now you have a chance to talk to Bob. What are you going to say?
+
+Connect at socket.cryptohack.org 13373
+
+---
