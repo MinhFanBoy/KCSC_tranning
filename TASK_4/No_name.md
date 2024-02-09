@@ -19,7 +19,7 @@ Ngoài ra, trong cấu trúc đại số nó được xếp trong nhóm aben v�
 
 VD: $y ^ 2 = x ^ 3 + 2 * x + 3$
 
-Ngoài ra, nó còn có dạng đặc biệt : $ y^{2}+a_{1}xy+a_{3}y=x^{3}+a_{2}x^{2}+a_{4}x+a_{6}$ đây còn được gọi là phương trình Weierstrass(tổng quát hơn phương trình ở trên).
+Ngoài ra, nó còn có dạng đặc biệt : $y ^ {2} + a_{1} * x * y + a_{3} * y = x ^ {3} + a_{2} * x ^ {2} + a_{4} * x + a_{6}$ đây còn được gọi là phương trình Weierstrass(tổng quát hơn phương trình ở trên).
 
 Với một điểm L trên K thuộc không gian $K ^ 2$ là (x, y) được định nghĩa là điểm thỏa mãn phương trình elliptic. Khi điểm L ở vô cực được coi là đơn vị $(a_{6}, 0)$
 
