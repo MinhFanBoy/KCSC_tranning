@@ -27,3 +27,4 @@ Với một điểm L trên K thuộc không gian $K ^ 2$ là (x, y) được đ
 
 Đây là hình ảnh của "đường cong" này trong không gian 3 chiều.
 
+https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif
