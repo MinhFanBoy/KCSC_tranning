@@ -15,7 +15,7 @@ $$y^{2}=x^{3}-px-q$$
 
 Ngoài ra, trong cấu trúc đại số nó được xếp trong nhóm aben với phép ánh xạ là phép cộng và điểm đơn vị là điếm $\theta$. 
 
-![image]([https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/80efdcd6-bbca-4e47-9429-2380f851ee24](https://images.viblo.asia/41f7339d-299e-4304-89a8-7c08c101e282.gif))
+![image]([https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/80efdcd6-bbca-4e47-9429-2380f851ee24])
 
 VD: $y ^ 2 = x ^ 3 + 2 * x + 3$
 
@@ -23,6 +23,6 @@ Ngoài ra, nó còn có dạng đặc biệt : $y ^ {2} + a_{1} * x * y + a_{3} 
 
 Với một điểm L trên K thuộc không gian $K ^ 2$ là (x, y) được định nghĩa là điểm thỏa mãn phương trình elliptic. Khi điểm L ở vô cực được coi là đơn vị $(a_{6}, 0)$
 
-![image](https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif)https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif)
+![image](https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif)
 
 Đây là hình ảnh của "đường cong" này trong không gian 3 chiều.
