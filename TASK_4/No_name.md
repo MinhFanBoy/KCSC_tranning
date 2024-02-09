@@ -15,7 +15,7 @@ $$y^{2}=x^{3}-px-q$$
 
 Ngoài ra, trong cấu trúc đại số nó được xếp trong nhóm aben với phép ánh xạ là phép cộng và điểm đơn vị là điếm $\theta$. 
 
-![image]([https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/80efdcd6-bbca-4e47-9429-2380f851ee24])
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/80efdcd6-bbca-4e47-9429-2380f851ee24)
 
 VD: $y ^ 2 = x ^ 3 + 2 * x + 3$
 
