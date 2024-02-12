@@ -63,11 +63,12 @@ $$P + Q = R$$
 
 Về mặt hình học, nếu đường thẳng đi qua P và Q cắt đường cong tại điểm thứ ba, kết quả là sự phản chiếu của điểm này qua trục x R. Nếu như P và Q cùng điểm, định luật nhóm xác định tiếp tuyến tại điểm đó và tìm giao điểm thứ ba.
 
-+ Phần tử nhận dạng ($\theta$ hoặc \infty):
++ Phần tử nhận dạng ($\theta$ hoặc $\infty$):
 
-Có một điểm đặc biệt trên đường cong elip gọi là phần tử đồng nhất, thường được ký hiệu là $\theta4 hoặc $\infty$ (vô cùng). Điểm này đóng vai trò là đồng nhất thức cộng trong luật nhóm. Đối với bất kỳ điểm P nào trên đường cong,
+Có một điểm đặc biệt trên đường cong elip gọi là phần tử đồng nhất, thường được ký hiệu là $\theta$ hoặc $\infty$ (vô cùng). Điểm này đóng vai trò là đồng nhất thức cộng trong luật nhóm. Đối với bất kỳ điểm P nào trên đường cong,
 
 $$P + \theta = \theta + P = P$$
+$$P + \infty = \infty + P = P$$
 
 + Phần tử nghịch đảo (Phủ định):
 
