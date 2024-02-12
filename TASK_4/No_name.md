@@ -57,19 +57,17 @@ Luật nhóm là một khái niệm cơ bản trong mật mã đường cong eli
 
 + Cộng điểm (P + Q):
 
-Cho hai điểm phân biệt
-
-$P$ và $Q$ trên đường cong elip, định luật nhóm xác định phép cộng các điểm này để tạo ra điểm thứ ba $R$, ký hiệu là
+Cho hai điểm phân biệt $P$ và $Q$ trên đường cong elip, định luật nhóm xác định phép cộng các điểm này để tạo ra điểm thứ ba $R$, ký hiệu là
 
 $$P + Q = R$$
 
 Về mặt hình học, nếu đường thẳng đi qua P và Q cắt đường cong tại điểm thứ ba, kết quả là sự phản chiếu của điểm này qua trục x R. Nếu như P và Q cùng điểm, định luật nhóm xác định tiếp tuyến tại điểm đó và tìm giao điểm thứ ba.
 
-+ Phần tử nhận dạng ($\theta$ hoặc \infity):
++ Phần tử nhận dạng ($\theta$ hoặc \infty):
 
-Có một điểm đặc biệt trên đường cong elip gọi là phần tử đồng nhất, thường được ký hiệu là $\theta4 hoặc $\infity$ (vô cùng). Điểm này đóng vai trò là đồng nhất thức cộng trong luật nhóm. Đối với bất kỳ điểm P nào trên đường cong,
+Có một điểm đặc biệt trên đường cong elip gọi là phần tử đồng nhất, thường được ký hiệu là $\theta4 hoặc $\infty$ (vô cùng). Điểm này đóng vai trò là đồng nhất thức cộng trong luật nhóm. Đối với bất kỳ điểm P nào trên đường cong,
 
-$$P + O = O + P = P$$
+$$P + \theta = \theta + P = P$$
 
 + Phần tử nghịch đảo (Phủ định):
 
