@@ -88,3 +88,27 @@ $$(P+Q)+R=P+(Q+R)$$
 Luật nhóm cho phép xây dựng một nhóm toán học bằng cách sử dụng tập hợp các điểm trên đường cong elip. Nhóm này được sử dụng trong ECC cho các hoạt động mã hóa khóa công khai, chẳng hạn như trao đổi khóa, chữ ký số và mã hóa khóa chung. Độ khó của bài toán logarit rời rạc trên đường cong elip tạo cơ sở cho tính bảo mật của các hoạt động mật mã này.
 
 Hiểu luật nhóm là rất quan trọng để thực hiện các thuật toán mật mã đường cong elip và đảm bảo tính an toàn và hiệu quả của các hệ thống mật mã dựa trên các đường cong elip.
+
+#### 2.2 Phương trình dạng đơn giản
+
+Phương trình của đường cong elip (elliptic curve) trong dạng đơn giản, thường là phương trình Weierstrass, có ý nghĩa quan trọng trong elliptic curve cryptography (ECC) và các hệ thống mã hóa dựa trên đường cong elip. Dạng đơn giản giúp tối ưu hóa các phép toán và triển khai của hệ thống mã hóa. Dưới đây là một số ý nghĩa chính:
+
+ + Thuận Tiện Cho Phép Toán:
+
+Dạng đơn giản của phương trình Weierstrass tạo ra cấu trúc nhóm trên đường cong elip mà không làm giảm đi tính toán. Các phép toán như cộng điểm và nhân số nguyên trở nên hiệu quả và đơn giản hóa.
+ + Tính Đồng Nhất:
+
+Việc sử dụng một dạng phương trình chung (ví dụ: phương trình Weierstrass) giúp tạo ra một chuẩn hóa trong triển khai của ECC. Các hệ thống có thể sử dụng cùng một dạng phương trình chung, giúp tích hợp và tương tác giữa các hệ thống dễ dàng hơn.
+Chia Sẻ Điểm:
+
+Dạng đơn giản thường làm cho việc chia sẻ các điểm trên đường cong elip trở nên dễ dàng. Các tiêu chuẩn được xây dựng dựa trên các dạng phương trình thông thường như phương trình Weierstrass, giúp đảm bảo tính tương thích và tích hợp trong các ứng dụng và giao thức khác nhau.
+ + Bảo Mật:
+
+Một số dạng phương trình đơn giản được chọn để đảm bảo tính an toàn và khả năng chống lại các tấn công. Các tham số trong phương trình phải được chọn cẩn thận để tránh các loại tấn công như tấn công động (side-channel attacks) và các vấn đề khác liên quan đến an ninh hệ thống mã hóa.
++ Hiệu Năng:
+
+Dạng đơn giản giúp cải thiện hiệu suất của hệ thống mã hóa. Đối với các thiết bị có tài nguyên hạn chế như thiết bị di động hoặc IoT, việc sử dụng dạng phương trình đơn giản có thể là quyết định quan trọng để đạt được hiệu suất tốt.
+Thuận Lợi Cho Triển Khai Trên Phần Cứng:
+
+Các thiết bị có tài nguyên hạn chế thường thích hợp với đường cong elip có dạng đơn giản. Các phép toán như cộng điểm và nhân số nguyên trên đường cong Weierstrass thường có thể được triển khai một cách hiệu quả trên phần cứng nhúng.
+Dạng đơn giản của phương trình đường cong elip không chỉ giúp tối ưu hóa tính toán mà còn làm cho các hệ thống mã hóa dựa trên ECC trở nên linh hoạt, hiệu quả và dễ quản lý.
