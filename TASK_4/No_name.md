@@ -68,6 +68,7 @@ Về mặt hình học, nếu đường thẳng đi qua P và Q cắt đường 
 Có một điểm đặc biệt trên đường cong elip gọi là phần tử đồng nhất, thường được ký hiệu là $\theta$ hoặc $\infty$ (vô cùng). Điểm này đóng vai trò là đồng nhất thức cộng trong luật nhóm. Đối với bất kỳ điểm P nào trên đường cong,
 
 $$P + \theta = \theta + P = P$$
+
 $$P + \infty = \infty + P = P$$
 
 + Phần tử nghịch đảo (Phủ định):
