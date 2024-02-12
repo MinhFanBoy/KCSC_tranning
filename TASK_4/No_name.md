@@ -37,7 +37,7 @@ Ngoài ra, nó còn có dạng đặc biệt : $y ^ {2} + a_{1} * x * y + a_{3} 
 
 Với một điểm L trên K thuộc không gian $K ^ 2$ là (x, y) được định nghĩa là điểm thỏa mãn phương trình elliptic. Khi điểm L ở vô cực được coi là đơn vị $(a_{6}, 0)$
 
-![image](https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif)
+![imageimage](https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif)
 
 Đây là hình ảnh của "đường cong" này trong không gian 3 chiều.
 
