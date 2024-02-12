@@ -19,7 +19,7 @@ Mật mã ECC cung cấp tính an toàn tương đương với các hệ mật k
 
 Để hình dung mức độ khó phá vỡ hơn bao nhiêu, Lenstra mới đây đã giới thiệu khái niệm "An ninh toàn cầu". Bạn có thể tính toán lượng năng lượng cần thiết để phá vỡ thuật toán mật mã và so sánh với lượng nước mà năng lượng có thể đun sôi. Theo biện pháp này, việc phá khóa RSA 228 bit đòi hỏi ít năng lượng hơn so với việc đun sôi một muỗng cà phê nước. Một cách tương đối, việc phá khóa đường cong elip 228 bit đòi hỏi đủ năng lượng để đun sôi tất cả nước trên trái đất. Đối với mức bảo mật này với RSA, bạn cần một khóa có 2.380 bit.
 
-### 2. Định 
+### 2. Định nghĩa
 
 Trong toán học, đường cong elip là một đường cong đại số trơn, trên đó có một điểm $\theta$ xác định. Một đường cong elip được xác định trên một trường K và mô tả các điểm trong không gian $K ^ 2$, tích Descartes của K với chính nó. Elliptic curves có thể được định nghĩa trong mọi trường K; Nếu đặc tính của trường khác với 2 và 3 thì đường cong có thể được mô tả như một đường cong đại số phẳng chứa các nghiệm (x, y) cho:
 
@@ -46,3 +46,45 @@ Nhìn kỹ hơn vào đường cong elip được vẽ ở trên. Nhận thấy,
 Chúng ta hãy tưởng tượng đường cong này là bối cảnh cho một trò chơi bi-a kỳ quái. Lấy hai điểm bất kỳ trên đường cong và vẽ một đường thẳng qua chúng, nó sẽ cắt đường cong tại đúng một điểm nữa. Trong trò chơi bi-a này, bạn lấy một quả bóng tại điểm A, bắn nó về phía điểm B. Khi nó chạm đường cong, quả bóng nảy thẳng lên (nếu nó nằm dưới trục x) hoặc thẳng xuống (nếu nó ở trên trục x) sang phía bên kia của đường cong.
 
 Việc này chỉ ra rằng nếu có hai điểm, với điều kiện một điểm thực hiện “(+)” chính nó n lần ra điểm còn lại, thì việc tìm ra n khi mà chỉ biết điểm đầu và điểm cuối là rất khó khăn. Áp dụng cho chính ví dụ về trò billiard, nếu một người chơi trò chơi này một mình trong một căn phòng trong một khoảng thời gian ngẫu nhiên. Rất dễ dàng cho anh ta để đánh bi đi theo các quy tắc mô tả ở trên. Đến khi một người khác bước vào phòng sau đó và nhìn thấy vị trí viên bi, ngay cả khi họ biết tất cả các quy tắc của trò chơi và vị trí bắt đầu, họ không thể xác định số lần viên bi được đánh mà không chơi qua toàn bộ trò chơi một lần nữa. Dễ thực hiện, khó suy ngược, đây chính là tính chất của một phương pháp mã hóa tốt.
+
+#### 2.1. Luât nhóm
+
+![image](http://blog.cloudflare.com/content/images/image02.gif)
+
+Luật nhóm là một khái niệm cơ bản trong mật mã đường cong elip (ECC) xác định cách các điểm trên đường cong elip có thể được kết hợp để tạo ra các điểm mới trên đường cong. Luật nhóm cho các đường cong elip tạo thành cơ sở cho các phép toán như cộng điểm và nhân vô hướng, những phép toán này rất quan trọng để thực hiện các thuật toán mã hóa.
+
+Định luật nhóm trên đường cong elip được định nghĩa như sau:
+
++ Cộng điểm (P + Q):
+
+Cho hai điểm phân biệt
+
+$P$ và $Q$ trên đường cong elip, định luật nhóm xác định phép cộng các điểm này để tạo ra điểm thứ ba $R$, ký hiệu là
+
+$$P + Q = R$$
+
+Về mặt hình học, nếu đường thẳng đi qua P và Q cắt đường cong tại điểm thứ ba, kết quả là sự phản chiếu của điểm này qua trục x R. Nếu như P và Q cùng điểm, định luật nhóm xác định tiếp tuyến tại điểm đó và tìm giao điểm thứ ba.
+
++ Phần tử nhận dạng ($\theta$ hoặc \infity):
+
+Có một điểm đặc biệt trên đường cong elip gọi là phần tử đồng nhất, thường được ký hiệu là $\theta4 hoặc $\infity$ (vô cùng). Điểm này đóng vai trò là đồng nhất thức cộng trong luật nhóm. Đối với bất kỳ điểm P nào trên đường cong,
+
+$$P + O = O + P = P$$
+
++ Phần tử nghịch đảo (Phủ định):
+
+Đối với bất kỳ điểm $P$ nào trên đường cong elip tồn tại một điểm $-P$ sao cho
+
+$$P + (−P) = \theta$$
+
+trong đó $−P$ là sự phản ánh của P qua trục x.
+
++ Tính kết hợp:
+
+Luật nhóm trên đường cong elip có tính kết hợp. Cho ba điểm $P, Q, R$ trên đường cong,
+
+$$(P+Q)+R=P+(Q+R)$$
+  
+Luật nhóm cho phép xây dựng một nhóm toán học bằng cách sử dụng tập hợp các điểm trên đường cong elip. Nhóm này được sử dụng trong ECC cho các hoạt động mã hóa khóa công khai, chẳng hạn như trao đổi khóa, chữ ký số và mã hóa khóa chung. Độ khó của bài toán logarit rời rạc trên đường cong elip tạo cơ sở cho tính bảo mật của các hoạt động mật mã này.
+
+Hiểu luật nhóm là rất quan trọng để thực hiện các thuật toán mật mã đường cong elip và đảm bảo tính an toàn và hiệu quả của các hệ thống mật mã dựa trên các đường cong elip.
