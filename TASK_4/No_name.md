@@ -25,7 +25,29 @@ Trong toán học, đường cong elip là một đường cong đại số trơ
 
 $$y^{2}=x^{3}-px-q$$
 
-Đối Luật nhóm
+Đối với một số hệ số p và q thuộc K. Đường cong bắt buộc phải không suy biến, nghĩa là đường cong không có đỉnh hoặc tự giao nhau. Với điểm O là điểm duy nhất ở vô cực. Ở đây hệ số p và q trong đa thức $x ^ 3 − p * x − q$ phải không có bất kỳ nghiệm kép nào. Từ đó ta có điều kiện $\Delta = 4 * p ^ 3 - 27 * b ^ 2 \neq 0$.(Điều này tương đương với điều kiện là không vuông góc trong x.)
+
+Ngoài ra, trong cấu trúc đại số nó được xếp trong nhóm aben với phép ánh xạ là phép cộng và điểm đơn vị là điếm $\theta$. 
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/80efdcd6-bbca-4e47-9429-2380f851ee24)
+
+VD: $y ^ 2 = x ^ 3 + 2 * x + 3$
+
+Ngoài ra, nó còn có dạng đặc biệt : $y ^ {2} + a_{1} * x * y + a_{3} * y = x ^ {3} + a_{2} * x ^ {2} + a_{4} * x + a_{6}$ đây còn được gọi là phương trình Weierstrass(tổng quát hơn phương trình ở trên).
+
+Với một điểm L trên K thuộc không gian $K ^ 2$ là (x, y) được định nghĩa là điểm thỏa mãn phương trình elliptic. Khi điểm L ở vô cực được coi là đơn vị $(a_{6}, 0)$
+
+![imageimage](https://images.viblo.asia/full/41f7339d-299e-4304-89a8-7c08c101e282.gif)
+
+Đây là hình ảnh của "đường cong" này trong không gian 3 chiều.
+
+Nhìn kỹ hơn vào đường cong elip được vẽ ở trên. Nhận thấy, một trong số đó là đối xứng ngang. Bất kỳ điểm nào trên đường cong đều được phản ánh qua trục x và vẫn giữ nguyên đường cong. Một đặc tính thú vị hơn là bất kỳ đường thẳng nào cũng sẽ cắt đường cong ở nhiều nhất là ba điểm.
+
+Chúng ta hãy tưởng tượng đường cong này là bối cảnh cho một trò chơi bi-a kỳ quái. Lấy hai điểm bất kỳ trên đường cong và vẽ một đường thẳng qua chúng, nó sẽ cắt đường cong tại đúng một điểm nữa. Trong trò chơi bi-a này, bạn lấy một quả bóng tại điểm A, bắn nó về phía điểm B. Khi nó chạm đường cong, quả bóng nảy thẳng lên (nếu nó nằm dưới trục x) hoặc thẳng xuống (nếu nó ở trên trục x) sang phía bên kia của đường cong.
+
+Việc này chỉ ra rằng nếu có hai điểm, với điều kiện một điểm thực hiện “(+)” chính nó n lần ra điểm còn lại, thì việc tìm ra n khi mà chỉ biết điểm đầu và điểm cuối là rất khó khăn. Áp dụng cho chính ví dụ về trò billiard, nếu một người chơi trò chơi này một mình trong một căn phòng trong một khoảng thời gian ngẫu nhiên. Rất dễ dàng cho anh ta để đánh bi đi theo các quy tắc mô tả ở trên. Đến khi một người khác bước vào phòng sau đó và nhìn thấy vị trí viên bi, ngay cả khi họ biết tất cả các quy tắc của trò chơi và vị trí bắt đầu, họ không thể xác định số lần viên bi được đánh mà không chơi qua toàn bộ trò chơi một lần nữa. Dễ thực hiện, khó suy ngược, đây chính là tính chất của một phương pháp mã hóa tốt.
+
+#### 2.1. Luật nhóm
 
 ![image](http://blog.cloudflare.com/content/images/image02.gif)
 
