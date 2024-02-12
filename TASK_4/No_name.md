@@ -25,9 +25,7 @@ Trong toán học, đường cong elip là một đường cong đại số trơ
 
 $$y^{2}=x^{3}-px-q$$
 
-Đối với một số hệ số p và q thuộc K. Đường cong bắt buộc phải không suy biến, nghĩa là đường cong không có đỉnh hoặc tự giao nhau. Với điểm O là điểm duy nhất ở vô cực. Ở đây hệ số p và q trong đa thức $x ^ 3 − p * x − q$ phải không có bất kỳ nghiệm kép nào. Từ đó ta có điều kiện $\Delta = 4 * p ^ 3 - 27 * b ^ 2 \neq 0$.(Điều này tương đương với điều kiện là không vuông góc trong x.)
-
-Ngoài ra,Luật nhóm
+Đối Luật nhóm
 
 ![image](http://blog.cloudflare.com/content/images/image02.gif)
 
