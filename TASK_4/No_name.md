@@ -91,6 +91,14 @@ Hiểu luật nhóm là rất quan trọng để thực hiện các thuật toá
 
 #### 2.2 Phương trình dạng đơn giản
 
+Như đã nói ở trên ta có thể thấy phương trình ecc có nhiều dạng khác nhau nhưng trong crypto thường chỉ sử dụng dạng đơn giản.
+
+Thông qua các phép biến đổi cở bản (cơ bản nhưng em đọc cx không hiểu gì :v) như:
+
++ Biến đổi từ Dạng Edwards về Weierstrass ($a *x ^ 2 + y ^  2 = 1 + d * {x ^ 2} * {y ^ 2}$)
++ Biến đổi từ Dạng Montgomery về Weierstrass ($B * y ^ 2 = x ^ 3 + A * {x ^ 2} + x$)
++ Biến đổi từ Dạng Jacobi về Weierstrass ($y ^ 2 = x ^ 3 + A * {x ^ 2} + x$)
+
 Phương trình của đường cong elip (elliptic curve) trong dạng đơn giản, thường là phương trình Weierstrass, có ý nghĩa quan trọng trong elliptic curve cryptography (ECC) và các hệ thống mã hóa dựa trên đường cong elip. Dạng đơn giản giúp tối ưu hóa các phép toán và triển khai của hệ thống mã hóa. Dưới đây là một số ý nghĩa chính:
 
  + Thuận Tiện Cho Phép Toán:
