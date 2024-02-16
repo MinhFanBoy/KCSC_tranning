@@ -1965,3 +1965,82 @@ while t:
 ```
 
 > crypto{k3y57r34m_r3u53_15_f474l}
+
+
+### 20. More
+
+```py
+
+"""
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from hashlib import md5
+from os import urandom
+
+FLAG = b"KCSC{???????????????????????????}"
+assert len(FLAG) % 16 == 1 # hint
+
+key1 = md5(urandom(3)).digest()
+key2 = md5(urandom(3)).digest()
+cipher1 = AES.new(key1, AES.MODE_ECB)
+cipher2 = AES.new(key2,AES.MODE_ECB)
+
+enc = cipher1.encrypt(pad(FLAG,16))
+enc = cipher2.encrypt(enc)
+
+print(enc.hex())
+
+# 21477fac54cb5a246cb1434a1e39d7b34b91e5c135cd555d678f5c01b2357adc0c6205c3a4e3a8e6fb37c927de0eec95
+"""
+```
+
+Bài này mình sử dụng cách tấn công vào 2DES khiến size_key từ $2 ^ 56$ giảm xuống còn $2 ^ 27$ từ đó ta hoàn toàn có thể dễ dàng brute được khóa. Vì len(flag) mod 16 == 1 nên từ đó ta có được block cuối cùng của flag là b"}\x07..." và block cuối của enc_flag thì đã có sẵn nên ta chỉ cần brute mã hóa block cuối của flag và giải mã block cuối của enc_flag cho tới khi nó giống nhau. Khi đó ta sẽ có được hai key vì tính chất của AES mode ECB nên các black sẽ được mã hóa với cùng một key nên từ đó ta có thể dễ dàng có được flag.
+
+```py
+
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from hashlib import md5
+from os import urandom
+from Crypto.Util.number import *
+from tqdm import *
+
+enc_flag = bytes.fromhex("21477fac54cb5a246cb1434a1e39d7b34b91e5c135cd555d678f5c01b2357adc0c6205c3a4e3a8e6fb37c927de0eec95")
+
+last_block_flag = pad(b"}", 16)
+last_block_enc = enc_flag[-16:]
+
+lst_1 = {}
+
+for x in tqdm(range(2 ** 24)):
+    
+    x = x.to_bytes(3, byteorder = "little")
+    x = md5(x).digest()
+    cipher = AES.new(x, AES.MODE_ECB)
+    lst_1[cipher.encrypt(last_block_flag)] = x
+
+for x in tqdm(range(2 ** 24)):
+    
+    x = x.to_bytes(3, byteorder = "little")
+    x = md5(x).digest()
+    cipher = AES.new(x, AES.MODE_ECB)
+
+    try:
+        KEY_1 = lst_1[cipher.decrypt(last_block_enc)]
+        KEY_2 = x
+        break
+    except:
+        pass
+
+cipher1 = AES.new(KEY_1, AES.MODE_ECB)
+cipher2 = AES.new(KEY_2,AES.MODE_ECB)
+
+flag = cipher2.decrypt(enc_flag)
+flag = cipher1.decrypt(flag)
+
+print(f"This is {flag}")
+```
+
+> KCSC{MeEt_In_tHe_mIdDLe_AttaCk__}
