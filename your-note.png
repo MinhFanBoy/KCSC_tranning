@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quals 2024</title>
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="/static/favicon.png">
+        <link href="/static/style.css?v=2"
+              type="text/css" rel="stylesheet" />
+        
+            <meta http-equiv="refresh" content="3;url=" />
+        
+    </head>
+    <body>
+        <header>
+            <div class="item item-logo">
+                <a href="/">
+                    <img src="/static/graphic/logo.svg" />
+                </a>
+            </div>
+            
+        </header>
+
+        
+        
+
+        
+<h1>Sign in with password</h1>
+<br>
+    
+
+    <form method="post" class="login-or-register">
+        <input id="csrf_token" name="csrf_token" type="hidden" value="IjE5MjUzOWIyN2RkMjkzYjU4ODJiMTE5MTE4M2UxNWE1MWRjMGQ5NTYi.ZchQuA.hva_n9N_bBX6lKwxiBCbQjm2PxE">
+        <p><label for="login">User name</label> <input id="login" name="login" type="text" value=""></p>
+        <p><label for="password">Password</label> <input id="password" name="password" required type="password" value=""></p>
+        <input type="submit" value="Proceed" />
+    </form>
+
+
+        <footer>
+          
+          
+          
+          
+          <p class="muted lang-switch">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420">
+              <path stroke-width="26" d="M209,15a195,195 0 1,0 2,0z"/>
+              <path stroke-width="18" d="m210,15v390m195-195H15M59,90a260,260 0 0,0 302,0 m0,240 a260,260 0 0,0-302,0M195,20a250,250 0 0,0 0,382 m30,0 a250,250 0 0,0 0-382"/>
+            </svg>
+            
+            
+              <a href="/language/ru">Русский</a>
+            
+          </p>
+          <p class="muted so-it-goes">So it goes.</p>
+          
+        </footer>
+
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//track.ttc.tf/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+</body>
+</html>
