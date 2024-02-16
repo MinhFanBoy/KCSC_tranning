@@ -1971,7 +1971,6 @@ while t:
 
 ```py
 
-"""
 
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
@@ -1992,10 +1991,10 @@ enc = cipher2.encrypt(enc)
 print(enc.hex())
 
 # 21477fac54cb5a246cb1434a1e39d7b34b91e5c135cd555d678f5c01b2357adc0c6205c3a4e3a8e6fb37c927de0eec95
-"""
+
 ```
 
-Bài này mình sử dụng cách tấn công vào 2DES khiến size_key từ $2 ^ 56$ giảm xuống còn $2 ^ 27$ từ đó ta hoàn toàn có thể dễ dàng brute được khóa. Vì len(flag) mod 16 == 1 nên từ đó ta có được block cuối cùng của flag là b"}\x07..." và block cuối của enc_flag thì đã có sẵn nên ta chỉ cần brute mã hóa block cuối của flag và giải mã block cuối của enc_flag cho tới khi nó giống nhau. Khi đó ta sẽ có được hai key vì tính chất của AES mode ECB nên các black sẽ được mã hóa với cùng một key nên từ đó ta có thể dễ dàng có được flag.
+Bài này mình sử dụng cách tấn công vào 2DES khiến size_key từ $2 ^ {56}$ giảm xuống còn $2 ^ {27}$ từ đó ta hoàn toàn có thể dễ dàng brute được khóa. Vì $len(flag) mod 16 == 1$ nên từ đó ta có được block cuối cùng của flag là b"}\x07..." và block cuối của enc_flag thì đã có sẵn nên ta chỉ cần brute mã hóa block cuối của flag và giải mã block cuối của enc_flag cho tới khi nó giống nhau. Khi đó ta sẽ có được hai key vì tính chất của AES mode ECB nên các black sẽ được mã hóa với cùng một key nên từ đó ta có thể dễ dàng có được flag.
 
 ```py
 
