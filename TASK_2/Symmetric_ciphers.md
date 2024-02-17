@@ -2130,80 +2130,112 @@ if __name__ == "__main__":
 ---
 
 ```py
-
+from Crypto.Cipher import AES
 from pwn import *
-from json import *
+import copy
+
+host = 'localhost'
+port = 2004
+conn = remote(host, port)
 
 
-s = connect("localhost", 2004)
+def xor_two_bytes(b1, b2):
+    return bytes(a ^ b for a, b in zip(b1, b2))
 
-def encrypted():
-    s.sendline(b"encrypt")
-    return s.recv()
+def put_to_bytes(buf, buf_idx, new_buf):
+    for i in range(len(new_buf)):
+        buf[buf_idx+i]=new_buf[i]
 
-def decrypt(iv: bytes, enc: bytes) -> bool:
-    s.sendline(b"decrypt")
-    s.sendline((iv + bytes(enc)).hex().encode())
-    if b'Decrypted successfully.' in s.recvline():
+def int_to_bytes(i):
+    return i.to_bytes(1, byteorder="big")
+
+def check_padding(ciphertext):
+    conn.sendline(b'decrypt')
+    conn.recvuntil(b'Ciphertext:')
+    conn.sendline(ciphertext)
+    out = conn.recvline().decode()
+    if 'Decrypted successfully.' in out:
         return True
-    else: return False
+    return False 
 
+oracle_calls=0
 
-tmp = bytes.fromhex(encrypted().decode())
+# in bytes
+AES_BLK_SIZE=16
 
-IV = tmp[:16]
-encrypted = tmp[16:]
+# prev_cblk_last_byte_idx: index of the last byte in ciphertext of previous block. Then it decrements (during recursion)
+# assumed_last_plaintext_bytes: most probable bytes of plaintext, grows
+# last_blk_known_outs: known bytes that last encryption function (AES) outputs in the last block, grows
+# search_for: padding byte we're looking for, starting at 0x01, up to 0x10 (increased during recursion)
+def try_padding_bytes(prev_cblk_last_byte_idx, buf, assumed_last_plaintext_bytes, last_blk_known_outs, search_for):
+    global oracle_calls
+    print ("plaintext_bytes=", assumed_last_plaintext_bytes)
+    if len(assumed_last_plaintext_bytes)==AES_BLK_SIZE:
+        return True # stop
+    assert prev_cblk_last_byte_idx>=0
+    last_byte_prev_cblk=buf[prev_cblk_last_byte_idx]
 
-# len(iv) = 16, len(enc_flag) = 32
+    buf_to_try=copy.deepcopy(buf)
+    # try padding byte:
+    for i in range(256):
+        # First I tempted to write this. But this was a mistake. Do not skip byte even if you don't modify buf.
+        # So I'm leaving this commented, just to remember:
+        #if buf[prev_cblk_last_byte_idx]==i:
+        #    continue
+        buf_to_try[prev_cblk_last_byte_idx]=i
+        rt = check_padding(binascii.hexlify(buf_to_try))
+        oracle_calls=oracle_calls+1
+        if rt == True:
+            #print ("success with pad byte 0x%02x" % i)
+            # At this point we know that the last plain blk is either ... 01
+            #                                                or    ... 02 02
+            #                                                or ... 03 03 03
+            #                                                ...
+            #                                                or    10 ... 10 (16 bytes)
 
-BYTE_NB = 16
+            # assume last plain byte is $search_for$:
+            last_byte_after_last_dercypt=i ^ search_for
+            #print ("last_byte_after_last_dercypt: 0x%02x" % last_byte_after_last_dercypt)
+            last_plain_byte=last_byte_prev_cblk ^ i ^ search_for
+            #print ("last plain byte: 0x%02x" % last_plain_byte)
+            last_blk_known_outs_new=int_to_bytes(last_byte_after_last_dercypt) + last_blk_known_outs
+            # Prepare a new buf for recursive call (so to preserve our current buf as is):
+            buf2=copy.deepcopy(buf)
+            new_prev_blk=xor_two_bytes(last_blk_known_outs_new, len(last_blk_known_outs_new)*int_to_bytes(search_for+1))
+            put_to_bytes(buf2, len(buf)-AES_BLK_SIZE-len(new_prev_blk), new_prev_blk)
+            if try_padding_bytes(prev_cblk_last_byte_idx-1, buf2, int_to_bytes(last_plain_byte)+assumed_last_plaintext_bytes, last_blk_known_outs_new, search_for+1):
+                return True # stop
+    return False # continue
 
-block_number = len(encrypted)//BYTE_NB
-decrypted = bytes()
+# blk_n=-1 for the last block
+# blk_n=-2 for the penultimate block
+# etc
+# ... like in Python: s[-1] is the last character, s[-2] - penultimate character
+def decrypt_blk(buf, blk_n):
 
-# Go through each block
-for i in range(block_number, 0, -1):
-
-    current_encrypted_block = encrypted[(i-1)*BYTE_NB:(i)*BYTE_NB]
-    # At the first encrypted block, use the initialization vector if it is known
-
-    if(i == 1):
-
-        previous_encrypted_block = bytearray(IV.encode("ascii"))
-
+    # Find last byte of previous blk:
+    prev_cblk_last_byte_idx=(len(buf)+blk_n*AES_BLK_SIZE)-1
+    if blk_n==-1:
+        rt=try_padding_bytes(prev_cblk_last_byte_idx, buf, b"", b"", 1)
     else:
+        # Also slice buf to remove unneded blocks at the end we don't want to handle:
+        rt=try_padding_bytes(prev_cblk_last_byte_idx, buf[:(blk_n+1)*AES_BLK_SIZE], b"", b"", 1)
 
-        previous_encrypted_block = encrypted[(i-2)*BYTE_NB:(i-1)*BYTE_NB]
+    if rt==False:
+        print ("Error. Can't find anything in this block.")
 
-    bruteforce_block = previous_encrypted_block
-    current_decrypted_block = IV
-    padding = 0
-    # Go through each byte of the block
-
-    for j in range(BYTE_NB, 0, -1):
-
-        padding += 1
-        # Bruteforce byte value
-
-        for value in range(0,256):
-
-            bruteforce_block = [x for x  in bytearray(bruteforce_block)]
-            bruteforce_block[j-1] = (bruteforce_block[j-1] + 1) % 256
-            joined_encrypted_block = [x for x in bytes(bruteforce_block)] + [x for x in current_encrypted_block]
-            # Ask the oracle
-
-            if decrypt(IV, joined_encrypted_block):
-
-                current_decrypted_block[-padding] = bruteforce_block[-padding] ^ previous_encrypted_block[-padding] ^ padding
-                # Prepare newly found byte values
-
-                for k in range(1, padding+1):
-
-                    bruteforce_block[-k] = padding + 1 ^ current_decrypted_block[-k] ^ previous_encrypted_block[-k]
-                break
-
-    decrypted = bytes(current_decrypted_block) + bytes(decrypted)
-print(decrypted[:-decrypted[-1]])  # Padding removal
+conn.sendline(b'encrypt')
+buf = conn.recvline().rstrip(b'\n').decode()
+print(buf)
+buf = bytes.fromhex(buf)
+print(buf)
+buf = bytearray(buf)
+print(buf)
+# Try to decrypt last 3 blocks:
+decrypt_blk(buf, -1)
+decrypt_blk(buf, -2)
+#decrypt_blk(buf,-3)
+print ("oracle_calls=", oracle_calls)
 
 ```
 
