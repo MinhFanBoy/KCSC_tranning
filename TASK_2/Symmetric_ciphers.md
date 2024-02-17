@@ -2043,3 +2043,168 @@ print(f"This is {flag}")
 ```
 
 > KCSC{MeEt_In_tHe_mIdDLe_AttaCk__}
+
+
+### 21. More and more
+
+---
+
+**_TASK:_**
+
+```py
+
+
+import socket
+import threading
+from Crypto.Cipher import AES
+from os import urandom
+import string
+
+
+chars = string.ascii_lowercase + string.ascii_uppercase + string.digits + '_{}'
+FLAG = b'KCSC{CBC_p4dd1ng_0racle_}'
+assert all(i in chars for i in FLAG.decode())
+
+
+def pad(msg, block_size):
+    pad_len = 16 - len(msg) % block_size
+    return msg + bytes([pad_len])*pad_len
+
+
+def encrypt(key):
+    iv = urandom(16)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    return (iv + cipher.encrypt(pad(FLAG,16)) ).hex().encode()
+    
+    
+def decrypt(enc,key):
+    enc = bytes.fromhex(enc)
+    iv = enc[:16]
+    ciphertext = enc[16:]
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    decrypted = cipher.decrypt(ciphertext)
+    pad_len = decrypted[-1]
+    if all(i == pad_len for i in decrypted[-pad_len:]):
+        return b'Decrypted successfully.'
+    else:
+        return b'Incorrect padding.'
+    
+    
+class ThreadedServer(object):
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sock.bind((self.host, self.port))
+
+    def listen(self):
+        self.sock.listen(5)
+        while True:
+            client, address = self.sock.accept()
+            client.settimeout(60)
+            threading.Thread(target = self.listenToClient,args = (client,address)).start()
+
+    def listenToClient(self, client, address):
+        size = 1024
+        key = urandom(16)
+        while True:
+            try:
+                choice = client.recv(size).strip()
+                if choice == b'encrypt':
+                    client.send(encrypt(key) + b'\n')
+                elif choice == b'decrypt':
+                    client.send(b'Ciphertext: ')
+                    c = client.recv(size).strip().decode()
+                    client.send(decrypt(c,key) + b'\n')
+            except:
+                client.close()
+                return False
+
+
+if __name__ == "__main__":
+    ThreadedServer('',2004).listen()
+
+```
+
+---
+
+```py
+
+from pwn import *
+from json import *
+
+
+s = connect("localhost", 2004)
+
+def encrypted():
+    s.sendline(b"encrypt")
+    return s.recv()
+
+def decrypt(iv: bytes, enc: bytes) -> bool:
+    s.sendline(b"decrypt")
+    s.sendline((iv + bytes(enc)).hex().encode())
+    if b'Decrypted successfully.' in s.recvline():
+        return True
+    else: return False
+
+
+tmp = bytes.fromhex(encrypted().decode())
+
+IV = tmp[:16]
+encrypted = tmp[16:]
+
+# len(iv) = 16, len(enc_flag) = 32
+
+BYTE_NB = 16
+
+block_number = len(encrypted)//BYTE_NB
+decrypted = bytes()
+
+# Go through each block
+for i in range(block_number, 0, -1):
+
+    current_encrypted_block = encrypted[(i-1)*BYTE_NB:(i)*BYTE_NB]
+    # At the first encrypted block, use the initialization vector if it is known
+
+    if(i == 1):
+
+        previous_encrypted_block = bytearray(IV.encode("ascii"))
+
+    else:
+
+        previous_encrypted_block = encrypted[(i-2)*BYTE_NB:(i-1)*BYTE_NB]
+
+    bruteforce_block = previous_encrypted_block
+    current_decrypted_block = IV
+    padding = 0
+    # Go through each byte of the block
+
+    for j in range(BYTE_NB, 0, -1):
+
+        padding += 1
+        # Bruteforce byte value
+
+        for value in range(0,256):
+
+            bruteforce_block = [x for x  in bytearray(bruteforce_block)]
+            bruteforce_block[j-1] = (bruteforce_block[j-1] + 1) % 256
+            joined_encrypted_block = [x for x in bytes(bruteforce_block)] + [x for x in current_encrypted_block]
+            # Ask the oracle
+
+            if decrypt(IV, joined_encrypted_block):
+
+                current_decrypted_block[-padding] = bruteforce_block[-padding] ^ previous_encrypted_block[-padding] ^ padding
+                # Prepare newly found byte values
+
+                for k in range(1, padding+1):
+
+                    bruteforce_block[-k] = padding + 1 ^ current_decrypted_block[-k] ^ previous_encrypted_block[-k]
+                break
+
+    decrypted = bytes(current_decrypted_block) + bytes(decrypted)
+print(decrypted[:-decrypted[-1]])  # Padding removal
+
+```
+
+> KCSC{CBC_p4dd1ng_0racle_}
