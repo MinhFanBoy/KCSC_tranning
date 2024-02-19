@@ -2240,3 +2240,66 @@ print ("oracle_calls=", oracle_calls)
 ```
 
 > KCSC{CBC_p4dd1ng_0racle_}
+
+Trên kia là code tự có, đây là code tự viết.
+
+```py
+
+from Crypto.Util.Padding import *
+from pwn import *
+from json import *
+
+s = connect("localhost", 2004)
+
+def encrypted_flag():
+
+    s.sendline(b"encrypt")
+
+    return s.recv()
+
+
+def decrypted(enc) -> bool:
+
+    s.sendline(b'decrypt')
+    s.recvuntil(b'Ciphertext: ')
+    s.send(enc.hex().encode())
+
+    if b"Decrypted successfully" in s.recvline():
+        return True
+    return False
+
+tmp = bytes.fromhex(encrypted_flag()[:-1].decode())
+
+iv = tmp[:16]
+enc_flag = tmp[16:]
+
+flag = b""
+
+for block in range(len(enc_flag) // 16, 0, -1):
+    c = b""
+    c2= enc_flag[(block - 1) * 16: block * 16]
+
+    if block == 1:
+        c1 = iv
+    else: c1 = enc_flag[(block - 2) * 16: (block -1) * 16]
+    
+    for i in range(15, -1, -1):
+        
+        p = (16 - i).to_bytes(1, byteorder= "big")
+        for y in range(0, 256):
+
+            brute = y.to_bytes(1, byteorder= "big")
+
+            last = xor( p * (15 - i), c)
+
+            tmp = c1[: i ] + brute + last
+
+            if decrypted(tmp + c2):
+                c = xor(p, brute) + c
+                break
+
+    flag = xor(c, c1) + flag
+
+print(f"This is flag: {flag[:-flag[-1]].decode()}")
+
+```
