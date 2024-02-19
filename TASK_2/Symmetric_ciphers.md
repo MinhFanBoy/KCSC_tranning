@@ -2303,3 +2303,88 @@ for block in range(len(enc_flag) // 16, 0, -1):
 print(f"This is flag: {flag[:-flag[-1]].decode()}")
 
 ```
+
+
+### 23. ???
+
+---
+
+**_TASK:_**
+
+
+```py
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from hashlib import md5
+from os import urandom
+
+FLAG = b'KCSC{Th15_15_jus+_f4k3_fl4g}'
+assert len(FLAG) % 16 == 1 # hint
+
+key1 = urandom(3)
+key2 = urandom(1)
+key3 = key1
+
+key1 = md5(2*key1).digest()
+key2 = md5(10*key2).digest()
+key3 = md5(2024*key3).digest()
+
+cipher1 = AES.new(key1, AES.MODE_ECB)
+cipher2 = AES.new(key2, AES.MODE_ECB)
+cipher3 = AES.new(key3, AES.MODE_ECB)
+
+enc = cipher1.encrypt(pad(FLAG, 16))
+enc = cipher2.decrypt(enc)
+enc = cipher3.encrypt(enc)
+
+print(enc.hex())
+# ceb9223fccd91526c755cbb723086a63424a2565ab08d06857d043b4380b6611731bf80bf897284196e5310a9639797f68b56134a2ec1478ea496ba25473ea154ff694d6d5dd23e437a54e6613b06bdd
+
+```
+---
+
+
+haizzz
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7e35a5f7-2588-4d8a-9de6-52f7e24b265a)
+
+
+```py
+from  Crypto.Util.number import *
+from Crypto.Util.Padding import *
+from Crypto.Cipher import AES
+from hashlib import md5
+from tqdm import *
+
+
+enc = "ceb9223fccd91526c755cbb723086a63424a2565ab08d06857d043b4380b6611731bf80bf897284196e5310a9639797f68b56134a2ec1478ea496ba25473ea154ff694d6d5dd23e437a54e6613b06bdd"
+enc = bytes.fromhex(enc)
+
+last_block_flag = pad(b"}", 16)
+last_block_enc = enc[-16:]
+
+for x in tqdm(range(2 ** 24)):
+
+    key_1 = x.to_bytes(3, byteorder= "big" )
+    key_3 = key_1
+    
+    key1 = md5(2*key_1).digest()
+    key3 = md5(2024*key_3).digest()
+
+    cipher1 = AES.new(key1, AES.MODE_ECB)
+    cipher3 = AES.new(key3, AES.MODE_ECB)
+
+    once = cipher1.encrypt(last_block_flag)
+    third = cipher3.decrypt(last_block_enc)
+
+    for i in range(2 ** 8):
+        key2 = i.to_bytes(1, byteorder= "big")
+        key2 = md5(10*key2).digest()
+        cipher2 = AES.new(key2 , AES.MODE_CBC)
+
+        if cipher2.encrypt(once) == third:
+
+            print("This is key: ",key1, i.to_bytes(1, byteorder= "big"), key3 )
+            break
+    
+```
