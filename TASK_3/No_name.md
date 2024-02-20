@@ -44,7 +44,7 @@ Ví dụ: Với nhóm (R, +), ta dễ thấy:
 + Tính kết hợp $\forall a, b, c \in R$ ta có: $a + b + c = a + (b + c) = (a + b) + c$
 + Có phần tử trung hòa $\forall x \in r$, $\exists 0 \in R$ sao cho: $x + 0 = x$
 + Có phần tử đối $\forall x \in R$, $\exists -x \in R$  sao cho: $x + (-x) = 0$ với 0 là phần tử trung hòa
-+ Có tính giao hoán: $(a + b) + c = a + (b + c)$ $\forall a, b, c \in R$
++ Có tính giao hoán: $(a + c) + b = a + (b + c)$ $\forall a, b, c \in R$
 
 Vậy (R, +) là một nhóm Abel.
 
@@ -55,7 +55,7 @@ Vậy (R, +) là một nhóm Abel.
 3. Có quy tắc giản ước: $a ∗ x = a ∗ y \to x = y$
 4. Phương trình $x ∗ a = b$ có nghiệm duy nhất $x = b ∗ a'$
 
-Thật vậy, theo ví dụ trên (R, +) ta hoàn toàn khồn thể tìm ra một phần tử trung hòa nào khác 0. Phần tử đối cũng như vậy.
+Thật vậy, theo ví dụ trên (R, +) ta hoàn toàn không thể tìm ra một phần tử trung hòa nào khác 0. Phần tử đối cũng như vậy.
 
 Quy tắc giản ước $a + b = a + c \to a + b + (-a) = a + c + (-a)$ mà đây là nhóm giao hoán và (-a) là phần tử đối của a.
 
@@ -71,7 +71,7 @@ Ký hiệu:
 + Cấp của nhóm G: ord(G) hay |G|
 + Cấp của phần tử a: ord(a) hay |a|
 
-Ngoài ra, theo định lý Lagrange (la gờ răng :L) thì cấp của nhóm phụ hữu hạn thuộc G (nhóm G hữu hạn) thì sẽ luôn chia hết, kiểu ord(G)|ord(a). Từ đó nhóm có bậc là số nguyên tố sẽ chỉ có hai nhóm con cấp 1 và chính nó.
+Ngoài ra, theo định lý Lagrange (la gờ răng :L) thì cấp của nhóm phụ hữu hạn thuộc G (nhóm G hữu hạn) thì sẽ luôn chia hết, kiểu ord(a)|ord(G). Từ đó nhóm có bậc là số nguyên tố sẽ chỉ có hai nhóm con cấp 1 và chính nó.
 
 Cũng là ngoài ra, nếu ord(G) = n thì nhóm $|Z_{n}^{*}| = \phi(n)$ với $\phi(n)$ tính theo hàm Euler.
 
