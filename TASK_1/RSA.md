@@ -2293,7 +2293,7 @@ c = (cipher.decrypt(long_to_bytes(c)))
 print(c)
 ```
 
-### I don't no What is this.
+### I don't know What is this.
 
 
 
@@ -2326,6 +2326,11 @@ print(f'c = {pow(3,bytes_to_long(flag),n)}')
 ---
 
 🥇
+
+[information](https://juejin.cn/post/7148772467194986504)
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/c396945c-dd64-4878-b6cd-5288f7b3b462)
+
 
 ```py
 
