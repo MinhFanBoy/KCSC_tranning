@@ -186,3 +186,17 @@ Công thức chi tiết để tính toán điểm phản xạ R qua trục hoàn
 
 
 TÍnh toán phép công là cơ sở để xây dựng nên hệ mật ECC, và nhiều vấn đề toán học khác.
+
+#### 2. 7 Phép nhân
+
+Phép nhân định nghĩa như một dãy các phép công liên tiếp với nhau $n * P = P + P ... + P = (n - 1) * P + P$
+
+Việc tính toán phép nhân vô hướng này có thể được tối ưu bằng cách sử dụng các thuật toán như Montgomery ladder hay double-and-add. Các thuật toán này giúp giảm số lần tính toán trên đường cong Elliptic và tăng tốc độ tính toán.
+
+Ta thực hiện như sau:
++ Set Q = P and R = O.
++ Loop while n > 0.
+  + If n ≡ 1 mod 2, set R = R + Q.
+  + Set Q = 2 Q and n = ⌊n/2⌋.
+  + If n > 0, continue with loop at Step 2.
++ Return the point R, which equals nP.
