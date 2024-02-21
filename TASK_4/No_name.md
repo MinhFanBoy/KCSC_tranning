@@ -203,12 +203,9 @@ Ta thực hiện như sau:
 
 #### 2. 8 Discrete log
 
-Trong đường cong elliptic trong trường hữu hạn $F_p$, bài toán log rời rạc là bài toán tìm số nguyên k sao cho $Q = k * P$ khi biết P, Q. Đây được coi là một trong những bài toán khó trong toán học.
-
-Trong trường hợp p nhỏ, ta có thể tình k bằng cách thử tất cả các số nguyên có thể trong khoảng từ [1: p - 1] để tìm ra số nguyên k. Nhưng đây là một cách làm khá lâu, với các bài toán lớn nó dường như trở nên bất khả thi với độ phức tập O(n). k được gọi là log rời rạc cơ số P của Q. 
+Trong nhóm nhân Zp*, cho các phần tử r và q của nhóm và một số nguyên tố p, tìm một số k sao cho r = qk mod p. Khi nhóm đường cong elip được mô tả bằng ký hiệu cộng, bài toán logarit rời rạc đường cong elip là: cho điểm P và Q trong nhóm, tìm một số k sao cho Pk = Q, k được gọi là log rời rạc cơ số P của Q. 
 
 Bất kỳ một hệ mật khóa công khai nào cũng phải sử dụng một bài toán khó để xây dựng hàm một chiều. Ý nghĩa một chiều ở đây có nghĩa là tính thuận thì dễ (thuật toán giải trong thời gian đa thức) và tính ngược thì khó (thuật toán giải với
 thời gian không phải là đa thức - thường là hàm mũ hoặc nửa mũ). Các tham số của Hệ mật dựa trên đường cong Elliptic (ECC) cần phải được lựa chọn cẩn thận để tránh được các tấn công đối với bài toán ECDLP.
-
-
+Trong trường hợp p nhỏ, ta có thể tình k bằng cách thử tất cả các số nguyên có thể trong khoảng từ [1: p - 1] để tìm ra số nguyên k. Nhưng đây là một cách làm khá lâu, với các bài toán lớn nó dường như trở nên bất khả thi với độ phức tập O(n).
 
