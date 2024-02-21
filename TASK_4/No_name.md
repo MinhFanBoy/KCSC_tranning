@@ -137,3 +137,12 @@ Tuy nhiên, nếu đường cong elliptic được xác định trên trường 
 Vậy với order của E(p) là số phần tử trên đường cong ký hiệu |E(k)|, vậy $|E(p)| = p + 1 - 2 * \sqrt{p}$
 
 Cụ thể hơn, ta có thể tính toán Group order của E(K) bằng cách tìm số lượng điểm trên đường cong, sử dụng các thuật toán tìm điểm trên đường cong như phép cộng và phép nhân. Việc tính toán Group order rất quan trọng trong việc áp dụng đường cong elliptic trong các ứng dụng mật mã, như tạo số nguyên tố trong mã hóa RSA.
+
+#### 2. 4 ECC subgroup order
+
+Trong elliptic cuvre, nhóm con được định nghĩa là bậc của một phần tử thuộc đường cong mà sau khi nhân điểm đó với một số ta sẽ được một điểm vãn thuộc đường cong. Như vậy, với điểm P sao cho thỏa mãn $P * n = Q, n \in N$ khiến Q thuộc đường cong. Bậc của P là số lượng phần tử thỏa mãn tính chất trên(số lượng điểm trên nhóm con). 
+
+Theo định lý la-gờ-răng (?) thì cấp của nhóm con là ước chung của cấp đường cong.
+
+Vậy với đường cong trên trường $F_p$, p là số nguyên tố, thì cấp của một phần tử có thể là 1 hoặc p. Điều này là cơ sở cho việc sử dụng đường cong elliptic trong ECC, vì nếu một điểm P trên đường cong có bậc nhóm con bằng p thì P có thể được sử dụng như một Base Point để tạo ra các khóa bảo mật trong hệ thống ECC.
+
