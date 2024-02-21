@@ -220,6 +220,34 @@ thi.
 
 #### 3.1 Phương pháp bước nhỏ bước lớn
 
+```py
+
+from gmpy2 import iroot
 
 
+def baby_gaint(a, b, p) -> int:
+    m = iroot(p, 2)[0] + 1
+
+    tmp = {}
+
+    for i in range(0, m):
+        tmp[pow(a, i, p)] = i
+
+    y = b
+    for i in range(0, m):
+        try:
+            j = tmp[y]
+            return ( i * m + j)
+        except:
+            y = y * pow(a, -m, p)
+
+    return None
+
+```
+
+Đây là code babystep giantstep mình viết để giải $a ^ x = b \pmod{p}$ thông thường.
+
+Thuật toán này dựa trên sự đánh đổi không-thời gian. Đó là một sửa đổi khá đơn giản của phép nhân thử, phương pháp ngây thơ để tìm logarit rời rạc. Với một nhóm hoán vị E(p), phần tử sinh a và một phần tử trong nhóm b. Ta tìm số x sao cho $a = x * b \pmod{p}$. Độ phức tạp của nó là O($sqrt{n}$) thay vì O(n) như brute-force.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/94a2bc1b-d77f-48eb-8c14-10f3fbc8ec3c)
 
