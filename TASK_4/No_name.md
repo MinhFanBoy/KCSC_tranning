@@ -251,3 +251,6 @@ Thuật toán này dựa trên sự đánh đổi không-thời gian. Đó là m
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/94a2bc1b-d77f-48eb-8c14-10f3fbc8ec3c)
 
+Tương tự như thế, giả sử tồn tại x = i * m + j với m = $\sqrt{p}$ nên $a = (i * m + j) * b \pmod{p}$ $\to$ $a - i * m * b = j * b \pmod{p}$
+
+từ đó thử với mọi i, j trong khoảng $1 \leq j, i \leq p - 1$ thử lưu cặp (j, j * b) và tính (a - i * m * b) nếu thỏa mãn thì ta tìm ra được $x = m * i + j$
