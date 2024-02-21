@@ -158,3 +158,31 @@ Hiện nay có một vài cách để tìm ra điểm cơ sở, dễ dàng nhấ
 
 Việc tìm một base point tốt ká quan trong trong crypto vì nó sẽ ảnh hưởng tới tính bảo mật, thời gian, hiệu suất của hệ thống.
 
+#### 2. 6 Phép cộng
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/9ab9490b-3267-4e9b-add6-0c26d1ba54a6)
+
+$$E: y ^ 2 = x ^ 3 + a * x + b$$
+
+Phép cộng hai điểm trên đường cong elliptic được thực hiện bằng cách sử dụng công thức cộng.
+
+Với hai điểm P, Q thuộc đường cong ta tính P + Q như sau:
+
++ Nếu P = $\theta$, thì Q + P = Q
++ Nếu Q = $\theta$, thì Q + P = P
++ Nếu P = - Q (cũng tương tự Q = - P) hay hai phần tử đối xứng nhau qua trục hoành (phần tử nghịch đảo), thì P + Q = $\theta$
++ Còn lại ta thực hiện như sau:
+  + Tính độ dốc của đoạn thẳng được tạo ra bởi P, Q. Nếu P, Q trùng nhau thì đoạn thẳng là tiếp tuyến của đường cong tại điểm P, Q
+  + Tìm giao điểm của đường này với đường cong
+  + Lấy điểm đối xứng của điếm có, điểm đó là điểm cần tìm
+ 
+Công thức chi tiết để tính toán điểm phản xạ R qua trục hoành là:
+
++ $s = (y_P - y_Q) / (x_P - x_Q)$
+
++ $x_R = s^2 - x_P - x_Q$
+
++ $y_R = -y_P + s * (x_P - x_R)$
+
+
+TÍnh toán phép công là cơ sở để xây dựng nên hệ mật ECC, và nhiều vấn đề toán học khác.
