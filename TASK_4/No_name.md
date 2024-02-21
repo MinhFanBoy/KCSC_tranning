@@ -125,9 +125,10 @@ Dạng đơn giản của phương trình đường cong elip không chỉ giúp
 
 > định lý Hasse
 
-    Với N là số phần tử trên elliptic curve trong trường p, ta có 
+Với N là số phần tử trên elliptic curve trong trường p, ta có 
     
 $$|N - (p + 1)| \leq 2 * \sqrt{p}$$
+
 
 Việc tính toán "order" của một đường cong elliptic trên trường hữu hạn Fp có thể trở nên rất phức tạp, và cần sử dụng các thuật toán đặc biệt để giải quyết vấn đề này. Một trong những phương pháp tính toán "order" của một đường cong elliptic là thuật toán Schoof.
 
