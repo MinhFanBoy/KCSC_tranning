@@ -216,6 +216,10 @@ Thuật toán tốt nhất hiện nay để tấn công bài toán ECDLP là s�
 thi.
 
 
+### 3. Phương pháp tính discrete log
+
+#### 3.1 Phương pháp bước nhỏ bước lớn
+
 
 
 
