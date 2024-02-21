@@ -146,3 +146,15 @@ Theo định lý la-gờ-răng (?) thì cấp của nhóm con là ước chung c
 
 Vậy với đường cong trên trường $F_p$, p là số nguyên tố, thì cấp của một phần tử có thể là 1 hoặc p. Điều này là cơ sở cho việc sử dụng đường cong elliptic trong ECC, vì nếu một điểm P trên đường cong có bậc nhóm con bằng p thì P có thể được sử dụng như một Base Point để tạo ra các khóa bảo mật trong hệ thống ECC.
 
+#### 2. 5 Base point
+
+Điểm cơ sở (base point) là điểm thuộc đường cong thỏa mãn:
+
++ Điểm cơ sở phải thuộc đường cong
++ Cấp của điểm cơ sở phải đủ lớn(tức số lượng điểm có thể tạo ra từ điểm cơ sở lớn để đảm bảo tính bảo mật)
++ Không có số nguyên dương nào khác 0 nhân với điểm đó tạo ra điểm vô cùng.
+
+Hiện nay có một vài cách để tìm ra điểm cơ sở, dễ dàng nhất pà cách thử và sai tức là ta cứ thử cho tới khi nào tìm được điểm thỏa mã thì dừng lại. Một cách khác đó là Pollard rho hay kangaroo nhưng phương pháp này thường chỉ được áp dụng cho các đường cong "nhỏ".
+
+Việc tìm một base point tốt ká quan trong trong crypto vì nó sẽ ảnh hưởng tới tính bảo mật, thời gian, hiệu suất của hệ thống.
+
