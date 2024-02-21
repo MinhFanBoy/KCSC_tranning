@@ -123,9 +123,15 @@ Dạng đơn giản của phương trình đường cong elip không chỉ giúp
 
 #### 2. 3 ECC order
 
-Với N là số phần tử trên elliptic curve trong trường p, ta có 
+> định lý Hasse
 
-$$|N - (p + 1)| \leq 2 * \sqrt{p}$$
+    Với N là số phần tử trên elliptic curve trong trường p, ta có 
+    
+    $$|N - (p + 1)| \leq 2 * \sqrt{p}$$
+
+Việc tính toán "order" của một đường cong elliptic trên trường hữu hạn Fp có thể trở nên rất phức tạp, và cần sử dụng các thuật toán đặc biệt để giải quyết vấn đề này. Một trong những phương pháp tính toán "order" của một đường cong elliptic là thuật toán Schoof.
+
+Tuy nhiên, nếu đường cong elliptic được xác định trên trường Fp và có thể được viết dưới dạng y^2 = x^3 + ax + b (mod p) (với a, b là các số nguyên trong trường Fp), thì theo định lý Hasse, ta có thể xác định được giới hạn trên và dưới cho "order" của đường cong elliptic đó như sau:
 
 Vậy với order của E(p) là số phần tử trên đường cong ký hiệu |E(k)|, vậy $|E(p)| = p + 1 - 2 * \sqrt{p}$
 
