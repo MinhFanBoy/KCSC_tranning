@@ -121,12 +121,12 @@ Thuận Lợi Cho Triển Khai Trên Phần Cứng:
 Các thiết bị có tài nguyên hạn chế thường thích hợp với đường cong elip có dạng đơn giản. Các phép toán như cộng điểm và nhân số nguyên trên đường cong Weierstrass thường có thể được triển khai một cách hiệu quả trên phần cứng nhúng.
 Dạng đơn giản của phương trình đường cong elip không chỉ giúp tối ưu hóa tính toán mà còn làm cho các hệ thống mã hóa dựa trên ECC trở nên linh hoạt, hiệu quả và dễ quản lý.
 
-### 2. 3 ECC order
+#### 2. 3 ECC order
 
 Với N là số phần tử trên elliptic curve trong trường p, ta có 
 
 $$|N - (p + 1)| \leq 2 * \sqrt{p}$$
 
-Vậy với order của E(p) là số phần tử trên đường cong ký hiệu (|E(k)|), vậy $|E(p)| = p + 1 - 2 * sqrt{p}$
+Vậy với order của E(p) là số phần tử trên đường cong ký hiệu |E(k)|, vậy $|E(p)| = p + 1 - 2 * \sqrt{p}$
 
 Cụ thể hơn, ta có thể tính toán Group order của E(K) bằng cách tìm số lượng điểm trên đường cong, sử dụng các thuật toán tìm điểm trên đường cong như phép cộng và phép nhân. Việc tính toán Group order rất quan trọng trong việc áp dụng đường cong elliptic trong các ứng dụng mật mã, như tạo số nguyên tố trong mã hóa RSA.
