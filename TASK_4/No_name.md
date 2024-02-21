@@ -207,5 +207,15 @@ Trong nhóm nhân Zp*, cho các phần tử r và q của nhóm và một số n
 
 Bất kỳ một hệ mật khóa công khai nào cũng phải sử dụng một bài toán khó để xây dựng hàm một chiều. Ý nghĩa một chiều ở đây có nghĩa là tính thuận thì dễ (thuật toán giải trong thời gian đa thức) và tính ngược thì khó (thuật toán giải với
 thời gian không phải là đa thức - thường là hàm mũ hoặc nửa mũ). Các tham số của Hệ mật dựa trên đường cong Elliptic (ECC) cần phải được lựa chọn cẩn thận để tránh được các tấn công đối với bài toán ECDLP.
-Trong trường hợp p nhỏ, ta có thể tình k bằng cách thử tất cả các số nguyên có thể trong khoảng từ [1: p - 1] để tìm ra số nguyên k. Nhưng đây là một cách làm khá lâu, với các bài toán lớn nó dường như trở nên bất khả thi với độ phức tập O(n).
+Trong trường hợp p nhỏ, ta có thể tình k bằng cách thử tất cả các số nguyên có thể trong khoảng từ [1: p - 1] để tìm ra số nguyên k. Nhưng đây là một cách làm khá lâu, với các bài toán lớn nó dường như trở nên bất khả thi với độ phức tập O(n).Trong trường hợp xấu nhất sẽ phải cần đến n bước
+thử, trung bình thường là n/2 là đạt được điểm Q, do đó cần phải chọn n đủ lớn để bài toán vét cạn là không khả thi (n ≥ 2160).
+
+Thuật toán tốt nhất hiện nay để tấn công bài toán ECDLP là sự kết hợp của thuật toán Pohlih-Hellman và Pollard’s rho, thuật toán này có thời gian tính là O($sqrt{p}$
+), với p là ước số nguyên tố lớn nhất của n do đó phải chọn số n sao cho nó chia hết số nguyên tố p lớn nhất có 
+ đủ lớn để giải bài toán này là không khả
+thi.
+
+
+
+
 
