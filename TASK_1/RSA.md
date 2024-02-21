@@ -2331,6 +2331,16 @@ print(f'c = {pow(3,bytes_to_long(flag),n)}')
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/c396945c-dd64-4878-b6cd-5288f7b3b462)
 
+Đẻ giải thích dễ hiểu hơn thì ta có:
+
++ Theo định lý Fermat nhỏ ta có : $a ^ {p - 1} = 1 \pmod{p} \forall { \text {p is prime}}$
++ gọi $a$ là tích của các prime mà p, q có thể có (ở trong bài này là khoảng [2: $2 ^ 8$]) từ đó ta có $a = k_1 * p = k_2 * q$
+
+Từ đó $2 ^ a = 2 ^ {k_1 * p} = { 2 ^ p} ^ {k_1} = 1 ^ {k_1} \pmod{p}$ nên $2 ^ a - 1 = k * p$
+
+Từ đó: gcd(2 ^ a - 1, n) = gcd(k * p, p * q) = p.
+
+từ đó ta dễ dàng có được p. rồi sử dụng p để tính discrete_log trong mod p là được (vì p là smooth prime và tính trong mod p hay n cũng tương đương)
 
 ```py
 
