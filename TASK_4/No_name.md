@@ -215,6 +215,25 @@ Thuật toán tốt nhất hiện nay để tấn công bài toán ECDLP là s�
  đủ lớn để giải bài toán này là không khả
 thi.
 
+#### 2. 9 ECC over finite fields
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/367f66ec-b3df-4e0a-8789-46e17645cb7e)
+
+Với định nghĩa như vậy ta lại nảy sinh một vấn đề rằng với mỗi x thuộc ${E(F_p) : Y ^ 2 = X ^ 3 + a * X + b}$ ta luôn có $y ^ 2 \equiv c \pmod{p}$ từ đó ta phải tìm thặng dư bậc hai với mội x để tìm được ra hai nghiệm y thỏa mãn.
+
+VD:
+$E : Y ^ 2 = X ^ 3 + 3 * X + 8$ over the field F13.
+
+$5 ^ 2 ≡ 12 (mod 13)$  và  $8 ^ 2 ≡ 12 (mod 13)$.
+tương tự như vậy ta có được tất cả các phần tử của đường cong trong trường hữu hạn.
+
+E(F13) = {O,(1, 5),(1, 8),(2, 3),(2, 10),(9, 6),(9, 7),(12, 2),(12, 11)}.
+
+Từ đó ta có bảng sau:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/84ceaba6-4943-433a-b100-43524938bd81)
+
+
 
 ### 3. Phương pháp tính discrete log
 
