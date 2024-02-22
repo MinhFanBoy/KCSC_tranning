@@ -1,4 +1,4 @@
-
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/edfc4aab-c058-407f-9858-8199a65d4b1d)
 Tables of contents
 ==================
 
@@ -214,6 +214,15 @@ Thuật toán tốt nhất hiện nay để tấn công bài toán ECDLP là s�
 ), với p là ước số nguyên tố lớn nhất của n do đó phải chọn số n sao cho nó chia hết số nguyên tố p lớn nhất có 
  đủ lớn để giải bài toán này là không khả
 thi.
+
+Việc khó đầu tiên là với hai điểm P, Q bất kỳ không phải lúc nào việc tính log rời rạc của nó cũng tồn tại và xác định, tuy nhiên trong bài toán mã hóa người ta luôn chọn P sao cho xác định được Q từ đó log của nó hoàn toàn xác định và bằng n.
+
+Việc khó thứ hai là với hai điểm P, Q ta có thể tìm ra được nhiều điểm n thỏa mãn từ đó ta phải hướng tới việc tìm n nhỏ nhất. Dễ chứng minh nó như sau, giả sử n * P = $\theta$, từ đó 2 * n * P = $\theta$, 3 * n * P = $\theta$, ... 
+
+từ đó ta có một tính chất khá hay (nhưng không biết áp dụng dc k )
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/7871a18d-f357-45b4-bf13-4f22c3c97d18)
+
 
 #### 2. 9 ECC over finite fields
 
