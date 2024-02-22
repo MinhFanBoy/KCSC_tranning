@@ -1,4 +1,4 @@
-![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/edfc4aab-c058-407f-9858-8199a65d4b1d)
+
 Tables of contents
 ==================
 
@@ -193,6 +193,12 @@ Phép nhân định nghĩa như một dãy các phép công liên tiếp với n
 
 Việc tính toán phép nhân vô hướng này có thể được tối ưu bằng cách sử dụng các thuật toán như Montgomery ladder hay double-and-add. Các thuật toán này giúp giảm số lần tính toán trên đường cong Elliptic và tăng tốc độ tính toán.
 
+Dễ thấy khi n lớn ( với n nhỏ thì không sao) thì việc tính từng P công với nhau là rất tốn thời gian và hiệu năng(cái tư bản không thích) nên ta sử dụng thuật toán double and add để tính toán.
+
+với $n * P = n_0 * Q_0 + n_1 * Q_1 + n_2 * Q_2 + ··· + n_r * Q_r$.
+
+$Q_0 = P, Q_1 = 2 * Q_0, Q_2 = 2 * Q_1, ... ,Q_r = 2 * Q_{r−1}$.
+
 Ta thực hiện như sau:
 + Set Q = P and R = O.
 + Loop while n > 0.
@@ -200,6 +206,8 @@ Ta thực hiện như sau:
   + Set Q = 2 Q and n = ⌊n/2⌋.
   + If n > 0, continue with loop at Step 2.
 + Return the point R, which equals nP.
+
+
 
 #### 2. 8 Discrete log
 
