@@ -348,6 +348,9 @@ rồi gửi các tham số vừa tính đựo cho Bob, khi đó, để xác nh�
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/096cf05b-dbfa-4410-b2ed-122d0a0b382e)
 
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/bab8c7ce-b2b1-46c3-a023-7eeea31945b0)
+
+(Hình minh họa)
 
 *More*
 
