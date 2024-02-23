@@ -355,7 +355,7 @@ Mỗi khi ký một tin nhắn ta cần chọn các k khác nhau để tranh b�
 
 giả sử ta bắt được hai mã xác thực (r, s) và (r', s'). Do được mã hóa cũng bằng k nên khi đó r = r'.  mà  
 
-$ s = k ^ {-1} * ( z + r *d_{A}) \pmod{n}$
+$s = k ^ {-1} * ( z + r *d_{A}) \pmod{n}$
 
 khi đó s - s' = k* (z - z'), từ đó k = (s - s')/ (z - z') nên ta có thể tìm k (vì z , z' đã biết) từ đó hoàn toàn có thể tính lại $d_A = (s * k - z) / r$
 
