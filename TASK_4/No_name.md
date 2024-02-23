@@ -290,3 +290,44 @@ Thuật toán này dựa trên sự đánh đổi không-thời gian. Đó là m
 Tương tự như thế, giả sử tồn tại x = i * m + j với m = $\sqrt{p}$ nên $a = (i * m + j) * b \pmod{p}$ $\to$ $a - i * m * b = j * b \pmod{p}$
 
 từ đó thử với mọi i, j trong khoảng $1 \leq j, i \leq p - 1$ thử lưu cặp (j, j * b) và tính (a - i * m * b) nếu thỏa mãn thì ta tìm ra được $x = m * i + j$
+
+### 4. ECC in crpytography
+
+#### 4. 1 Diffie hellman key exchange
+
+Nó khá giống với trao đổi khóa trong RSA, nên mình sẽ nói(cụ thể là viết) nhanh.
+
+Alice và Bob tạo ra một đường cong chung sử dụng dạng như đã nói ở trên và một điểm P thuộc đường cong.
+
+Alice trong ra một số bí mật là a và giữ nó làm bí mất k để cho ai biết kể cả Bob. Tương tự Bob cũng tạo ra một số b.
+
+Alice và Bob tính:
+
+$$Q_A = a * P \text{và} Q_B = b * P $$
+
+Sau đó thì Alice gửi cho Bob $Q_A$ Bob gửi cho Alice $Q_B$. Từ đó ta có thể tính ra số bí mật chung là:
+$$secret = a * Q_B = b * Q_A = a * b * P$$
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/e498c030-cfc5-4a12-bf7d-f44abc7cff6c)
+
+(Ảnh minh họa)
+
+#### 4. 2 EEPKC
+
+Mã hóa nãy cũng gần giống như RSA => :(
+
+Alice và Bob tạo ra một đường cong chung sử dụng dạng như đã nói ở trên và một điểm P thuộc đường cong. Với thông điệp muốn gửi là M.
+
+Alice chọn ra một số bí mật là a(giữ số này k cho ai biết).
+
+Alice tính : $Q_a = a * P$
+
+Rồi sau đó chon một số k ngẫu nhiên có thể để lộ, rồi tính: $c_1 = k * P$ và $c_2 = M + k * Q_a$
+
+Rồi gửi hai điểm trên là được.
+
+Ta sẽ giả mã nó bằng cách như sau: $M = c_2 - a * c_1 = M + k * a * P - a * k * P = M$ :v đơn giảm mà.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/3523f254-ff04-489f-8548-7e4ec87146c2)
+
+(Hình minh họa)
