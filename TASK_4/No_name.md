@@ -331,3 +331,31 @@ Ta sẽ giả mã nó bằng cách như sau: $M = c_2 - a * c_1 = M + k * a * P 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/3523f254-ff04-489f-8548-7e4ec87146c2)
 
 (Hình minh họa)
+
+#### 4. 3 ECDSA
+
+Giả sử Alice và Bob muốn trao đổi với nhau thì họ phải thảo thuận một đường cong chung gồm (curve, n, G), trong đó curve là các tham số của đường cong, n là cấp của G, G là điểm cơ sở.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/607810c1-6c25-4a89-9e83-65a18f37753c)
+
+Dể ký một tin nhắn ta làm theo các bước sau:
+
+Chọn một số bí mật $d_a$, trong khoảng [1, n - 1]
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/4fa1316d-6e7b-498d-90fb-2d23902ff5b0)
+
+rồi gửi các tham số vừa tính đựo cho Bob, khi đó, để xác nhận tin nhắn đã được gửi là đúng Bob xác nhận lại như sau:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/096cf05b-dbfa-4410-b2ed-122d0a0b382e)
+
+
+*More*
+
+Mỗi khi ký một tin nhắn ta cần chọn các k khác nhau để tranh bị tấn công theo cách sau:
+
+giả sử ta bắt được hai mã xác thực (r, s) và (r', s'). Do được mã hóa cũng bằng k nên khi đó r = r'.  mà  
+
+$ s = k ^ {-1} * ( z + r *d_{A}) \pmod{n}$
+
+khi đó s - s' = k* (z - z'), từ đó k = (s - s')/ (z - z') nên ta có thể tìm k (vì z , z' đã biết) từ đó hoàn toàn có thể tính lại $d_A = (s * k - z) / r$
+
