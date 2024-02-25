@@ -623,3 +623,93 @@ Use the decrypt.py file to decode the flag
 
 ---
 
+Do đề bài đã cho q_x nên ta cần tính q_y mà khi thay số vào ta có $y ^ 2 = const \pmod{m}$ mà m % 4 == 3 từ đó ta có thể dễ dàng tính y bằng công thức la-gờ-răng $y = {const} ^ {(m + 1) // 4} \pmod{m}$ rồi từ đó ta tính secret = n_b * Q_a vừa tính rồi sử dụng file giải mã sẵn có là ta có được flag.
+
+```py
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+
+from Crypto.Util.number import bytes_to_long, long_to_bytes
+
+
+def is_pkcs7_padded(message):
+    padding = message[-message[-1]:]
+    return all(padding[i] == len(padding) for i in range(0, len(padding)))
+
+
+def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Decrypt flag
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = bytes.fromhex(iv)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext)
+
+    if is_pkcs7_padded(plaintext):
+        return unpad(plaintext, 16).decode('ascii')
+    else:
+        return plaintext.decode('ascii')
+
+
+
+
+def add_point(p, q, a, b, n):
+    if p[1] == 0:
+        return q
+    elif q[1] == 0:
+        return p
+    elif p[0] == q[0] and p[1] == -q[1]:
+        return (0, 0)
+    else:
+        if p[0] == q[0] and p[1] == q[1]:
+            m = ((3 * (p[0] ** 2) + a) * pow(2 * p[1], -1, n) ) % n
+        else:
+            m = ((q[1] - p[1]) * (pow(q[0] - p[0], -1, n))) % n
+
+        x = (m ** 2 - q[0] - p[0]) % n
+        y = (m * (p[0] - x) - p[1]) % n
+        return (x, y)
+
+def multiplitcation(p, a, b, m, n):
+    q = p
+    r = (0, 0)
+
+    while n > 0:
+        if n % 2 == 1:
+            r = add_point(r, q, a, b, m)
+        q = add_point(q, q, a, b, m)
+        n //= 2
+    return r
+
+# E: Y2 = X3 + 497 X + 1768, p: 9739, G: (1804,5368)
+
+a = 497
+b = 1768
+m = 9739
+G = (1804,5368)
+
+q_x = 4726
+nB = 6534
+
+q_y = pow((pow(q_x, 3, m) + a * q_x + b) % m, (m + 1) // 4, m)
+
+
+tmp = {'iv': 'cd9da9f1c60925922377ea952afc212c', 'encrypted_flag': 'febcbe3a3414a730b125931dccf912d2239f3e969c4334d95ed0ec86f6449ad8'}
+
+
+
+
+shared_secret = multiplitcation((q_x, q_y), a, b, m, nB)[0]
+iv = tmp['iv']
+ciphertext = tmp['encrypted_flag']
+
+print(decrypt_flag(shared_secret, iv, ciphertext))
+
+```
+
+>crypto{3ff1c1ent_k3y_3xch4ng3}
