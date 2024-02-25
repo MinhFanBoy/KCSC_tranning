@@ -713,3 +713,326 @@ print(decrypt_flag(shared_secret, iv, ciphertext))
 ```
 
 >crypto{3ff1c1ent_k3y_3xch4ng3}
+
+
+### 7. Smooth Criminal
+
+---
+
+**_TASK:_**
+
+```py
+
+from Crypto.Cipher import AES
+from Crypto.Util.number import inverse
+from Crypto.Util.Padding import pad, unpad
+from collections import namedtuple
+from random import randint
+import hashlib
+import os
+
+# Create a simple Point class to represent the affine points.
+Point = namedtuple("Point", "x y")
+
+# The point at infinity (origin for the group law).
+O = 'Origin'
+
+FLAG = b'crypto{??????????????????????????????}'
+
+
+def check_point(P: tuple):
+    if P == O:
+        return True
+    else:
+        return (P.y**2 - (P.x**3 + a*P.x + b)) % p == 0 and 0 <= P.x < p and 0 <= P.y < p
+
+
+def point_inverse(P: tuple):
+    if P == O:
+        return P
+    return Point(P.x, -P.y % p)
+
+
+def point_addition(P: tuple, Q: tuple):
+    # based of algo. in ICM
+    if P == O:
+        return Q
+    elif Q == O:
+        return P
+    elif Q == point_inverse(P):
+        return O
+    else:
+        if P == Q:
+            lam = (3*P.x**2 + a)*inverse(2*P.y, p)
+            lam %= p
+        else:
+            lam = (Q.y - P.y) * inverse((Q.x - P.x), p)
+            lam %= p
+    Rx = (lam**2 - P.x - Q.x) % p
+    Ry = (lam*(P.x - Rx) - P.y) % p
+    R = Point(Rx, Ry)
+    assert check_point(R)
+    return R
+
+
+def double_and_add(P: tuple, n: int):
+    # based of algo. in ICM
+    Q = P
+    R = O
+    while n > 0:
+        if n % 2 == 1:
+            R = point_addition(R, Q)
+        Q = point_addition(Q, Q)
+        n = n // 2
+    assert check_point(R)
+    return R
+
+
+def gen_shared_secret(Q: tuple, n: int):
+    # Bob's Public key, my secret int
+    S = double_and_add(Q, n)
+    return S.x
+
+
+def encrypt_flag(shared_secret: int):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Encrypt flag
+    iv = os.urandom(16)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    ciphertext = cipher.encrypt(pad(FLAG, 16))
+    # Prepare data to send
+    data = {}
+    data['iv'] = iv.hex()
+    data['encrypted_flag'] = ciphertext.hex()
+    return data
+
+
+# Define the curve
+p = 310717010502520989590157367261876774703
+a = 2
+b = 3
+
+# Generator
+g_x = 179210853392303317793440285562762725654
+g_y = 105268671499942631758568591033409611165
+G = Point(g_x, g_y)
+
+# My secret int, different every time!!
+n = randint(1, p)
+
+# Send this to Bob!
+public = double_and_add(G, n)
+print(public)
+
+# Bob's public key
+b_x = 272640099140026426377756188075937988094
+b_y = 51062462309521034358726608268084433317
+B = Point(b_x, b_y)
+
+# Calculate Shared Secret
+shared_secret = gen_shared_secret(B, n)
+
+# Send this to Bob!
+ciphertext = encrypt_flag(shared_secret)
+print(ciphertext)
+```
+
+**_OUTPUT:_**
+
+Point(x=280810182131414898730378982766101210916, y=291506490768054478159835604632710368904)
+
+{'iv': '07e2628b590095a5e332d397b8a59aa7', 'encrypted_flag': '8220b7c47b36777a737f5ef9caa2814cf20c1c1ef496ec21a9b4833da24a008d0870d3ac3a6ad80065c138a2ed6136af'}
+
+---
+
+hmm. Bài này mình tìm lại n bằng log rời rạc vì khi phân tích p qua factordb ta thấy p là smooth prime dễ dàng để phân tích. Nên từ đó mình code sage để tìm lại n. Khi có n ta có thể dễ dàng tìm lại secret bằng cách giống như bài trên.
+
+```sage
+
+
+
+m = 310717010502520989590157367261876774703
+a = 2
+b = 3
+
+# Generator
+g_x = 179210853392303317793440285562762725654
+g_y = 105268671499942631758568591033409611165
+
+
+
+
+# Bob's public key
+b_x = 272640099140026426377756188075937988094
+b_y = 51062462309521034358726608268084433317
+
+
+F = GF(m)
+
+E = EllipticCurve(F, [a, b])
+
+G = E(g_x, g_y)
+B = E(b_x, b_y)
+A = E(280810182131414898730378982766101210916, 291506490768054478159835604632710368904)
+a = discrete_log(A, G, operation = "+")
+
+print(a * B)
+
+# (171172176587165701252669133307091694084 : 188106434727500221954651940996276684440 : 1)
+
+```
+
+```py
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+
+from Crypto.Util.number import bytes_to_long, long_to_bytes
+
+
+def is_pkcs7_padded(message):
+    padding = message[-message[-1]:]
+    return all(padding[i] == len(padding) for i in range(0, len(padding)))
+
+
+def decrypt_flag(shared_secret: int, iv: str, ciphertext: str):
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(shared_secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Decrypt flag
+    ciphertext = bytes.fromhex(ciphertext)
+    iv = bytes.fromhex(iv)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext)
+
+    if is_pkcs7_padded(plaintext):
+        return unpad(plaintext, 16).decode('ascii')
+    else:
+        return plaintext.decode('ascii')
+
+
+
+
+def add_point(p, q, a, b, n):
+    if p[1] == 0:
+        return q
+    elif q[1] == 0:
+        return p
+    elif p[0] == q[0] and p[1] == -q[1]:
+        return (0, 0)
+    else:
+        if p[0] == q[0] and p[1] == q[1]:
+            m = ((3 * (p[0] ** 2) + a) * pow(2 * p[1], -1, n) ) % n
+        else:
+            m = ((q[1] - p[1]) * (pow(q[0] - p[0], -1, n))) % n
+
+        x = (m ** 2 - q[0] - p[0]) % n
+        y = (m * (p[0] - x) - p[1]) % n
+        return (x, y)
+
+def multiplitcation(p, a, b, m, n):
+    q = p
+    r = (0, 0)
+
+    while n > 0:
+        if n % 2 == 1:
+            r = add_point(r, q, a, b, m)
+        q = add_point(q, q, a, b, m)
+        n //= 2
+    return r
+
+# E: Y2 = X3 + 497 X + 1768, p: 9739, G: (1804,5368)
+
+
+tmp = {'iv': '07e2628b590095a5e332d397b8a59aa7', 'encrypted_flag': '8220b7c47b36777a737f5ef9caa2814cf20c1c1ef496ec21a9b4833da24a008d0870d3ac3a6ad80065c138a2ed6136af'}
+
+shared_secret = [171172176587165701252669133307091694084, 188106434727500221954651940996276684440][0]
+iv = tmp['iv']
+ciphertext = tmp['encrypted_flag']
+
+print(decrypt_flag(shared_secret, iv, ciphertext))
+```
+
+> crypto{n07_4ll_curv3s_4r3_s4f3_curv3s}
+
+
+### 8. Exceptional Curves
+
+**_TASK:_**
+
+```py
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from random import randint
+import hashlib
+
+FLAG = b'crypto{??????????????????????}'
+
+
+def gen_public_key():
+    private = randint(1, E.order() - 1)
+    public = G * private
+    return(public, private)
+
+
+def shared_secret(public_key, private_key):
+    S = public_key * private_key
+    return S.xy()[0]
+
+
+def encrypt_flag(flag):
+    # Bob's public key
+    b_x = 0x7f0489e4efe6905f039476db54f9b6eac654c780342169155344abc5ac90167adc6b8dabacec643cbe420abffe9760cbc3e8a2b508d24779461c19b20e242a38
+    b_y = 0xdd04134e747354e5b9618d8cb3f60e03a74a709d4956641b234daa8a65d43df34e18d00a59c070801178d198e8905ef670118c15b0906d3a00a662d3a2736bf
+    B = E(b_x, b_y)
+    # Calculate shared secret
+    A, nA = gen_public_key()
+    print(f'Public Key: {A}')
+    secret = shared_secret(B, nA)
+    # Derive AES key from shared secret
+    sha1 = hashlib.sha1()
+    sha1.update(str(secret).encode('ascii'))
+    key = sha1.digest()[:16]
+    # Encrypt flag
+    iv = os.urandom(16)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    ciphertext = cipher.encrypt(pad(FLAG, 16))
+    # Prepare encryption to send
+    data = {}
+    data['iv'] = iv.hex()
+    data['encrypted_flag'] = ciphertext.hex()
+    return data
+
+
+# Curve params
+p = 0xa15c4fb663a578d8b2496d3151a946119ee42695e18e13e90600192b1d0abdbb6f787f90c8d102ff88e284dd4526f5f6b6c980bf88f1d0490714b67e8a2a2b77
+a = 0x5e009506fcc7eff573bc960d88638fe25e76a9b6c7caeea072a27dcd1fa46abb15b7b6210cf90caba982893ee2779669bac06e267013486b22ff3e24abae2d42
+b = 0x2ce7d1ca4493b0977f088f6d30d9241f8048fdea112cc385b793bce953998caae680864a7d3aa437ea3ffd1441ca3fb352b0b710bb3f053e980e503be9a7fece
+
+# Define curve
+E = EllipticCurve(GF(p), [a, b])
+
+# Protect against Pohlig-Hellman Algorithm
+assert is_prime(E.order())
+
+# Create generator
+G = E.gens()[0]
+print(f'Generator: {G}')
+
+encrypted_flag = encrypt_flag(FLAG)
+print(encrypted_flag)@
+```
+
+**_OUTPUT:_**
+
+Generator: (3034712809375537908102988750113382444008758539448972750581525810900634243392172703684905257490982543775233630011707375189041302436945106395617312498769005 : 4986645098582616415690074082237817624424333339074969364527548107042876175480894132576399611027847402879885574130125050842710052291870268101817275410204850 : 1)
+Public Key: (4748198372895404866752111766626421927481971519483471383813044005699388317650395315193922226704604937454742608233124831870493636003725200307683939875286865 : 2421873309002279841021791369884483308051497215798017509805302041102468310636822060707350789776065212606890489706597369526562336256272258544226688832663757 : 1)
+{'iv': '719700b2470525781cc844db1febd994', 'encrypted_flag': '335470f413c225b705db2e930b9d460d3947b3836059fb890b044e46cbb343f0'}
+
+---
