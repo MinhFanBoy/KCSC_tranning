@@ -362,3 +362,264 @@ $s = k ^ {-1} * ( z + r *d_{A}) \pmod{n}$
 
 khi đó s - s' = k* (z - z'), từ đó k = (s - s')/ (z - z') nên ta có thể tìm k (vì z , z' đã biết) từ đó hoàn toàn có thể tính lại $d_A = (s * k - z) / r$
 
+## I. Write up
+
+### 1. Background Reading
+
+---
+
+**_TASK:_**
+
+Formally, let E be an elliptic curve, point addition has the following properties
+
+(a) P + O = O + P = P
+(b) P + (−P) = O
+(c) (P + Q) + R = P + (Q + R)
+(d) P + Q = Q + P
+
+In ECC, we study elliptic curves over a finite field Fp. This means we look at the curve modulo the characteristic p and an elliptic curve will no longer be a curve, but a collection of points whose x,y coordinates are integers in Fp.
+
+The following starter challenges will take you through the calculations for ECC and get you used to the basic operations that ECC is built upon, have fun!
+
+Property (d) shows that point addition is commutative. The flag is the name we give groups with a commutative operation.
+
+---
+
+Tính chất d) là tính chất giao hoán, theo kiến thức đã học từ TASK3 ta dễ thấy đó là nhóm aben còn gọi là nhóm giao hoán.
+
+> crypto{abelian}
+
+
+ ### 2. Point Negation
+
+---
+
+**_TASK:_**
+
+ E: Y2 = X3 + 497 X + 1768, p: 9739
+
+Using the above curve, and the point P(8045,6936), find the point Q(x,y) such that P + Q = O.
+
+---
+
+Ta có điểm để thảo mãn P + Q = 0 là điểm đối xứng với nó qua trục hoành, nên ta chỉ cần lấy nghịch đảo hệ số P_y là được (lưu ý do đây đang là trong nhóm hữu hạn nên ta lấy thành p - P_y)
+
+
+> crypto{8045, 2803}
+
+
+### 3. Point Addition
+
+
+---
+
+**_TASK:_**
+
+We will work with the following elliptic curve, and prime:
+
+$$E: Y^2 = X^3 + 497 * X + 1768,\quad p: 9739$$
+
+You can test your algorithm by asserting: $X + Y = (1024, 4440)$ and $X + X = (7284, 2107)$ for $X = (5274, 2841)$ and $Y = (8669, 740)$.
+
+
+Using the above curve, and the points $P = (493, 5564), Q = (1539, 4742), R = (4403,5202)$, find the point $S(x,y) = P + P + Q + R$ by implementing the above algorithm.
+
+---
+
+Dựa theo kiến thức đã học ở bên trên, dùng thuật toán cộng điểm để tính điểm S = 2P + Q + R;
+Sau khi tính được tạo độ điểm S có thể thay tọa độ S vào E để kiểm tra.
+Ta dùng thuật toán cộng điểm đã trình bày ở trên tiến hành cộng từng điểm 1, rồi lấy kết quả cộng với điểm tiếp theo. Cụ thể tính 2P trước sau đó tính 2P + Q và cuối cùng 2P + Q + R.
+
+P + P + Q + R = (P + P) + (Q + R)
+
+```python
+
+
+def add_point(p, q, a, b, n):
+    if p[1] == 0:
+        return q
+    elif q[1] == 0:
+        return p
+    elif p[0] == q[0] and p[1] == -q[1]:
+        return (0, 0)
+    else:
+        if p[0] == q[0] and p[1] == q[1]:
+            m = ((3 * (p[0] ** 2) + a) * pow(2 * p[1], -1, n) ) % n
+        else:
+            m = ((q[1] - p[1]) * (pow(q[0] - p[0], -1, n))) % n
+
+        x = (m ** 2 - q[0] - p[0]) % n
+        y = (m * (p[0] - x) - p[1]) % n
+        return (x, y)
+    
+a = 497
+b = 1768
+n = 9739
+
+P = (493, 5564)
+Q = (1539, 4742)
+R = (4403,5202)
+
+print(add_point(add_point(P, P, a, b, n), add_point(Q, R, a, b, n), a, b, n))
+
+
+```
+
+> crypto{4215, 2162}
+
+### 4. Scalar Multiplication
+
+---
+
+**_TASK:_**
+
+We will work with the following elliptic curve, and prime:
+
+$$E: Y2 = X3 + 497 X + 1768,\quad p: 9739$$
+
+You can test your algorithm by asserting: $1337 * X = (1089, 6931)$ for $X = (5323, 5438)$.
+
+
+Using the above curve, and the points $P = (2339, 2213)$, find the point $Q(x,y) = 7863 * P$ by implementing the above algorithm.
+
+After calculating $Q$, substitute the coordinates into the curve. Assert that the point $Q$ is in $E(Fp)$.
+
+
+---
+
+Bài này chỉ đơn giản là thực hiện nhiều lần phép cộng điểm, do số khá lớn nên ta áp dụng cách cộng điểm double and add đã được nhắc đến ở trên(nếu k tin có thể lên xem lại)
+
+```python
+
+
+
+def add_point(p, q, a, b, n):
+    if p[1] == 0:
+        return q
+    elif q[1] == 0:
+        return p
+    elif p[0] == q[0] and p[1] == -q[1]:
+        return (0, 0)
+    else:
+        if p[0] == q[0] and p[1] == q[1]:
+            m = ((3 * (p[0] ** 2) + a) * pow(2 * p[1], -1, n) ) % n
+        else:
+            m = ((q[1] - p[1]) * (pow(q[0] - p[0], -1, n))) % n
+
+        x = (m ** 2 - q[0] - p[0]) % n
+        y = (m * (p[0] - x) - p[1]) % n
+        return (x, y)
+
+def multiplitcation(p, a, b, m, n):
+    q = p
+    r = (0, 0)
+
+    while n > 0:
+        if n % 2 == 1:
+            r = add_point(r, q, a, b, m)
+        q = add_point(q, q, a, b, m)
+        n //= 2
+    return r
+
+a = 497
+b = 1768
+m = 9739
+
+P = (2339, 2213)
+n = 7863
+
+print(multiplitcation(P, a, b, m, n))
+
+
+```
+
+> crypto{9467, 2742}
+
+
+### 5. Curves and Logs
+
+---
+
+**_TASK:_**
+
+$$E: Y2 = X3 + 497 X + 1768,\quad p: 9739,\quad G: (1804,5368)$$
+
+Calculate the shared secret after Alice sends you $Q_A = (815, 3190)$, with your secret integer $n_B = 1829$.
+
+Generate a key by calculating the SHA1 hash of the x coordinate (take the integer representation of the coordinate and cast it to a string). The flag is the hexdigest you find.****
+
+---
+
+
+Bài này có nói đểm cách chuyển khóa diffie-hellman, và ta đã có sãn tọa độ điểm của alice rồi nên bây giờ ta chỉ cần tính Q_a * n_b theo code đã viết sãn ở trên (giống y sì bài trước là ta có đáp án)
+
+
+```python
+
+
+from hashlib import sha1
+from Crypto.Util.number import bytes_to_long, long_to_bytes
+
+def add_point(p, q, a, b, n):
+    if p[1] == 0:
+        return q
+    elif q[1] == 0:
+        return p
+    elif p[0] == q[0] and p[1] == -q[1]:
+        return (0, 0)
+    else:
+        if p[0] == q[0] and p[1] == q[1]:
+            m = ((3 * (p[0] ** 2) + a) * pow(2 * p[1], -1, n) ) % n
+        else:
+            m = ((q[1] - p[1]) * (pow(q[0] - p[0], -1, n))) % n
+
+        x = (m ** 2 - q[0] - p[0]) % n
+        y = (m * (p[0] - x) - p[1]) % n
+        return (x, y)
+
+def multiplitcation(p, a, b, m, n):
+    q = p
+    r = (0, 0)
+
+    while n > 0:
+        if n % 2 == 1:
+            r = add_point(r, q, a, b, m)
+        q = add_point(q, q, a, b, m)
+        n //= 2
+    return r
+
+a = 497
+b = 1768
+m = 9739
+G = (1804,5368)
+
+q = (815, 3190)
+nB = 1829
+
+
+
+hash = sha1()
+hash.update(str(multiplitcation(q, a, b, m, nB)[0]).encode())
+print(hash.hexdigest())
+
+
+
+```
+
+### 6. Efficient Exchange
+
+
+---
+
+**_TASK:_**
+
+E: Y2 = X3 + 497 X + 1768, p: 9739, G: (1804,5368)
+
+Calculate the shared secret after Alice sends you q_x = 4726, with your secret integer nB = 6534.
+
+Use the decrypt.py file to decode the flag
+
+{'iv': 'cd9da9f1c60925922377ea952afc212c', 'encrypted_flag': 'febcbe3a3414a730b125931dccf912d2239f3e969c4334d95ed0ec86f6449ad8'}
+
+---
+
