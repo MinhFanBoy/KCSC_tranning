@@ -152,4 +152,40 @@ print(s.recv().decode())
 
 ```
 
+2. Micscrypt
 
+```py
+
+from PIL import Image
+import numpy as np
+import galois
+GF256 = galois.GF(2**8)
+
+img = Image.open('qr_flag_rgb.png')
+pixels = img.load()
+width, height = img.size
+
+M = GF256(np.random.randint(0, 256, size=(3, 3), dtype=np.uint8))
+
+# scan full height -> weight
+for x in range(width):
+    for y in range(0,height,3):
+        A = GF256([pixels[x, y], pixels[x, y+1], pixels[x, y+2]])
+        M = np.add(A, M)
+        pixels[x, y], pixels[x, y+1], pixels[x, y+2] = [tuple([int(i) for i in j]) for j in M]
+
+img.save('qr_flag_encrypt.png')
+```
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/6c647279-da66-454d-96f3-22a4fb14d690)
+
+Ta có một file và một ảnh. File chall là file mã hóa ảnh qr code thành ảnh qr code đã được mã hóa.
+
+Ban đầu file sẽ tạo ra một ma trận M là một ma trận random trong trường GF($2 ^ 8$). Giả sử qr là một bẳng [a, b, c, ..] và qr được mã hóa là [a', b', c', ...]
+thì ta có qr sẽ được mã hóa như sau:
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/1d4e8045-adfc-4b94-94d6-9b9e68fe312a)
+
+Sau một lúc tìm hiểu thì mình thấy phần tử đầu tiên của một qr là màu đen, từ đó mình tìm được a. Dựa vào ảnh qr mã hóa mình có thể tìm lại M = a - a', từ đó mình có thể lật ngược các bước mã hóa để tìm lại qr ban đầu.
+
+![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/4fe9ad1f-6ee3-4bd0-a776-73229732fe3f)
