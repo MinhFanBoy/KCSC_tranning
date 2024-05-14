@@ -120,7 +120,8 @@ Mình có mã hóa AES.ECB mode như sau:
 
 Mình thấy nó mẫ hóa các đầu vào thành các khối enc 16 bytes.
 
-Mình thực hiện tấn công bằng cách gửi lại tên user name là chính cái json mình cần gửi cho hàm login là ta sẽ có nó được đoạn json mã hóa và thành công lấy được flag.
+Từ đó mình thực hiện tấn công bằng phương pháp cắt ghép choosen plaintext attack. Đầu tiên mình thêm phần padding là hai chữ cái "bb" để ta có thể tách phần input mà mà ta nhập thành các block khác nhau.
+Tiếp theo, mình thực hiện tấn công bằng cách gửi lại tên user name là chính cái json mình cần gửi cho hàm login là ta sẽ có nó được đoạn json mã hóa và thành công lấy được flag.
 
 ```py
 
@@ -181,7 +182,7 @@ img.save('qr_flag_encrypt.png')
 
 Ta có một file và một ảnh. File chall là file mã hóa ảnh qr code thành ảnh qr code đã được mã hóa.
 
-Ban đầu file sẽ tạo ra một ma trận M là một ma trận random trong trường GF($2 ^ 8$). Giả sử qr là một bẳng [a, b, c, ..] và qr được mã hóa là [a', b', c', ...]
+Ban đầu file sẽ tạo ra một ma trận M là một ma trận random trong trường GF($2 ^ 8$). Giả sử qr là một mảng [a, b, c, ..] và qr được mã hóa là [a', b', c', ...]
 thì ta có qr sẽ được mã hóa như sau:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/1d4e8045-adfc-4b94-94d6-9b9e68fe312a)
@@ -685,3 +686,10 @@ I = P.ideal(f1,f2,f3)
 for eq in I.groebner_basis():
     print(eq)
 ```
+
+
+### end
+
+Hơi tiếc giải này không làm được !
+
+--5/15/2024--
