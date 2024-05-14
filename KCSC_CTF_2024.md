@@ -114,13 +114,13 @@ Tóm tắt lại file thì nó yêu cầu mình đăng nhập với tên là "ad
 
 sau đó nó mã hóa json trên bằng AES.ECB mode để gửi tới server (Ngoài ra mình không được đăng ký tên user bằng admin).
 
-mình có mã hóa AES.ECB mode như sau:
+Mình có mã hóa AES.ECB mode như sau:
 
 ![image](https://github.com/MinhFanBoy/KCSC_tranning/assets/145200520/2532b32e-c5d0-41af-8c30-53ab655430e3)
 
 Mình thấy nó mẫ hóa các đầu vào thành các khối enc 16 bytes.
 
-Mình thực hiện tấn công bằng cách gửi lại tên user name là chính cái json mình cần gửi cho hàm login là ta sẽ có nó đưuocj mà hóa và thành công lấy được flag.
+Mình thực hiện tấn công bằng cách gửi lại tên user name là chính cái json mình cần gửi cho hàm login là ta sẽ có nó được đoạn json mã hóa và thành công lấy được flag.
 
 ```py
 
