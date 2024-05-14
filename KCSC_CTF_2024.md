@@ -597,7 +597,7 @@ Và ta có các thông tin như sau:
 
 Bài này mình hiện tại thấy có hai hướng như sau:
 
-#### Hướng 1:
+#### Hướng 1
 
 Chuyển vế cả hai phương trình ta có:
 
@@ -619,7 +619,7 @@ và mỗi phương trình có thể viết lại như sau:
 + $f(x,y) = a_0 * (y) * x_k + a_1 * (y) * x_{k−1} + ⋯ + a_k * (y)$
 + $g(x,y) = b_0 * (y) * x_l + b_1 * (y) * x_{l−1} + ⋯ + b_l * (y)$
 
-Coi y là một tham số ta có Re(f, g) = F(y) từ đó nó trở thành hàm một biến. Với một số z thỏa mãn F(z) = 0 thì ta luôn có GCD(f(x, z), g(z, z)) != 0
+Coi y là một tham số ta có Re(f, g) = F(y) từ đó nó trở thành hàm một biến. Với một số z thỏa mãn F(z) = 0 thì ta luôn có GCD(f(x, z), g(z, z)) != 11
 
 Áp dụng vào trường hợp bài này, mình tính Re(f_1, _3) và Re(f_2, f_3) từ đó GCD(f(y), f'(y)) = flag_2. Sau khi có flag 2 mình sử dụng GCD(f_1, f_3) = flag_1
 
